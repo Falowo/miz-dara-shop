@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ffc19c8658a0b806b0dd67ab3b2e29ea",
+    "content-hash": "44319b4a4d3f14715b69500d9d5c483b",
     "packages": [
         {
             "name": "barbieswimcrew/zip-code-validator",
@@ -6742,16 +6742,16 @@
         },
         {
             "name": "symfony/security-http",
-            "version": "v4.4.5",
+            "version": "v4.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/security-http.git",
-                "reference": "c38fe1cd72360dfaa39c82fcb9e4666b041f8834"
+                "reference": "dcf596a85d7759a1b82ab844a51a191a409ee306"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/security-http/zipball/c38fe1cd72360dfaa39c82fcb9e4666b041f8834",
-                "reference": "c38fe1cd72360dfaa39c82fcb9e4666b041f8834",
+                "url": "https://api.github.com/repos/symfony/security-http/zipball/dcf596a85d7759a1b82ab844a51a191a409ee306",
+                "reference": "dcf596a85d7759a1b82ab844a51a191a409ee306",
                 "shasum": ""
             },
             "require": {
@@ -6818,7 +6818,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2020-02-26T10:27:30+00:00"
+            "time": "2020-03-23T12:37:11+00:00"
         },
         {
             "name": "symfony/sendgrid-mailer",
