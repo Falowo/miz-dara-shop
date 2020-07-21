@@ -1,0 +1,58 @@
+# See dos how to configure the bundle: https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html
+liip_imagine:
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
+
+    filter_sets :
+        cache : ~
+
+        # the name of the "filter set"
+        thumb :
+
+            # adjust the image quality to 75%
+            quality : 75
+
+            # list of transformations to apply (the "filters")
+            filters :
+
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+#                thumbnail  : { size : [120, 90], mode : outbound }
+                thumbnail  : { size : [360, 230], mode : outbound }
+
+                # create a 2px black border: center the thumbnail on a black background
+                # 4px larger to create a 2px border around the final image
+                background : { size : [360, 230], position : center, color : '#FFF' }
+        min :
+
+            # adjust the image quality to 75%
+            quality : 75
+
+            # list of transformations to apply (the "filters")
+            filters :
+
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+#                thumbnail  : { size : [120, 90], mode : outbound }
+                thumbnail  : { size : [80, 60], mode : outbound }
+
+                
+
+        big:
+
+            # adjust the image quality to 75%
+            quality: 75
+
+            # list of transformations to apply (the "filters")
+            filters:
+
+                # create a thumbnail: set size to 120x90 and use the "outbound" mode
+                # to crop the image when the size ratio of the input differs
+                #                thumbnail  : { size : [120, 90], mode : outbound }
+                thumbnail: { size: [1108, 734], mode: outbound }
+
+                # create a 2px black border: center the thumbnail on a black background
+                # 4px larger to create a 2px border around the final image
+#                background: { size: [1108, 734], position: center, color: '#FFF' }
+
+       

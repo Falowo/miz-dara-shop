@@ -1,12 +1,98 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        {% block stylesheets %}{% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			{% block title %}Blog symfony
+			{% endblock %}
+		</title>
+		{% block stylesheets %}
+			{# <link rel="stylesheet" href="{{ asset('lib/bootstrap/bootstrap.min.css') }}"> #}
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"/>
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css">
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
+	</head>
+	<body>
+            <img src="{{ '/base/header.jpeg' | imagine_filter('big') }}" class="card-img-top" alt="mi">
+
+		<nav class="navbar navbar-expand-sm navbar-dark bg-success">
+			<div class="container">
+				<a href="{{ path('app_index') }}" class="navbar-brand mb-0 h1">
+					MIZ. DARA UNIQUE
+					<i class="fas fa-home"></i>
+				</a>
+				{#        <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
+				<ul class="navbar-nav ml-3 mr-auto">
+					{% block menu %}
+						{# show the method menu() of AncestorCategoryController #}
+						{{ render(controller('App\\Controller\\IndexController::menu')) }}
+					{% endblock %}
+				</ul>
+				{#        </div>#}
+				<ul class="navbar-nav">
+
+					{{ render(controller('App\\Controller\\CartController::link')) }}
+
+					{% if app.user is null %}
+
+
+						<li class="nav-item">
+							<a href="{{ path('app_register') }}" class="nav-link">
+								Registrate
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_login') }}" class="nav-link">
+								Login
+							</a>
+						</li>
+
+					{% else %}
+						<li class="nav-item">
+							<span class="nav-link">
+								{{ app.user.firstName }}
+							</span>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_logout') }}" class="nav-link">
+								Logout
+							</a>
+						</li>
+					{% endif %}
+
+				</ul>
+			</div>
+		</nav>
+		<div class="container">
+			{% for type, messages in app.session.flashBag.all %}
+				{% for message in messages %}
+					{% if type=='error' %}
+						{% set type = 'danger' %}
+
+						<div class="alert alert-{{ type }} mt-2">{{ message|raw }}</div>
+					{% endif %}
+					{% if type=='success' %}
+						{% set type = 'success' %}
+
+						<div class="alert alert-{{ type }} mt-2">{{ message|raw }}</div>
+					{% endif %}
+
+				{% endfor %}
+
+			{% endfor %}
+			{% block body %}{% endblock %}
+		</div>
+            <img src="{{ '/base/footer.jpeg' | imagine_filter('big') }}" class="card-img-top mb-4">
+		{% block javascripts %}
+			{# <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+						            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+						            crossorigin="anonymous"></script>
+						    <script src="{{ asset('lib/bootstrap/bootstrap.min.js') }}"></script> #}
+			{{ encore_entry_script_tags('app') }}
+
+		{% endblock %}
+
+		
+	</body>
 </html>

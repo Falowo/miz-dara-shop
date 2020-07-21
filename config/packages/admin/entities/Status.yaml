@@ -1,0 +1,12 @@
+easy_admin:
+  entities:
+    Status:
+      class: App\Entity\Status
+      list:
+        actions: ['show', 'edit', 'delete']
+      show:
+        fields:
+          - 'purchases'
+      form:
+        fields:
+          - 'name'

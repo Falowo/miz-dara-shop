@@ -1,0 +1,40 @@
+{% if value is not null %}
+  
+      <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Product</th>
+      <th scope="col">Size</th>
+      <th scope="col">Color</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Product Price</th>
+      <th scope="col">Total Price</th>
+    </tr>
+  </thead>
+  <tbody>
+   {% for purchaseLine in value %}
+    <tr>
+      <td> {{ purchaseLine.id }} </td>
+      <td> {{ purchaseLine.product }} </td>
+      <td> {{ purchaseLine.size }} </td>
+      <td> {{ purchaseLine.tint }} </td>
+      <td> {{ purchaseLine.quantity }} </td>
+      <td> {{ purchaseLine.productPrice |  format_number }} </td>
+      <td> {{ purchaseLine.price |  format_number }} </td>
+    </tr>
+    
+    {% if loop.last %}
+         <tr>
+      <th colspan="6">Total for Items</th>
+      <td > {{ purchaseLine.purchase.totalPurchaseLines | format_number }} </td>
+    </tr>
+         <tr>
+      <th colspan="6">Total with delivery fees</th>
+      <td > {{ purchaseLine.purchase.total |  format_number }} </td>
+    </tr>
+    {% endif %}
+   {% endfor %} 
+  </tbody>
+</table>
+{% endif %}

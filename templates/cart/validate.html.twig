@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dara-Shop-validate
+{% endblock %}
+
+{% block body %}
+	
+	{% if purchase.purchaseLines | length > 0 %}
+		{{ render(controller('App\\Controller\\CartController::cart')) }}
+		{% if app.user.address %}
+
+			<h2>Validate your address</h2>
+			<p>
+				{{app.user.address.street}}
+				<br>
+				{{app.user.address.cityName}}
+				<br>
+				{% if app.user.address.zipCode %}
+					{{app.user.address.zipCode}}
+				{% endif %}
+
+				{{app.user.address.cityName}}
+				<br>
+				{{app.user.address.country | capitalize}}
+				<br>
+				{% if app.user.address.phoneNumber %}
+					Phone : +
+					{{app.user.address.phoneNumber.countryCode}}
+					{{app.user.address.phoneNumber.nationalNumber}}
+				{% endif %}
+				<br>
+				<a href="{{ path('address_new', {'case':'modify'}) }}" class="btn btn-success">Modify</a>
+				<a href="{{ path('cart_transport') }}" class="btn btn-success">Use this address</a>
+				<a href="{{ path('address_new') }}" class="btn btn-success">Add a new address</a>
+			{% else %}
+				<a href="{{ path('address_new') }}" class="btn btn-success">Create a new address</a>
+
+			{% endif %}
+
+		</p>
+
+
+	{% else %}
+		<p>Your cart is empty !</p>
+	{% endif %}
+
+
+{% endblock %}

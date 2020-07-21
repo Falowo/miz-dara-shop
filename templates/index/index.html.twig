@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello IndexController!{% endblock %}
+
+
+
+    {% block body %}
+        <h1>Welcome</h1>
+
+<div class="row">
+
+
+                {% for product in products %}
+                    {{ include('product/_card.html.twig') }}
+                {% endfor %}
+
+
+
+</div>
+
+        <div class="pagination">
+            {{ knp_pagination_render(products) }}
+        </div>
+
+
+    {% endblock %}

@@ -1,0 +1,15 @@
+
+{% if purchase %}
+    {% if purchase.purchaseLines | length > 0 %}
+        
+    {% endif %}
+<li class="nav-item">
+	<a class="nav-link" href="{{ path('cart_index') }} ">
+		<i class="fa fa-shopping-cart"></i>
+		<span id="alert-cart" class="badge badge-danger">
+        {{purchase.purchaseLines | length}}
+        </span>
+	</a>
+</li>
+
+{% endif %}

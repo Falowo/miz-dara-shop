@@ -1,0 +1,52 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+	transport
+{% endblock %}
+
+
+{% block body %}
+
+	{{ render(controller('App\\Controller\\CartController::cart')) }}
+
+<h2>Select your delivery service</h2>
+	
+{% if deliveryFeess is defined %}
+	<table class="table">
+    
+			{% for deliveryFees in deliveryFeess  %}
+		<tr>
+				
+					<td>
+                    <a href="{{ path('cart_setDeliveryFees', {'id':deliveryFees.id} ) }}">
+						{{ deliveryFees.transport.name}}
+                    </a>
+					</td>
+                    <td>
+                    <a href="{{ path('cart_setDeliveryFees', {'id':deliveryFees.id} ) }}">
+                    Delivered within {{deliveryFees.maxDays}} days
+                    </a>
+                    </td>
+                    <td>
+                    <a href="{{ path('cart_setDeliveryFees', {'id':deliveryFees.id} ) }}">
+					{{ deliveryFees.deliveryPrice }}&nbsp₦
+                    </a>
+                    </td>
+                    <td>
+                    <a href="{{ path('cart_setDeliveryFees', {'id':deliveryFees.id} ) }}">
+                    <i class="fas fa-check fa-2x"></i>
+                    </a>
+                    </td>
+
+
+
+		
+
+	</tr>
+		{% endfor %}
+
+
+</table>
+
+{% endif %}
+{% endblock %}

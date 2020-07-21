@@ -1,0 +1,5 @@
+{% for category in ancestorCategories %}
+	<li class="nav-item">
+		<a class="nav-link" href="{{ path('category', {'id': category.id, 'slug': category.slug}) }}">{{ category.name }}</a>
+	</li>
+{% endfor %}

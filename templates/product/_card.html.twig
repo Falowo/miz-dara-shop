@@ -1,0 +1,58 @@
+<div class="col-6 m-0 p-0">
+    <a class="nav-link p-0" href="{{ path('product_add', {'id': product.id, 'slug': product.slug}) }}">
+
+
+        <div class="card">
+           
+
+            
+            {% if product.mainImage %}
+                <img src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('thumb') }}"
+                             class="card-img-top"
+                             alt="{{ product.name }}">
+            
+
+            {% elseif product.images is not empty %}
+                {% for image in product.images %}
+                    {% if loop.first %}
+                        <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb') }}"
+                             class="card-img-top"
+                             alt="{{ product.name }}">
+
+                    {% endif %}
+                {% endfor %}
+
+
+
+            {% else %}
+                <img src="{{ '/products/images/main/empty.jpg' | imagine_filter('thumb') }}" class="card-img-top"
+                     alt="{{ product.name }}">
+            {% endif %}
+
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.info }}</p>
+
+                {% if product.discountPrice is null %}
+                    <a href="{{ path('product_add', {'id': product.id, 'slug': product.slug}) }}"
+                       class="btn btn-success float-right" style="font-weight: bold; font-size:1.5rem">
+                        {{ product.formatedPrice }}&nbsp₦
+                    </a>
+                {% else %}
+                    <a href="{{ path('product_add', {'id': product.id, 'slug': product.slug}) }}"
+                       class="btn btn-danger float-right" style="font-weight: bold; font-size:1.5rem">
+                        <del style="margin-right: 10px">
+                            {{ product.formatedPrice }}&nbsp₦
+                        </del>
+
+                        {{ product.formatedDiscountPrice }}&nbsp₦
+                    </a>
+                {% endif %}
+
+
+            </div>
+        </div>
+    </a>
+
+</div>
+

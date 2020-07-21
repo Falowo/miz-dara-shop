@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!
+{% endblock %}
+
+{% block body %}
+    {{ render(controller('App\\Controller\\CartController::cart')) }}
+{% if purchase %}
+  <table class="table">
+<tr>
+				
+					<td>
+                    
+						{{ purchase.deliveryFees.transport.name}}
+                   
+					</td>
+                    <td>
+                  
+                    Delivered within {{purchase.maxDays}} days
+                    
+                    </td>
+                    <td>
+					{{ purchase.deliveryPrice }}&nbsp₦
+                    </td>
+                  
+	</tr>
+  </table>  
+
+{% endif %}
+{% endblock %}
+
+
+		
+

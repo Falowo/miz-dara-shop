@@ -1,0 +1,144 @@
+{% if purchase %}
+	{% if not purchase.paid %}
+		
+	<h1>Your cart</h1>
+	{% else %}
+		<h1>Congratulations ! Your Purchase is registered</h1>
+	{% endif %}
+{% endif %}
+
+{% if purchase.purchaseLines | length > 0 %}
+	<table class="table">
+		<thead>
+			<tr>
+				<th colspan="2">Product</th>
+				<th>Size</th>
+				<th>Color</th>
+				<th>Price</th>
+				<th>Quantity</th>
+				<th>Total</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for purchaseLine in purchase.purchaseLines %}
+				<tr>
+					<td>
+						{% if purchaseLine.image %}
+							<img src="{{ vich_uploader_asset(purchaseLine.image, 'imageFile') | imagine_filter('min') }}" class="card-img-top" alt="{{ purchaseLine.product.name }}">
+						{% else %}
+							<img src="{{ '/products/images/main/empty.jpg' | imagine_filter('min') }}" class="card-img-top" alt="{{ purchaseLine.product.name }}">
+						{% endif %}
+					</td>
+					<td>{{ purchaseLine.product.name }}</td>
+					<td>{{ purchaseLine.size.name }}</td>
+					<td>{{ purchaseLine.tint.name }}</td>
+					{% if purchaseLine.product.discountPrice %}
+						<td>
+							<del>{{ purchaseLine.product.formatedPrice }}&nbsp₦</del><br>
+							<strong class="text-primary ">{{ purchaseLine.product.formatedDiscountPrice }}&nbsp₦
+							</strong>
+						</td>
+					{% else %}
+						<td>{{ purchaseLine.product.formatedPrice }}&nbsp₦</td>
+					{% endif %}
+					<td class="text-center">{{ purchaseLine.quantity }}</td>
+					{% if purchaseLine.product.discountPrice %}
+						<td>{{ (purchaseLine.product.discountPrice * purchaseLine.quantity)|number_format(0, '.', ',') }}&nbsp₦
+						</td>
+					{% else %}
+						<td>{{ (purchaseLine.product.price * purchaseLine.quantity)|number_format(0, '.', ',') }}&nbsp₦</td>
+					{% endif %}
+					{% if not purchase.paid %}
+
+						<td>
+
+							<form method="post" action="{{ path('purchaseLine_delete', {'id': purchaseLine.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+								<input type="hidden" name="_method" value="DELETE">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ purchaseLine.id) }}">
+								<button class="btn btn-danger btn-sm">
+									<i class="fas fa-trash"></i>
+								</button>
+							</form>
+
+						</td>
+					{% endif %}
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+
+			{% if purchase.deliveryFees %}
+				<tr>
+					<td colspan="2">
+						<strong>Delivery Service :
+							{{ purchase.deliveryFees.transport.name }}</strong>
+					</td>
+					<td colspan="4">
+
+						delivered within
+						{{ purchase.maxDays }}
+						days
+					</td>
+					<td>
+						{{ purchase.deliveryPrice | number_format(0, '.', ',') }}&nbsp₦
+					</td>
+					{% if not purchase.paid %}						
+					<td>
+					<a href="{{path('cart_transport', {'edit': true} ) }} ">
+					<button class="btn btn-danger btn-sm">
+									<i class="fas fa-trash"></i>
+								</button>
+					</a>
+					</td>
+					{% endif %}
+
+				</tr>
+			{% endif %}
+			<tr style="font-size: 1.1rem; font-weight: bold">
+				<td colspan="4" class="text-success text-right">Total :</td>
+				<td colspan="2" class="text-success " style="font-size: 1.3rem; font-weight: bold">
+					{{ total | number_format(0, '.', ',') }}&nbsp₦
+				</td>
+
+				{% if not purchase.paid  %}
+
+					{% if purchase.deliveryFees %}
+						<td>
+
+							<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
+						</td>
+						<td>
+							<a href="{{ path('cart_pay') }}" class="text-right text-success">
+								<i class="fas fa-credit-card fa-3x"></i>
+
+							</a>
+
+						{% elseif purchase.address %}
+							<td class="text-center">
+								<a href="{{ path('app_index') }}">Continue shopping</a>
+							</td>
+
+
+						{% else %}
+						<td>
+
+							<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
+						</td>
+						{% if not purchase.address %}
+							
+							<td class="text-right pl-auto">
+
+								<a  href="{{ path('cart_validate') }}" class="text-success text-right">
+									<i class="fas fa-cart-arrow-down fa-3x"></i>
+								</a>
+							</td>
+						{% endif %}
+
+						{% endif %}
+					{% endif %}
+				</tr>
+			</tr>
+		</tfoot>
+	</tr>
+</tfoot></table>{% else %}<p>Your cart is empty !</p>{% endif %}

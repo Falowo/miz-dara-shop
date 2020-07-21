@@ -1,0 +1,31 @@
+easy_admin:
+  entities:
+    Category:
+      controller: App\Controller\EasyAdmin\CategoryController
+      class: App\Entity\Category
+      list:
+        fields:
+          - 'id'
+          - 'name'
+          - 
+            property: 'hasParent'
+            type: 'boolean'
+            type_options: 'disable'
+          - 'parent'
+          - 'categories'
+          - 'products'
+      search:
+        fields: ['name']         
+      form:  # <-- 'form' is applied to both 'new' and 'edit' views
+        fields:
+          - 'name'
+          - 'parent'
+          - { type: 'group', label: 'Categories', css_class: 'col-sm-4' }
+          - 
+            property: 'categories'
+            type: 'collection'
+            type_options:
+              entry_type: App\Form\CategoryEmbeddableType
+              allow_delete: true
+              allow_add: true
+              by_reference: false

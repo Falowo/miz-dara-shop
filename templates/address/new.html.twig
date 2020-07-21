@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>Your address</h1>
+
+    {{ form_start(form) }}
+        
+        {{ form_row(form.firstName) }}
+        {{ form_row(form.lastName) }}
+        {{ form_row(form.country) }}
+        {{ form_row(form.street) }}
+        {{ form_row(form.cityJsonId) }}
+        {{ form_row(form.zipCode) }}
+        {{ form_row(form.phoneNumber) }}
+        {# {{ form_widget(registrationForm) }} #}
+
+        <button class="btn btn-primary">Register</button>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+     {{ parent() }}
+     {{ encore_entry_script_tags('newAddress') }}
+ {% endblock %}

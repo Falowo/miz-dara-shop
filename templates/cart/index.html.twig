@@ -1,0 +1,10 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CartController!
+{% endblock %}
+
+{% block body %}
+    {{ render(controller('App\\Controller\\CartController::cart')) }}
+
+
+{% endblock %}
