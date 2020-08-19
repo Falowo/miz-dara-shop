@@ -1,11 +1,11 @@
 {
     "devDependencies": {
-        "@babel/core": "^7.9.6",
-        "@babel/preset-env": "^7.9.6",
+        "@babel/core": "^7.11.4",
+        "@babel/preset-env": "^7.11.0",
         "@symfony/webpack-encore": "^0.30.0",
         "core-js": "^3.0.0",
         "node-sass": "^4.14.1",
-        "regenerator-runtime": "^0.13.2",
+        "regenerator-runtime": "^0.13.7",
         "sass-loader": "^8.0.2",
         "webpack-notifier": "^1.6.0"
     },
@@ -18,14 +18,18 @@
         "build": "encore production --progress"
     },
     "dependencies": {
-        "@popperjs/core": "^2.4.0",
-        "bootstrap": "^4.5.0",
+        "@popperjs/core": "^2.4.4",
+        "bootstrap": "^4.5.2",
         "elliptic": "^6.5.3",
         "featherlight": "^1.7.14",
         "jquery": "^3.5.1",
-        "lodash": "^4.17.19",
+        "lodash": "^4.17.20",
         "popper.js": "^1.16.1",
         "select2": "^4.0.13",
+        "serialize-javascript": "^4.0.0",
         "websocket-extensions": "^0.1.4"
+    },
+    "optionalDependencies": {
+        "fsevents": "^2.1.3"
     }
 }
