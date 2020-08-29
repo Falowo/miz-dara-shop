@@ -26,11 +26,11 @@ class CreateLocalDataController extends AbstractController
         }
         $em->flush();
 
-        $countries = $localeService->getArrayCountries();
+        $countries = $localeService->getCountryChoices();
 
         foreach($countries as $k=>$v){
             $country = new Country();
-            $country->setCode($k);
+            $country->setCode($v);
             $em->persist($country);
         }
         $em->flush();
