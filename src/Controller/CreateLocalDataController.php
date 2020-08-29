@@ -30,7 +30,7 @@ class CreateLocalDataController extends AbstractController
 
         foreach($countries as $k=>$v){
             $country = new Country();
-            $country->setCode($v);
+            $country->setCode($k);
             $em->persist($country);
         }
         $em->flush();
