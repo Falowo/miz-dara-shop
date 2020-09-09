@@ -24,7 +24,7 @@ class MailerService
     {
         
         $email = (new TemplatedEmail())
-            ->from('gf.krikorian@free.fr')
+            ->from('noreply@miz-dara-shop.com')
             ->to(new Address($user->getEmail()))
             ->subject('Thanks for signing up!')
     
@@ -41,6 +41,7 @@ class MailerService
             } catch (TransportExceptionInterface $e) {
                 // some error prevented the email sending; display an
                 // error message or try to resend the message
+                $this->mailer->send($email);
             }
             
     }

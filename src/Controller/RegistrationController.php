@@ -65,7 +65,7 @@ class RegistrationController extends AbstractController
      * Undocumented function
      *
      * @param User $user
-     * @Route("/confirm/{email}", name="app_confirmEmail")
+     * @Route("/am/ready/to/buy/the/best/stuff/ever/{email}", name="app_confirmEmail")
      */
     public function confirmEmail($email, UserRepository $userRepository)
     {

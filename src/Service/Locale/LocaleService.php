@@ -86,8 +86,9 @@ class LocaleService
         if ($native === true) {
             foreach ($array as $k => $v) {
                 $countries[$k] = $v['native'];
-            }
-        } else {
+            }   
+        } 
+        else {
             foreach ($array as $k => $v) {
                 $countries[$k] = $v['name'];
             }
