@@ -81,7 +81,10 @@ class RegistrationController extends AbstractController
            }
         
         else{
-            return $this->redirectToRoute('app_register');
+            // return $this->redirectToRoute('app_register');
+            return $this->render('registration/confirmEmailFailed.html.twig', [
+                'user' => $user,
+            ]);
         }
 
 
