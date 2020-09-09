@@ -76,12 +76,12 @@ class RegistrationController extends AbstractController
         if($user){           
                 $user->setConfirmedEmail(true);
                 $em = $this->getDoctrine()->getManager();
-                $em->flush;
+                $em->flush();
                 return $this->redirectToRoute('app_login');
            }
         
         else{
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_register');
         }
 
 
