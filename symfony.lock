@@ -179,9 +179,6 @@
             "./config/packages/misd_phone_number.yaml"
         ]
     },
-    "pagerfanta/pagerfanta": {
-        "version": "v2.1.3"
-    },
     "php": {
         "version": "7.4"
     },
@@ -460,6 +457,9 @@
     "symfony/polyfill-php80": {
         "version": "v1.18.0"
     },
+    "symfony/polyfill-uuid": {
+        "version": "v1.18.1"
+    },
     "symfony/process": {
         "version": "v4.4.5"
     },
@@ -509,6 +509,15 @@
     },
     "symfony/security-http": {
         "version": "v4.4.5"
+    },
+    "symfony/sendgrid-mailer": {
+        "version": "4.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.4",
+            "ref": "b46e4f8f1adb2864f0aa9c0ff57aea3324a07199"
+        }
     },
     "symfony/serializer": {
         "version": "v4.4.5"
@@ -566,6 +575,9 @@
     },
     "symfony/twig-pack": {
         "version": "v1.0.0"
+    },
+    "symfony/uid": {
+        "version": "v5.1.5"
     },
     "symfony/validator": {
         "version": "4.3",
