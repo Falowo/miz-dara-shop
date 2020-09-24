@@ -17,9 +17,20 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 class DashboardController extends AbstractDashboardController
 {
+     /**
+     * @Route("/admin", name="dashboardRouteName")
+     */
+    public function index(): Response
+    {
+        return parent::index();
+    }
+
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
@@ -57,4 +68,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Products', 'fas fa-sun')->setSubItems($submenu2);
         yield MenuItem::subMenu('Purchases', 'far fa-money-bill-alt')->setSubItems($submenu3);
     }
+
+    
 }

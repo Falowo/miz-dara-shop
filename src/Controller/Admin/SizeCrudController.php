@@ -8,8 +8,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
+
 class SizeCrudController extends AbstractCrudController
 {
+
+   
+
+
     public static function getEntityFqcn(): string
     {
         return Size::class;
@@ -19,7 +24,7 @@ class SizeCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInSingular('Size')
-            ->setEntityLabelInPlural('Size')
+            ->setEntityLabelInPlural('Sizes')
             ->setSearchFields(['id', 'name']);
     }
 
