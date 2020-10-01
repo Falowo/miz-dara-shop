@@ -3,7 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Product;
+use App\Form\ImageEmbeddableType;
+use App\Form\StockEmbeddableType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -12,6 +16,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 
 class ProductCrudController extends AbstractCrudController
 {
@@ -38,11 +44,18 @@ class ProductCrudController extends AbstractCrudController
         $discountPrice = IntegerField::new('discountPrice');
         $categories = AssociationField::new('categories');
         $panel2 = FormField::addPanel('images');
-        $mainImageFile = Field::new('mainImageFile');
-        $images = AssociationField::new('images')->setTemplatePath('easy_admin/images.html.twig');
+        $mainImageFile = ImageField::new('mainImageFile');
+        $images = CollectionField::new('images')
+            ->setTemplatePath('admin/field/images.html.twig')
+            ->allowAdd()
+            ->allowDelete()
+            ->setEntryType(ImageEmbeddableType::class);
         $panel3 = FormField::addPanel('Stocks');
-        $stocks = AssociationField::new('stocks');
-        $mainImage = ImageField::new('mainImage');
+        $stocks = CollectionField::new('stocks')
+            ->allowAdd()
+            ->allowDelete()
+            ->setEntryType(StockEmbeddableType::class);
+        $mainImage = AvatarField::new('mainImage')->setTemplatePath('admin/field/mainImage.html.twig');
         $id = IntegerField::new('id', 'ID');
         $creationDate = DateTimeField::new('creationDate');
         $hasStock = Field::new('hasStock');
@@ -54,7 +67,23 @@ class ProductCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImageFile, $images, $panel3, $stocks];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImageFile, $images, $panel3, $stocks];
+            return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImage, $mainImageFile, $images, $panel3, $stocks];
         }
     }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            // ...
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER);
+    }
+
+    // public function createEntity(string $entityFqcn)
+    // {
+    //     $product = new Product();
+    //     $product->????();
+
+    //     return $product;
+    // }
 }

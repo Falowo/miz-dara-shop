@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -22,7 +21,6 @@ class Tint
 
     /**
      * @ORM\Column(type="string", length=26)
-     * @Assert\Unique()
      */
     private $name;
 

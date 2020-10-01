@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Listener;
+namespace App\EventSubscriber;
 
 
 use App\Entity\Image;

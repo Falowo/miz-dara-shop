@@ -32,12 +32,12 @@
 
 							<div class="carousel-item active">
 
-								{% if product.mainImage %}
+								{# {% if product.mainImage %} #}
 									<img class="d-block w-100" src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('big') }}" alt="{{ product.name }}">
-								{% else %}
-									<img class="d-block w-100" src="{{ '/products/images/main/empty.jpg' | imagine_filter('big') }}" alt="{{ product.name }}">
+								{# {% else %} #}
+									{# <img class="d-block w-100" src="{{ '/products/images/main/empty.jpg' | imagine_filter('big') }}" alt="{{ product.name }}"> #}
 
-								{% endif %}
+								{# {% endif %} #}
 								<div class="carousel-caption d-none d-md-block">
 									<h5>{{ product.name }}</h5>
 								</div>

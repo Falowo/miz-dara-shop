@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Category;
+use App\Form\CategoryEmbeddableType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -22,7 +24,7 @@ class CategoryCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInSingular('Category')
-            ->setEntityLabelInPlural('Category')
+            ->setEntityLabelInPlural('Categories')
             ->setSearchFields(['name']);
     }
 
@@ -32,7 +34,10 @@ class CategoryCrudController extends AbstractCrudController
         $name = TextField::new('name');
         $parent = AssociationField::new('parent');
         $panel2 = FormField::addPanel('Categories');
-        $categories = AssociationField::new('categories');
+        $categories = CollectionField::new('categories')
+            ->allowAdd()
+            ->allowDelete()
+            ->setEntryType(CategoryEmbeddableType::class);
         $id = IntegerField::new('id', 'ID');
         $hasParent = BooleanField::new('hasParent');
         $theme = IntegerField::new('theme');

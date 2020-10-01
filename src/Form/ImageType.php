@@ -29,8 +29,6 @@ class ImageType extends AbstractType
                 ]
             ])
 
-            ->add('tint')
-            ->add('product')
         ;
 
 

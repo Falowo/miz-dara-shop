@@ -21,7 +21,7 @@ class PurchaseCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInSingular('Purchase')
-            ->setEntityLabelInPlural('Purchase')
+            ->setEntityLabelInPlural('Purchases')
             ->setSearchFields(['id', 'deliveryPrice', 'maxDays', 'totalPurchaseLines']);
     }
 

@@ -129,6 +129,8 @@ class Category
 
             $this->categories[] = $category;
             $category->setParent($this);
+            
+
         }
 
         return $this;

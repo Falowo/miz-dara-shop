@@ -4,7 +4,6 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\SizeRepository")
@@ -23,7 +22,6 @@ class Size
     /**
      * @ORM\Column(type="string", length=16)
      * @ORM\OrderBy({"name" = "ASC"})
-     * @Assert\Unique()
      *
      */
     private $name;

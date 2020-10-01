@@ -23,13 +23,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DashboardController extends AbstractDashboardController
 {
-     /**
-     * @Route("/admin", name="dashboardRouteName")
-     */
-    public function index(): Response
-    {
-        return parent::index();
-    }
+    //  /**
+    //  * @Route("/admin", name="dashboardRouteName")
+    //  */
+    // public function index(): Response
+    // {
+    //     return parent::index();
+    // }
 
     public function configureDashboard(): Dashboard
     {
