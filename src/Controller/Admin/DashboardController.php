@@ -48,7 +48,7 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('Size', 'fas fa-pen', Size::class),
             MenuItem::linkToCrud('Colors', 'fas fa-pen', Tint::class),
             MenuItem::linkToCrud('tags', 'fas fa-pen', Tag::class),
-            MenuItem::linkToCrud('Categories', 'fas fa-inbox', Category::class),
+            MenuItem::linkToCrud('Categories', 'fas fa-pen', Category::class),
         ];
 
         $submenu2 = [
