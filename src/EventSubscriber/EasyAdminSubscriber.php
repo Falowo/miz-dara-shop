@@ -3,12 +3,11 @@
 namespace App\EventSubscriber;
 
 use App\Entity\Category;
+use App\Entity\DeliveryFees;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\Stock;
-use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
-use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityBuildEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
@@ -16,19 +15,15 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
+use Symfony\Component\Mime\Message;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+
+
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
-    /**
-     * Undocumented variable
-     *
-     * @var EntityManagerInterface
-     */
-    private $em;
-
-    private $session;
 
     /**
      * @var CacheManager
@@ -41,23 +36,28 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     private $uploaderHelper;
 
     /**
-     *
-     * @var ProductRepository
+     * @var FlashBagInterface
      */
-    private $productRepository;
+    private $flashBagInterface;
+
+    /**
+     * @var [type]
+     */
+    private $em;
 
     public function __construct(
-        EntityManagerInterface $em,
+
         CacheManager $cacheManager,
         UploaderHelper $uploaderHelper,
-        SessionInterface $session,
-        ProductRepository $productRepository
+        FlashBagInterface $flashBagInterface,
+        EntityManagerInterface $em
+
     ) {
-        $this->em = $em;
+
         $this->cacheManager = $cacheManager;
         $this->uploaderHelper = $uploaderHelper;
-        $this->session = $session;
-        $this->productRepository = $productRepository;
+        $this->flashBagInterface = $flashBagInterface;
+        $this->em = $em;
     }
 
     public static function getSubscribedEvents()
@@ -66,6 +66,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             BeforeEntityPersistedEvent::class => ['beforePersist'],
             BeforeEntityUpdatedEvent::class => ['beforeUpdate'],
             BeforeEntityDeletedEvent::class => ['beforeDelete'],
+            AfterEntityPersistedEvent::class => ['afterPersist']
 
         ];
     }
@@ -76,18 +77,25 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
 
-        $this->setCategory($entity);       
+
+        $this->setCategory($entity);
 
         $this->setProductForImages($entity);
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
 
+        $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
+
 
         return;
     }
 
-
+    public function afterPersist(AfterEntityPersistedEvent $event)
+    {
+        $entity = $event->getEntityInstance();
+        $this->makeSureOneLocalFieldIsCompletedInDeliveryFees($entity);
+    }
 
     public function beforeUpdate(BeforeEntityUpdatedEvent $event)
     {
@@ -101,6 +109,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
+
+        $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
 
 
         return;
@@ -134,6 +144,9 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
         if ($entity instanceof Category) {
 
+            if ($entity->getParent() === $entity) {
+                $entity->setParent(null);
+            }
             $entity
                 ->setHasParent();
 
@@ -143,35 +156,27 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
             if (count($entity->getCategories()) > 0) {
                 foreach ($entity->getCategories() as $category) {
+                    if ($entity === $category) {
+                        $entity->removeCategory($category);
+                    }
                     $entity->addCategory($category);
                     $category
-                    ->setParent($entity)
-                    ->setHasParent()
-                    ;
-                    
+                        ->setParent($entity)
+                        ->setHasParent();
                 }
             }
         }
     }
 
-    // private function storeProductInSession($entity)
-    // {
-    //     if ($entity instanceof Product) {
-    //         $this->session->set('lastProduct', $entity->getId());
-    //     }
-    // }
-
-    // private function getStoredProductInSession()
-    // {
-    //     $productId = $this->session->get('lastProduct');
-    //     return $this->productRepository->find($productId);
-    // }
 
     private function setProductForImages($entity)
     {
         if ($entity instanceof Product) {
             foreach ($entity->getImages() as $image) {
                 $image->setProduct($entity);
+                if (!($image->getName()) && !($image->getImageFile())) {
+                    $entity->removeImage($image);
+                }
             }
         }
     }
@@ -186,10 +191,9 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     private function setCategoriesForProduct($entity)
     {
-        if($entity instanceof Product){
-            foreach($entity->getCategories() as $category){
-                while($category->getparent())
-                {
+        if ($entity instanceof Product) {
+            foreach ($entity->getCategories() as $category) {
+                while ($category->getparent()) {
                     $entity->addCategory($category->getParent());
                     $category = $category->getParent();
                 }
@@ -199,13 +203,45 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     public function setHasStockForProduct($entity)
     {
-        if ($entity instanceof Product){
+        if ($entity instanceof Product) {
             $entity->setHasStock(null);
         }
 
-        if ($entity instanceof Stock){
-            if ($product = $entity->getProduct()){
+        if ($entity instanceof Stock) {
+            if ($product = $entity->getProduct()) {
                 $product->setHasStock(null);
+            }
+        }
+    }
+    private function makeSureOneLocalFieldIsCompletedInDeliveryFees($entity)
+    {
+        if ($entity instanceof DeliveryFees) {
+            if (!($entity->getNgCity() || $entity->getNgState() || $entity->getCountry() || $entity->getContinent())) {
+                $this->flashBagInterface->add('danger', 'You need to complete one of the Locale Fields');
+
+                $this->em->remove($entity);
+                $this->em->flush();
+            }
+        }
+    }
+
+    private function makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity)
+    {
+
+        if ($entity instanceof DeliveryFees) {
+
+            if (!($entity->getNgCity() xor $entity->getNgState() xor $entity->getCountry() xor $entity->getContinent())) {
+                $this->flashBagInterface->add('danger', 'You need to complete ONLY one of the Locale Fields, only the more precise field will be retained');
+                if ($entity->getNgCity()) {
+                    $entity->setNgState(null);
+                    $entity->setCountry(null);
+                    $entity->setContinent(null);
+                } elseif ($entity->getNgState()) {
+                    $entity->setCountry(null);
+                    $entity->setContinent(null);
+                } elseif ($entity->getCountry()) {
+                    $entity->setContinent(null);
+                }
             }
         }
     }

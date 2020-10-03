@@ -26,15 +26,15 @@ class DeliveryFeesCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $transport = AssociationField::new('transport');
-        $maxDays = IntegerField::new('maxDays');
-        $ngCity = AssociationField::new('ngCity');
-        $ngState = AssociationField::new('ngState');
-        $country = AssociationField::new('country');
-        $continent = AssociationField::new('continent');
-        $fixedAmount = IntegerField::new('fixedAmount');
-        $amountByKm = IntegerField::new('amountByKm');
-        $percentOfRawPrice = IntegerField::new('percentOfRawPrice');
-        $freeForMoreThan = IntegerField::new('freeForMoreThan');
+        $maxDays = IntegerField::new('maxDays')->setHelp('Overrides the field daysByKm in Transport Services');
+        $ngCity = AssociationField::new('ngCity')->setHelp('ONE and only ONE field ngCity OR ngState OR country OR continent must be completed');
+        $ngState = AssociationField::new('ngState')->setHelp('ONE and only ONE field ngCity OR ngState OR country OR continent must be completed');
+        $country = AssociationField::new('country')->setHelp('ONE and only ONE field ngCity OR ngState OR country OR continent must be completed');
+        $continent = AssociationField::new('continent')->setHelp('ONE and only ONE field ngCity OR ngState OR country OR continent must be completed');
+        $fixedAmount = IntegerField::new('fixedAmount')->setHelp('in Naira');
+        $amountByKm = IntegerField::new('amountByKm')->setHelp('in Naira');
+        $percentOfRawPrice = IntegerField::new('percentOfRawPrice')->setHelp('eg: for 20% write 20');
+        $freeForMoreThan = IntegerField::new('freeForMoreThan')->setHelp('in Naira');
         $id = IntegerField::new('id', 'ID');
 
         if (Crud::PAGE_INDEX === $pageName) {

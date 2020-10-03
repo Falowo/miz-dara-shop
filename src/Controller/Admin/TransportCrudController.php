@@ -6,6 +6,7 @@ use App\Entity\Transport;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CurrencyField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -28,9 +29,9 @@ class TransportCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $name = TextField::new('name');
-        $speed = TextField::new('speed');
+        $speed = TextField::new('speed')->setHelp('eg: fast, regular, slow etc.');
         $maxDaysByKm = NumberField::new('maxDaysByKm');
-        $defaultAmountByKm = IntegerField::new('defaultAmountByKm');
+        $defaultAmountByKm = IntegerField::new('defaultAmountByKm')->setHelp('inNaira');
         $id = IntegerField::new('id', 'ID');
         $deliveryFeess = AssociationField::new('deliveryFeess');
 

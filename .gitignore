@@ -20,7 +20,7 @@
 ###< symfony/web-server-bundle ###
 
 /.idea
-/public/images/
+/public/products/
 ###> liip/imagine-bundle ###
 /public/media/cache/
 ###< liip/imagine-bundle ###
@@ -31,3 +31,8 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> easyadmin ###
+easyadmin-config.backup
+###< easyadmin ###
+
