@@ -6,7 +6,9 @@ use App\Entity\Category;
 use App\Entity\DeliveryFees;
 use App\Entity\Image;
 use App\Entity\Product;
+use App\Entity\Purchase;
 use App\Entity\Stock;
+use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
@@ -15,9 +17,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Symfony\Component\HttpFoundation\Session\Flash\AutoExpireFlashBag;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
-use Symfony\Component\Mime\Message;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 
@@ -45,12 +45,18 @@ class EasyAdminSubscriber implements EventSubscriberInterface
      */
     private $em;
 
+    /**
+     * @var StockRepository
+     */
+    private $stockRepository;
+
     public function __construct(
 
         CacheManager $cacheManager,
         UploaderHelper $uploaderHelper,
         FlashBagInterface $flashBagInterface,
-        EntityManagerInterface $em
+        EntityManagerInterface $em,
+        StockRepository $stockRepository
 
     ) {
 
@@ -58,6 +64,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->uploaderHelper = $uploaderHelper;
         $this->flashBagInterface = $flashBagInterface;
         $this->em = $em;
+        $this->stockRepository = $stockRepository;
     }
 
     public static function getSubscribedEvents()
@@ -88,6 +95,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
 
 
+
         return;
     }
 
@@ -95,6 +103,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
         $this->makeSureOneLocalFieldIsCompletedInDeliveryFees($entity);
+        $this->avoidCreatePurchase($entity);
+        return;
     }
 
     public function beforeUpdate(BeforeEntityUpdatedEvent $event)
@@ -109,6 +119,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
+        $this->avoidDuplicatedStock($entity);
 
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
 
@@ -242,6 +253,49 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                 } elseif ($entity->getCountry()) {
                     $entity->setContinent(null);
                 }
+            }
+        }
+    }
+
+    private function avoidCreatePurchase($entity)
+    {
+        if ($entity instanceof Purchase) {
+            if (!($entity->getUser() && $entity->getaddress())) {
+                $this->flashBagInterface->add('danger', 'You cannot create purchase from admin');
+
+                $this->em->remove($entity);
+                $this->em->flush();
+            }
+        }
+    }
+
+    private function avoidDuplicatedStock($entity)
+    {
+        if ($entity instanceof Product){
+            if ($entity->getStocks()){
+                $pairSizeTints = [];
+                foreach($entity->getStocks() as $stock){
+                    $pairSizeTint = $stock->getSize() . $stock->getTint();
+                    $k = array_search($pairSizeTint, $pairSizeTints);
+                    if($k === false){
+                        $pairSizeTints[]=$pairSizeTint;
+                    }else{
+                        $this->flashBagInterface->add('danger', 'The stock for size ' . $stock->getSize() . ' and color ' . $stock->getTint() . ' already exists, edit it !');
+                        $entity->removeStock($stock);
+
+                    }
+                    
+                }
+            }
+        }
+    }
+    private function avoidUncompleteStock($entity)
+    {
+        if ($entity instanceof Stock) {
+            if (!($entity->getProduct() && $entity->getTint() && $entity->getSize() && $entity->getQuantity())) {
+
+                $this->flashBagInterface->add('danger', 'You need to complete all entities even as Unique or else (prepare your sizes and colors before) or 0 for the quantity');
+
             }
         }
     }

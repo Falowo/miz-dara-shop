@@ -50,7 +50,7 @@ class Stock
 
     public function __toString()
     {
-        return 'size : ' . $this->size . ' ..... Color : ' . $this->tint . ' ..... Quantity : ' . $this->quantity;
+        return 'size : ' . $this->size . ' / Color : ' . $this->tint . ' / Quantity : ' . $this->quantity . '  ';
     }
 
 

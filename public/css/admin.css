@@ -1,0 +1,68 @@
+:root{
+    /* change the background color of the <body> */
+    --body-bg: yellow;
+} 
+
+html body div.content-panel-body.with-background,
+/* html body div.content-panel-body.with-background span.select2-dropdown, */
+html body div.content-panel-body.with-background input,
+html body div.content-panel-body.with-background div.field-collection-item.field-collection-item-complex
+{
+    background-color: black;
+    color: white;
+    font-size: large;
+    border: 1px solid lightgrey;
+}
+
+html, body,
+/* html body div.content-panel-body.with-background ul,
+html body div.content-panel-body.with-background li, */
+html body div.content-panel-body.with-background label,
+html body div.content-panel-body.with-background span
+{
+    background-color: black;
+    color: hotpink;
+    font-size: large;
+}
+
+html body div.content-panel-body.with-background span.select2-selection__choice__remove,
+html body div.content-panel-body.with-background input.select2-search__field
+{
+    background-color: white;
+    color: black
+}
+
+div.content-panel-body,
+div.content-panel-body td.text-,
+div.content-panel-body td.text-right,
+div.content-panel-body td.text-center,
+div.content-panel-body td.no-results,
+div.content-panel-body td.actions, 
+div.content-panel-body th, 
+div.content-panel-body span, 
+div.content-panel-body a,
+div.content-panel-body.without-header.without-footer.without-padding div.data-row
+{
+    background-color: black;
+    color:white;
+}
+div.content-panel-body td.text-{
+    background-color: black;
+    color:white;
+}
+
+aside.main-sidebar,
+aside.main-sidebar a,
+aside.main-sidebar span
+{
+    background-color: black;
+    color: white;
+    font-size: large;
+}
+
+div.list-pagination
+{
+    background-color: yellow;
+    color: black;
+}
+}

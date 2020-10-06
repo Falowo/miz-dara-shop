@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Purchase;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -40,9 +42,17 @@ class PurchaseCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $purchaseDate, $deliveryFees, $paid, $status, $purchaseLines, $user];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$paid, $status];
+            return [];
         } elseif (Crud::PAGE_EDIT === $pageName) {
             return [$paid, $status];
         }
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        return $actions
+            // ...
+            ->add(Crud::PAGE_INDEX, Action::DETAIL)
+            ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER);
     }
 }
