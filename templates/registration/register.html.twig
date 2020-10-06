@@ -10,8 +10,11 @@
         {{ form_row(registrationForm.plainPassword) }}
         {{ form_row(registrationForm.firstName) }}
         {{ form_row(registrationForm.lastName) }}
+        <button type="button" class="btn btn-lg btn-success" data-toggle="popover" title="Terms" data-content="I am a trustfull customer and I visit your website with positive mind">Click to see the terms</button>
         {{ form_row(registrationForm.agreeTerms) }}        
+        {{ form_row(registrationForm.captcha) }}        
         <button class="btn btn-primary">Register</button>
     {{ form_end(registrationForm) }}
-    
+
+       
 {% endblock %}
