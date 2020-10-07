@@ -6,8 +6,10 @@ use App\Entity\Address;
 use App\Form\AddressType;
 use App\Repository\PurchaseRepository;
 use App\Service\Cart\CartService;
+use App\Service\Mailer\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -25,11 +27,19 @@ class AddressController extends AbstractController
         Request $request,
         CartService $cartService,
         PurchaseRepository $purchaseRepository,
-        string $case
+        string $case,
+        MailerService $mailerService,
+        FlashBagInterface $flashBagInterface
     ) {
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
+        if (!($user->getConfirmedEMail())){
+            $flashBagInterface->add('danger', 'You must confirm your email before you can continue a new confirmation email has been sent to you');
+            $mailerService->sendSignUpEmail($user);
+
+            return $this->redirectToRoute('cart_index');
+        }
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);

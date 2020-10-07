@@ -27,7 +27,7 @@
 						{% if purchaseLine.image %}
 							<img src="{{ vich_uploader_asset(purchaseLine.image, 'imageFile') | imagine_filter('min') }}" class="card-img-top" alt="{{ purchaseLine.product.name }}">
 						{% else %}
-							<img src="{{ '/products/images/main/empty.jpg' | imagine_filter('min') }}" class="card-img-top" alt="{{ purchaseLine.product.name }}">
+							<img src="{{ '/products/images/empty.jpg' | imagine_filter('min') }}" class="card-img-top" alt="{{ purchaseLine.product.name }}">
 						{% endif %}
 					</td>
 					<td>{{ purchaseLine.product.name }}</td>

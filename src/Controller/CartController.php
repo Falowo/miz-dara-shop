@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\DeliveryFees;
+use App\Entity\Image;
 use App\Entity\Purchase;
 use App\Entity\PurchaseLine;
 use App\Entity\User;
@@ -35,8 +36,8 @@ class CartController extends AbstractController
     public function index(CartService $cartService)
     {
         if ($purchase = $cartService->getPurchase()) {
-            
-            if($purchase->getAddress() && !$purchase->getDeliveryFees()){
+
+            if ($purchase->getAddress() && !$purchase->getDeliveryFees()) {
                 return $this->redirectToRoute('cart_transport');
             }
 
@@ -88,7 +89,7 @@ class CartController extends AbstractController
 
         if ($purchase && count($purchase->getPurchaseLines()) > 0) {
 
-            if($purchase->getAddress()){
+            if ($purchase->getAddress()) {
                 return $this->redirectToRoute('cart_transport');
             }
 
@@ -96,7 +97,7 @@ class CartController extends AbstractController
              * @var User $user
              */
             $user = $this->getUser();
-            
+
 
             if (!$user->getAddress()) {
                 return $this->redirectToRoute('address_new');
@@ -105,9 +106,9 @@ class CartController extends AbstractController
                 $manager->flush();
             }
 
-           
+
             $total = $cartService->getTotalPurchase($purchase);
-            
+
 
             return $this->render('cart/validate.html.twig', [
                 'purchase' => $purchase,
@@ -129,7 +130,7 @@ class CartController extends AbstractController
         $purchase = $cartService->getPurchase();
         $user = $this->getUser();
         if ($purchase) {
-            if($purchase->getDeliveryFees() && $edit===false){
+            if ($purchase->getDeliveryFees() && $edit === false) {
                 return $this->redirectToRoute('cart_index');
             }
             if (!$purchase->getAddress() && $user->getAddress()) {
@@ -138,7 +139,7 @@ class CartController extends AbstractController
                 $em->flush();
             }
             $deliveryFeess = $cartService->getDeliveryFeess($purchase);
-            
+
             foreach ($deliveryFeess as $deliveryFees) {
                 $deliveryFees->setDeliveryPrice($cartService->getDeliveryPrice($deliveryFees, $purchase));
                 if (!$deliveryFees->getMaxDays()) {
@@ -168,7 +169,7 @@ class CartController extends AbstractController
         EntityManagerInterface $em,
         LocaleService $localeService
     ) {
-        if($deliveryFees){
+        if ($deliveryFees) {
             $purchase = $cartService->getPurchase();
             if ($deliveryFees->getMaxDays()) {
                 $maxDays = $deliveryFees->getMaxDays();
@@ -196,7 +197,7 @@ class CartController extends AbstractController
     {
 
         $purchase = $cartService->getPurchase();
-        if($purchase){
+        if ($purchase) {
 
             $purchase->setPaid(true);
             foreach ($purchase->getPurchaseLines() as $purchaseLine) {
@@ -206,15 +207,15 @@ class CartController extends AbstractController
             $total = $purchase->getTotalPurchaseLines() + $purchase->getDeliveryPrice();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-    
+
             $session->remove('purchaseId');
-            
+
             return $this->render('cart/paid.html.twig', [
                 'purchase' => $purchase,
-                'total' => $total             
-                ]);
-            }
-           
+                'total' => $total
+            ]);
+        }
+
         return $this->redirectToRoute('app_index');
     }
 
@@ -231,8 +232,8 @@ class CartController extends AbstractController
              */
             $purchase = $cartService->getPurchase();
 
-            
-        
+
+
             $total = $cartService->getTotalPurchaseLines($purchase);
             if ($purchase->getTotalPurchaseLines() !== $total)
                 $purchase->setTotalPurchaseLines($total);
@@ -241,39 +242,48 @@ class CartController extends AbstractController
             if ($purchase->getDeliveryPrice()) {
                 $total += $purchase->getDeliveryPrice();
             }
-            foreach($purchase->getPurchaseLines() as $purchaseLine){
-                $image = $imageRepository->findOneBy([
-                        'product'=>$purchaseLine->getProduct(),
-                        'tint'=>$purchaseLine->getTint()
-                        ]);
-                   if(!$image){
-                       $image = $purchaseLine->getProduct()->getMainImage();
-                   }
-
-                $purchaseLine->setImage($image);
+            foreach ($purchase->getPurchaseLines() as $purchaseLine) {
+                if(!($purchaseLine->getImage())){
+                    $image = new Image;
+                    if ($name = $purchaseLine->getProduct()->getMainImage()) {
+                        $image->setName($name);
+                    } elseif (!$image->getName()) {
+                        if ($image = $imageRepository->findOneBy([
+                            'product' => $purchaseLine->getProduct(),
+                            'tint' => $purchaseLine->getTint()
+                        ])) {
+                           
+                        } else {
+                            $image = $imageRepository->findOneBy([
+                                'product' => $purchaseLine->getProduct()
+                            ]);
+                        }
+                    }
+                    
+                    $purchaseLine->setImage($image);
+                }
             }
-
         } else {
             $purchase = new Purchase();
             $total = 0;
         }
 
-        
+
 
         return $this->render('cart/_cart.html.twig', [
             'purchase' => $purchase,
-            'total' => $total            
+            'total' => $total
         ]);
     }
-    
+
     public function link(CartService $cartService)
     {
         $purchase = $cartService->getPurchase();
 
-        
+
         return $this->render('cart/_link.html.twig', [
             'purchase' => $purchase,
-            
+
         ]);
     }
 }
