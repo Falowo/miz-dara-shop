@@ -15,7 +15,7 @@ html body div.content-panel-body.with-background div.field-collection-item.field
     border: 1px solid lightgrey;
 }
 
-html, body,
+html body,
 /* html body div.content-panel-body.with-background ul,
 html body div.content-panel-body.with-background li, */
 html body div.content-panel-body.with-background label,
@@ -61,7 +61,8 @@ aside.main-sidebar span
     font-size: large;
 }
 
-div.list-pagination
+div.list-pagination,
+div.content-panel div.content-panel-header
 {
     background-color: yellow;
     color: black;

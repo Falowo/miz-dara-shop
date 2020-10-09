@@ -4,7 +4,15 @@
 {% endblock %}
 {% block stylesheets %}
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<style>
+html body{
+    background-color: black;
+    color: hotpink;
+}
+</style>
+
 {% endblock %}
+
 {% block body %}
 
         <h1>Set first</h1>
@@ -43,7 +51,7 @@
 	<a href="{{path('statusCC' ) }}" class="list-group-item list-group-item-action list-group-item-dark">
 		Status</a>
 	<a href="{{path('purchaseCC' ) }}" class="list-group-item list-group-item-action list-group-item-danger">
-		Purchase</a>
+		Purchases</a>
 </div>
 
 {% endblock %}
