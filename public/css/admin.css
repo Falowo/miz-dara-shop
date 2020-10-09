@@ -1,6 +1,7 @@
 :root{
     /* change the background color of the <body> */
     --body-bg: yellow;
+    --body-max-width: 100%;
 } 
 
 html body div.content-panel-body.with-background,

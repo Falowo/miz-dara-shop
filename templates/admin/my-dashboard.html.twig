@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+{% block title %}
+	Admin
+{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+{% endblock %}
+{% block body %}
+
+        <h1>Set first</h1>
+<div class="list-group">
+	<a href="{{path('categoryCC' ) }} " class="list-group-item list-group-item-action list-group-item-success">
+		Categories</a>
+	<a href="{{path('sizeCC' ) }}" class="list-group-item list-group-item-action list-group-item-primary">
+		Sizes</a>
+	<a href="{{path('tintCC' ) }}" class="list-group-item list-group-item-action list-group-item-danger">
+		Colors</a>
+	<a href="{{path('tagCC' ) }}" class="list-group-item list-group-item-action list-group-item-dark">
+		Tags</a>
+</div>
+
+<h1>Products</h1>
+        <div class="list-group">
+	<a href="{{path('productCC' ) }}" class="list-group-item list-group-item-action list-group-item-success">
+		Products</a>
+	<a href="{{path('imageCC' ) }}" class="list-group-item list-group-item-action list-group-item-danger">
+		Images</a>
+	<a href="{{path('stockCC' ) }}" class="list-group-item list-group-item-action list-group-item-warning">
+		Stocks</a>
+
+        </div>
+
+        <h1>Delivery Fees</h1>
+        <div class="list-group">
+	<a href="{{path('transportCC' ) }}" class="list-group-item list-group-item-action list-group-item-info">
+		Transport Services</a>
+	<a href="{{path('deliveryFeesCC' ) }}" class="list-group-item list-group-item-action list-group-item-success">
+		Delivery Fees</a>
+        </div>
+<h1>Purchases</h1>
+        <div class="list-group">
+
+	<a href="{{path('statusCC' ) }}" class="list-group-item list-group-item-action list-group-item-dark">
+		Status</a>
+	<a href="{{path('purchaseCC' ) }}" class="list-group-item list-group-item-action list-group-item-danger">
+		Purchase</a>
+</div>
+
+{% endblock %}

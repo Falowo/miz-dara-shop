@@ -18,12 +18,25 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 
 
 class DashboardController extends AbstractDashboardController
 {
-    
+    /**
+     * @Route("/admin", name="dashboard_index")
+     */
+    public function index(): Response
+    {
+         
+
+        
+
+        return $this->render('admin/my-dashboard.html.twig');
+    }
 
     public function configureDashboard(): Dashboard
     {
@@ -69,5 +82,141 @@ class DashboardController extends AbstractDashboardController
     {
         return Assets::new()->addCssFile('css/admin.css');
     }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/category", name="categoryCC")
+     */
+    public function categoryCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
     
+        return $this->redirect($routeBuilder->setController(CategoryCrudController::class)->generateUrl());
+    }
+
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/size", name="sizeCC")
+     */
+    public function sizeCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(SizeCrudController::class)->generateUrl());
+    }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/tint", name="tintCC")
+     */
+    public function tintCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(TintCrudController::class)->generateUrl());
+    }
+    /**
+     *
+     * @return Response
+     * @Route("/admin/tag", name="tagCC")
+     */
+    public function tagCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(TagCrudController::class)->generateUrl());
+    }
+
+    
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/product", name="productCC")
+     */
+    public function productCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(ProductCrudController::class)->generateUrl());
+    }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/image", name="imageCC")
+     */
+    public function imageCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(ImageCrudController::class)->generateUrl());
+    } 
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/stock", name="stockCC")
+     */
+    public function stockCC(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(StockCrudController::class)->generateUrl());
+    }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/deliveryFees", name="deliveryFeesCC")
+     */
+    public function deliveryFees(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(DeliveryFeesCrudController::class)->generateUrl());
+    }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/transport", name="transportCC")
+     */
+    public function transport(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(TransportCrudController::class)->generateUrl());
+    }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/status", name="statusCC")
+     */
+    public function status(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(StatusCrudController::class)->generateUrl());
+    }
+
+    /**
+     *
+     * @return Response
+     * @Route("/admin/purchase", name="purchaseCC")
+     */
+    public function purchase(): Response
+    {
+        $routeBuilder = $this->get(CrudUrlGenerator::class)->build();
+    
+        return $this->redirect($routeBuilder->setController(PurchaseCrudController::class)->generateUrl());
+    }
+
+
 }
+
