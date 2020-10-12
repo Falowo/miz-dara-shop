@@ -9,8 +9,11 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Entity\PurchaseLine;
 use App\Entity\Continent;
+use App\Entity\Image;
+use App\Entity\User;
 use App\Repository\ContinentRepository;
 use App\Repository\DeliveryFeesRepository;
+use App\Repository\ImageRepository;
 use App\Repository\PurchaseRepository;
 use App\Repository\StockRepository;
 use App\Repository\TransportRepository;
@@ -43,6 +46,7 @@ class CartService
     private $localeService;
     private $transportRepository;
     private $stockRepository;
+    private $imageRepository;
     private $em;
 
     public function __construct(
@@ -54,6 +58,7 @@ class CartService
         ContinentRepository $continentRepository,
         TransportRepository $transportRepository,
         StockRepository $stockRepository,
+        ImageRepository $imageRepository,
         EntityManagerInterface $em
 
     ) {
@@ -64,7 +69,8 @@ class CartService
         $this->deliveryFeesRepository = $deliveryFeesRepository;
         $this->continentRepository = $continentRepository;
         $this->transportRepository = $transportRepository;
-        $this->stockRepository=$stockRepository;
+        $this->stockRepository = $stockRepository;
+        $this->imageRepository = $imageRepository;
         $this->em = $em;
     }
 
@@ -139,6 +145,53 @@ class CartService
         }
         return $purchase;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     * @return void
+     */
+    public function getLastNotPaidPurchase(User $user)
+    {
+        if(!($purchase = $this->getPurchase())){
+
+            $purchases = $user->getPurchases();
+            if(count($purchases) > 0){
+                $notPaidPurchases = [];
+                foreach($purchases as $purchase){
+                    
+                    if (!($purchase->getPaid())){
+                            dump($purchase);
+                            $notPaidPurchases[] = $purchase;                            
+                        }                        
+                    }
+
+                    foreach($notPaidPurchases as $notPaidPurchase){
+                        
+                        if($notPaidPurchase === end($notPaidPurchases)){
+                            $this->setPurchaseInSession($notPaidPurchase);
+                        }else{
+                            $this->em -> remove($notPaidPurchase);
+                            $this->em->flush();
+                        }
+                    }
+            }
+        }
+    }
+
+    /**
+     *
+     * @param Purchase $purchase
+     * @return Purchase
+     */
+    public function setPurchaseInSession(Purchase $purchase): Purchase
+    {
+        $this->session->set('purchaseId', $purchase->getId());
+        return $purchase;
+    }
+
+
 
     /**
      * @return Purchase|null
@@ -263,5 +316,31 @@ class CartService
             $price += $percentOfRawPrice * $this->getTotalPurchaseLines($purchase) / 100;
         }
         return $price;
+    }
+
+
+    public function setImages(Purchase $purchase)
+    {
+        foreach ($purchase->getPurchaseLines() as $purchaseLine) {
+            if(!($purchaseLine->getImage())){
+                $image = new Image;
+                if ($name = $purchaseLine->getProduct()->getMainImage()) {
+                    $image->setName($name);
+                } elseif (!$image->getName()) {
+                    if ($image = $this->imageRepository->findOneBy([
+                        'product' => $purchaseLine->getProduct(),
+                        'tint' => $purchaseLine->getTint()
+                    ])) {
+                       
+                    } else {
+                        $image = $this->imageRepository->findOneBy([
+                            'product' => $purchaseLine->getProduct()
+                        ]);
+                    }
+                }
+                
+                $purchaseLine->setImage($image);
+            }
+        }
     }
 }

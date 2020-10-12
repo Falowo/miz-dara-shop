@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Repository;
+
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -32,14 +33,14 @@ class ProductRepository extends ServiceEntityRepository
 
 
         return $this->createQueryBuilder('p')
-            ->select('p, i, c' )
-             ->Join('p.categories', 'c')
+            ->select('p, i, c')
+            ->Join('p.categories', 'c')
             ->leftJoin('p.stocks', 's')
             ->leftJoin('p.images', 'i')
             // ->andWhere('i.isMainImage = true')
             ->andWhere('p.hasStock = true')
-             ->andWhere('c.id = :id')
-             ->setParameter('id', $id)
+            ->andWhere('c.id = :id')
+            ->setParameter('id', $id)
             ->orderBy('p.id', 'DESC')
             ->getQuery();
     }
@@ -70,7 +71,8 @@ class ProductRepository extends ServiceEntityRepository
             //            'p.price' => 'p.price'
         ));
         return $this->createQueryBuilder('p')
-        ->select('p, c')
+            ->select('p, c')
+            ->andWhere('p.hasStock = true')
             ->join('p.categories', 'c')
             ->orderBy($column, $order);
     }

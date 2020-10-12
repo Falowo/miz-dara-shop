@@ -5,7 +5,8 @@
 
 {% block body %}
     {{ include('cart/_cart.html.twig') }}
-{% if purchase %}
+{% if purchase.address %}
+    {{ include('cart/_address.html.twig') }}
   
 
 {% endif %}

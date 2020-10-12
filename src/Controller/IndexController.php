@@ -7,7 +7,9 @@ use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
 use App\Repository\UserRepository;
+use App\Service\Cart\CartService;
 use App\Service\Mailer\MailerService;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,10 +29,23 @@ class IndexController extends AbstractController
      */
     public function index(
         ProductRepository $repository,
-        PurchaseRepository $purchaseRepository,
+        MailerService $mailerService,
         PaginatorInterface $paginator,
+        CartService $cartService,
+        EntityManagerInterface $em,
         Request $request
     ): Response {
+
+        if($user = $this->getUser()){
+            if( !($user->getConfirmedEmail()) ){
+                $mailerService->sendSignUpEmail($user);
+                return $this->render('index/confirm_your_email.html.twig', [
+                    'controller_name' => 'IndexController'        
+                ]);
+            }
+
+           $cartService->getLastNotPaidPurchase($user);
+        }
        
         $products = $paginator->paginate(
             $repository->findAllByRandomQuery(null), /* query NOT result */

@@ -8,15 +8,16 @@
 		</title>
 		{% block stylesheets %}
 			{# <link rel="stylesheet" href="{{ asset('lib/bootstrap/bootstrap.min.css') }}"> #}
-			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"/>
+			<link
+			rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"/>
 			{# <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.12/css/select2.min.css"> #}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 	</head>
 	<body>
-{% block header %}
-            <img src="{{ '/base/header.jpeg' | imagine_filter('big') }}" class="card-img-top" alt="mi">
-{% endblock %}
+		{% block header %}
+			<img src="{{ '/base/header.jpeg' | imagine_filter('big') }}" class="card-img-top" alt="mi">
+		{% endblock %}
 		<nav class="navbar navbar-expand-sm navbar-dark bg-success">
 			<div class="container">
 				<a href="{{ path('app_index') }}" class="navbar-brand mb-0 h1">
@@ -83,19 +84,21 @@
 			{% block body %}{% endblock %}
 		</div>
 		{% block footer %}
-		<a href="{{ path('contact_index') }}">
-            <img src="{{ '/base/footer.jpeg' | imagine_filter('big') }}" class="card-img-top mb-4">
-		</a>
+			<div class="mt-5">
+				<a href="{{ path('contact_index') }}">
+					<img src="{{ '/base/footer.jpeg' | imagine_filter('big') }}" class="card-img-top mb-4">
+				</a>
+			</div>
 		{% endblock %}
 		{% block javascripts %}
 			{# <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-						            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-						            crossorigin="anonymous"></script>
-						    <script src="{{ asset('lib/bootstrap/bootstrap.min.js') }}"></script> #}
+									            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+									            crossorigin="anonymous"></script>
+									    <script src="{{ asset('lib/bootstrap/bootstrap.min.js') }}"></script> #}
 			{{ encore_entry_script_tags('app') }}
 
 		{% endblock %}
 
-		
+
 	</body>
 </html>

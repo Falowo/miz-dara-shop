@@ -6,10 +6,8 @@ use App\Entity\Address;
 use App\Form\AddressType;
 use App\Repository\PurchaseRepository;
 use App\Service\Cart\CartService;
-use App\Service\Mailer\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -21,25 +19,20 @@ class AddressController extends AbstractController
 {
 
     /**
-     * @Route("/new/{case}", name="address_new", defaults={"case": "new"}) )
+     * @Route("/new/{case}/{edit}", name="address_new", defaults={"case": "new", "edit":false}) )
      */
     public function new(
         Request $request,
         CartService $cartService,
         PurchaseRepository $purchaseRepository,
         string $case,
-        MailerService $mailerService,
-        FlashBagInterface $flashBagInterface
+        bool $edit
     ) {
+        
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
-        if (!($user->getConfirmedEMail())){
-            $flashBagInterface->add('danger', 'You must confirm your email before you can continue a new confirmation email has been sent to you');
-            $mailerService->sendSignUpEmail($user);
-
-            return $this->redirectToRoute('cart_index');
-        }
+       
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
         $form->handleRequest($request);
@@ -66,10 +59,12 @@ class AddressController extends AbstractController
             }
             if ($purchase = $cartService->getPurchase()) {
                 $purchase->setAddress($address);
+                dump($purchase);
             }
             $em->persist($address);
             $em->flush();
-            return $this->redirectToRoute('cart_transport');
+            dump($edit);
+            return $this->redirectToRoute('cart_transport', ['edit'=>$edit]);
         }
 
         return $this->render('address/new.html.twig', [

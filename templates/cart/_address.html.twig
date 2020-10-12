@@ -1,0 +1,27 @@
+{% if purchase.address %}
+	<h2>Your delivery address</h2>
+	<p>
+		{{purchase.address.firstName}}
+		{{purchase.address.lastName}}
+		<br>
+		{{purchase.address.street}}
+		<br>
+
+		{% if purchase.address.zipCode %}
+			{{purchase.address.zipCode}}
+		{% endif %}
+
+		{{purchase.address.cityName}}
+		<br>
+		{{purchase.address.country | capitalize}}
+		<br>
+		{% if purchase.address.phoneNumber %}
+			Phone : +
+			{{purchase.address.phoneNumber.countryCode}}
+			{{purchase.address.phoneNumber.nationalNumber}}
+		{% endif %}
+		<br>
+	</p>
+
+	<a href="{{ path('address_new', {'edit': true}) }}" class="btn btn-warning">Change the delivery address</a>
+{% endif %}

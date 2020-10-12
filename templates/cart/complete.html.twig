@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello CartController!
+{% block title %}Chose delivery service
 {% endblock %}
 
 {% block body %}
     {{ render(controller('App\\Controller\\CartController::cart')) }}
-{% if purchase %}
+{% if purchase.deliveryFees %}
   <table class="table">
 <tr>
 				

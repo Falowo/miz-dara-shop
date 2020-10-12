@@ -109,8 +109,8 @@
 							<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
 						</td>
 						<td>
-							<a href="{{ path('cart_pay') }}" class="text-right text-success">
-								<i class="fas fa-credit-card fa-3x"></i>
+							<a href="{{ path('cart_pay') }}" class="text-right text-primary">
+								<i class="fas fa-credit-card fa-5x"></i>
 
 							</a>
 
@@ -139,6 +139,11 @@
 					{% endif %}
 				</tr>
 			</tr>
+			
 		</tfoot>
 	</tr>
-</tfoot></table>{% else %}<p>Your cart is empty !</p>{% endif %}
+</tfoot></table>
+			
+
+
+{% else %}<p>Your cart is empty !</p>{% endif %}

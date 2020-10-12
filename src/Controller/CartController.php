@@ -11,6 +11,7 @@ use App\Repository\ImageRepository;
 use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
 use App\Service\Locale\LocaleService;
+use App\Service\Mailer\MailerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -159,7 +160,6 @@ class CartController extends AbstractController
     }
 
     /**
-     * Undocumented function
      *
      * @Route("/complete/{id}", name="cart_setDeliveryFees", requirements={"id"="\d+"})
      */
@@ -193,7 +193,7 @@ class CartController extends AbstractController
      * @return Response
      * @Route("/pay", name="cart_pay")
      */
-    public function pay(CartService $cartService, StockRepository $stockRepository, SessionInterface $session)
+    public function pay(CartService $cartService, MailerService $mailerService, SessionInterface $session)
     {
 
         $purchase = $cartService->getPurchase();
@@ -207,6 +207,11 @@ class CartController extends AbstractController
             $total = $purchase->getTotalPurchaseLines() + $purchase->getDeliveryPrice();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            $cartService->setImages($purchase);
+
+            $mailerService->sendPurchasePaymentConfirmation($this->getUser());
+
 
             $session->remove('purchaseId');
 
@@ -226,14 +231,8 @@ class CartController extends AbstractController
      */
     public function cart(CartService $cartService, ImageRepository $imageRepository)
     {
-        if ($cartService->getPurchase()) {
-            /**
-             * @var Purchase $purchase
-             */
-            $purchase = $cartService->getPurchase();
-
-
-
+        if ($purchase = $cartService->getPurchase()) {
+            
             $total = $cartService->getTotalPurchaseLines($purchase);
             if ($purchase->getTotalPurchaseLines() !== $total)
                 $purchase->setTotalPurchaseLines($total);
@@ -242,27 +241,7 @@ class CartController extends AbstractController
             if ($purchase->getDeliveryPrice()) {
                 $total += $purchase->getDeliveryPrice();
             }
-            foreach ($purchase->getPurchaseLines() as $purchaseLine) {
-                if(!($purchaseLine->getImage())){
-                    $image = new Image;
-                    if ($name = $purchaseLine->getProduct()->getMainImage()) {
-                        $image->setName($name);
-                    } elseif (!$image->getName()) {
-                        if ($image = $imageRepository->findOneBy([
-                            'product' => $purchaseLine->getProduct(),
-                            'tint' => $purchaseLine->getTint()
-                        ])) {
-                           
-                        } else {
-                            $image = $imageRepository->findOneBy([
-                                'product' => $purchaseLine->getProduct()
-                            ]);
-                        }
-                    }
-                    
-                    $purchaseLine->setImage($image);
-                }
-            }
+            $cartService->setImages($purchase);
         } else {
             $purchase = new Purchase();
             $total = 0;
@@ -286,4 +265,14 @@ class CartController extends AbstractController
 
         ]);
     }
+
+    public function showPurchaseAdress(CartService $cartService)
+    {
+        if($purchase = $cartService->getPurchase()){
+            return $this->render('cart/_address.html.twig', [
+                'purchase' => $purchase
+            ]);
+        }
+    }
+
 }

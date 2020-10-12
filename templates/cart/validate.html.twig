@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	
+
 	{% if purchase.purchaseLines | length > 0 %}
 		{{ render(controller('App\\Controller\\CartController::cart')) }}
 		{% if app.user.address %}
@@ -13,8 +13,7 @@
 			<p>
 				{{app.user.address.street}}
 				<br>
-				{{app.user.address.cityName}}
-				<br>
+
 				{% if app.user.address.zipCode %}
 					{{app.user.address.zipCode}}
 				{% endif %}
@@ -28,21 +27,18 @@
 					{{app.user.address.phoneNumber.countryCode}}
 					{{app.user.address.phoneNumber.nationalNumber}}
 				{% endif %}
-				<br>
-				<a href="{{ path('address_new', {'case':'modify'}) }}" class="btn btn-success">Modify</a>
-				<a href="{{ path('cart_transport') }}" class="btn btn-success">Use this address</a>
-				<a href="{{ path('address_new') }}" class="btn btn-success">Add a new address</a>
-			{% else %}
-				<a href="{{ path('address_new') }}" class="btn btn-success">Create a new address</a>
+			</p>
+			<a href="{{ path('address_new', {'case':'modify'}) }}" class="btn btn-success">Modify</a>
+			<a href="{{ path('cart_transport') }}" class="btn btn-success">Use this address</a>
+			<a href="{{ path('address_new') }}" class="btn btn-success">Add a new address</a>
+		{% else %}
+			<a href="{{ path('address_new') }}" class="btn btn-success">Create a new address</a>
 
-			{% endif %}
+		{% endif %}
 
-		</p>
-
-
-	{% else %}
-		<p>Your cart is empty !</p>
-	{% endif %}
+	{{ render(controller('App\\Controller\\CartController::address')) }}
 
 
-{% endblock %}
+{% else %}
+	<p>Your cart is empty !</p>
+{% endif %}{% endblock %}

@@ -9,9 +9,9 @@
 
 	{{ render(controller('App\\Controller\\CartController::cart')) }}
 
-<h2>Select your delivery service</h2>
 	
 {% if deliveryFeess is defined %}
+<h2>Select your delivery service</h2>
 	<table class="table">
     
 			{% for deliveryFees in deliveryFeess  %}
@@ -36,11 +36,7 @@
                     <a href="{{ path('cart_setDeliveryFees', {'id':deliveryFees.id} ) }}">
                     <i class="fas fa-check fa-2x"></i>
                     </a>
-                    </td>
-
-
-
-		
+                    </td>		
 
 	</tr>
 		{% endfor %}
