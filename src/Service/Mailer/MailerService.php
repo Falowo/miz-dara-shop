@@ -52,13 +52,14 @@ class MailerService
     {
         
         $email = (new Email())
-            ->from($contact->getEmail())
+
+            ->from('noreply@miz-dara-shop.com')
             ->to('josselinkrikorian@yahoo.fr')
             ->subject($contact->getSubject())
 
             // path of the Twig template to render
             ->text($contact->getContent())
-
+            
             // pass variables (name => value) to the template
             ;
         try {
