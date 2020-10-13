@@ -55,7 +55,7 @@ class MailerService
 
             ->from('noreply@miz-dara-shop.com')
             ->to('josselinkrikorian@yahoo.fr')
-            ->subject($contact->getSubject() . $contact->getEmail())
+            ->subject($contact->getSubject())
 
             // path of the Twig template to render
             ->text($contact->getContent())
