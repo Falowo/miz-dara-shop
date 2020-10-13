@@ -50,10 +50,10 @@ class MailerService
 
     public function sendContactEmail(Contact $contact)
     {
-
+        
         $email = (new Email())
             ->from($contact->getEmail())
-            ->to('obarayego@gmail.com')
+            ->to('josselinkrikorian@yahoo.fr')
             ->subject($contact->getSubject())
 
             // path of the Twig template to render
@@ -67,6 +67,8 @@ class MailerService
             // some error prevented the email sending; display an
             // error message or try to resend the message
             $this->mailer->send($email);
+            dump($email);
+
         }
     }
 
