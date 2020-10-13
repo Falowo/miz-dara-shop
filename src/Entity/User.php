@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Misd\PhoneNumberBundle\Validator\Constraints\PhoneNumber as AssertPhoneNumber;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -64,13 +64,6 @@ class User implements UserInterface
     private $lastName;
 
     
-
-    /**
-     * @ORM\Column(type="phone_number", nullable=true)
-     * @AssertPhoneNumber
-     * 
-     */
-    private $phoneNumber;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Purchase", mappedBy="user")
@@ -300,53 +293,7 @@ class User implements UserInterface
     }
 
     
-    /**
-     * Get the value of phoneNumber
-     */ 
-    public function getPhoneNumber()
-    {
-        return $this->phoneNumber;
-    }
-
-    /**
-     * Set the value of phoneNumber
-     *
-     * @return  self
-     */ 
-    public function setPhoneNumber ($phoneNumber): self
-    {
-        $this->phoneNumber = $phoneNumber;
-
-        return $this;
-    }
-
-    public function getCountry(): ?string
-    {
-        return LocaleService::getArrayCountries()[$this->getCountryCode()]['name'];
-    }
-
-    /**
-     * use the json array 
-     *
-     * @return string|null
-     */
-    public function getCountryCode(): ?string
-    {
-        return LocaleService::getArrayCities()[$this->city]['country'];
-    }
-
     
-    public function getZipCode(): ?string
-    {
-        return $this->zipCode;
-    }
-
-    public function setZipCode(?string $zipCode): self
-    {
-        $this->zipCode = $zipCode;
-
-        return $this;
-    }
 
     public function getAddress(): ?Address
     {
