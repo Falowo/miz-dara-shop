@@ -9,8 +9,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
-
-
+use Symfony\Component\Mime\Email;
 
 class MailerService
 {
@@ -52,8 +51,8 @@ class MailerService
     public function sendContactEmail(Contact $contact)
     {
 
-        $email = (new TemplatedEmail())
-            ->from(new Address($contact->getEmail()))
+        $email = (new Email())
+            ->from($contact->getEmail())
             ->to('obarayego@gmail.com')
             ->subject($contact->getSubject())
 
