@@ -33,6 +33,7 @@ class ContactController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $mailerService->sendContactEmail($contact);
             $this->addFlash('success', 'Your message has been successfully sent');
+            return $this->redirectToRoute('contact_index');
         }
 
 

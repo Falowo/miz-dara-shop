@@ -104,6 +104,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $entity = $event->getEntityInstance();
         $this->makeSureOneLocalFieldIsCompletedInDeliveryFees($entity);
         $this->avoidCreatePurchase($entity);
+        $this->avoidUncompleteStock($entity);
         return;
     }
 
@@ -122,6 +123,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->avoidDuplicatedStock($entity);
 
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
+
+        $this->setCategoriesForRelatedProducts($entity);
 
 
         return;
@@ -203,10 +206,25 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     private function setCategoriesForProduct($entity)
     {
         if ($entity instanceof Product) {
+
             foreach ($entity->getCategories() as $category) {
+
                 while ($category->getparent()) {
                     $entity->addCategory($category->getParent());
                     $category = $category->getParent();
+                }
+            }
+        }
+    }
+    private function setCategoriesForRelatedProducts($entity)
+    {
+        if ($entity instanceof Category) {
+
+
+            if ((count($entity->getProducts()) > 0)) {
+                $this->flashBagInterface->add('warning', 'Warning ! You may have to edit the categories for the related products!');
+                foreach($entity->getProducts() as $product){
+                    $this->setCategoriesForProduct($product);
                 }
             }
         }
@@ -271,20 +289,18 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     private function avoidDuplicatedStock($entity)
     {
-        if ($entity instanceof Product){
-            if ($entity->getStocks()){
+        if ($entity instanceof Product) {
+            if ($entity->getStocks()) {
                 $pairSizeTints = [];
-                foreach($entity->getStocks() as $stock){
+                foreach ($entity->getStocks() as $stock) {
                     $pairSizeTint = $stock->getSize() . $stock->getTint();
                     $k = array_search($pairSizeTint, $pairSizeTints);
-                    if($k === false){
-                        $pairSizeTints[]=$pairSizeTint;
-                    }else{
+                    if ($k === false) {
+                        $pairSizeTints[] = $pairSizeTint;
+                    } else {
                         $this->flashBagInterface->add('danger', 'The stock for size ' . $stock->getSize() . ' and color ' . $stock->getTint() . ' already exists, edit it !');
                         $entity->removeStock($stock);
-
                     }
-                    
                 }
             }
         }
@@ -295,7 +311,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             if (!($entity->getProduct() && $entity->getTint() && $entity->getSize() && $entity->getQuantity())) {
 
                 $this->flashBagInterface->add('danger', 'You need to complete all entities even as Unique or else (prepare your sizes and colors before) or 0 for the quantity');
-
+                $this->em->remove($entity);
+                $this->em->flush();
             }
         }
     }

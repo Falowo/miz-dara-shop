@@ -19,30 +19,22 @@
 			<div id="contactForm" class="mt-4">
 				{{form_start(form)}}
 				<div class="row">
-					<div class="col">
+					<div class="col-4">
 						{{form_row(form.firstName)}}
 					</div>
-					<div class="col">
+					<div class="col-8">
 						{{form_row(form.email)}}
 					</div>
 				</div>
 				<div class="row">
-                <div class="col">
-					{{form_row(form.email)}}
-                </div>
-                <div class="col">
-					{{form_row(form.email)}}
-                </div>
+					<div class="col">
+						{{form_row(form.subject)}}
+					</div>
 				</div>
 				<div class="row">
-                <div class="col">
-					{{form_row(form.subject)}}
-                </div>
-				</div>
-				<div class="row">
-                <div class="col">
-					{{form_row(form.content)}}
-                </div>
+					<div class="col">
+						{{form_row(form.content)}}
+					</div>
 				</div>
 				<div class="form-group">
 					<button class="btn btn-primary">Send</button>

@@ -22,31 +22,54 @@ class CategoryController extends AbstractController
     public function index(Category $category, ProductRepository $repository, PaginatorInterface $paginator, Request $request, EntityManagerInterface $em, $id)
     {
 
-        $selectedCategory = $category;
-
         $products = $paginator->paginate(
             $repository->findAllByCategoryQuery($id), /* query NOT result */
             $request->query->getInt('page', 1), /*page number*/
             12 /*limit per page*/
         );
 
-        
+
 
 
         if (!is_null($category->getParent())) {
 
-            while (!is_null($category->getParent()->getParent())) {
+            $parent = $category->getParent();
 
-                $category = $category->getParent();
+        } else {
+            $parent = $category;
+        }
+
+        $ancestors = [];
+       
+        for ($i = 0; $i <= 16; $i++) {
+            if ($i === 0) {
+                if ($ancestors[$i] = $category->getParent()) {
+                    while (!is_null($ancestors[$i]->getParent())) {
+                        $ancestors[$i] = $ancestors[$i]->getParent();
+                    }
+                } else {
+                    $ancestors[$i] = null;
+                }
+            } else {
+                if ( $ancestors[$i - 1] && $category->getParent() !== $ancestors[$i - 1]) {
+                    $ancestors[$i] = $category->getParent();
+                    while ($ancestors[$i]->getParent() !== $ancestors[$i - 1]) {
+                        $ancestors[$i] = $ancestors[$i]->getParent();
+                    }
+                }else{
+                    $ancestors[$i]=null;
+                }
             }
         }
+       
 
 
         return $this->render('category/index.html.twig', [
             'controller_name' => 'CategoryController',
             'products' => $products,
-            'selectedCategory'=>$selectedCategory,
-            'category'=>$category
+            'category' => $category,
+            'parent' => $parent,
+            'ancestors' => $ancestors
         ]);
     }
 }

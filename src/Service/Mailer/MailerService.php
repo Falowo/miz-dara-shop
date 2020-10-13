@@ -54,7 +54,7 @@ class MailerService
 
         $email = (new TemplatedEmail())
             ->from(new Address($contact->getEmail()))
-            ->to('noreply@miz-dara-shop.com')
+            ->to('obarayego@gmail.com')
             ->subject($contact->getSubject())
 
             // path of the Twig template to render
@@ -92,7 +92,7 @@ class MailerService
                 $email = (new TemplatedEmail())
                 ->from('noreply@miz-dara-shop.com')
                 ->to(new Address($user->getEmail()))
-                ->subject('Thanks for signing up!')
+                ->subject('Congratulation for your purchase!')
     
                 // path of the Twig template to render
                 ->htmlTemplate('emails/purchase_payment_confirmation.html.twig')

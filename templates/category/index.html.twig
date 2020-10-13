@@ -1,96 +1,84 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}MDS {{selectedCategory.name}}
+{% block title %}MDS
+	{{category.name}}
 {% endblock %}
 
 {% block menu %}
 
 
-	{% for parent in category.categories %}
+	{% for sibling in parent.categories %}
 
-		<li class="nav-item dropdown" style="display: flex">
-			<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				{{ parent.name }}
-			</a>
+		{% if sibling.categories | length > 0 %}
+			<li class="nav-item dropdown" style="display: flex">
 
-			<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-				{% if parent.categories | length > 0 %}
-					<div class="dropdown-divider"></div>
-					{% for child in parent.categories %}
-
-						<a class="dropdown-item-text" {% if child.categories | length > 0 %} style="font-weight:bold" {% endif %} href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">{{ child.name }}</a>
-
-						{% if child.categories | length > 0 %}
-
-							{% for baby in child.categories %}
-
-								<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}">{{ baby.name }}</a>
+				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					{{ sibling.name }}</a>
 
 
-							{% endfor %}
+			{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('category', {'id': sibling.id, 'slug': sibling.slug}) }}">
+						{{ sibling.name }}</a>
 
-						{% endif %}
+				{% endif %}
+				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+					{% if sibling.categories | length > 0 %}
+						<div class="dropdown-divider"></div>
+						{% for child in sibling.categories %}
 
-					{% endfor %}
+							<a class="dropdown-item-text" {# {% if child.categories | length > 0 %} #} style="font-weight:bold" {# {% endif %} #} href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">{{ child.name }}</a>
+
+							{% if child.categories | length > 0 %}
+
+								{% for baby in child.categories %}
+
+									<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}">{{ baby.name }}</a>
+
+
+								{% endfor %}
+
+							{% endif %}
+
+						{% endfor %}
+					{% endif %}
+				</div>
+			</li>
+		{% endfor %}
+	{% endblock %}
+	{% block body %}
+
+		{# PATH FROM HOME #}
+
+		<div class="p-4">
+			<a href="{{ path('app_index')}} ">Home</a>
+			<span class="text-primary">&nbsp/&nbsp</span>
+
+
+			{% for ancestor in ancestors %}
+				{% if ancestor %}
+					<a href="{{ path('category', {'id': ancestor.id, 'slug': ancestor.slug } ) }} ">
+						{{ ancestor.name }}
+					</a>
+									<span class="text-primary">&nbsp/&nbsp</span>
 
 				{% endif %}
 
-
-			</div>
-		</li>
-
-	{% endfor %}
-
-
-{% endblock %}
-
-{% block body %}
-
-	<h1>{{selectedCategory.name}}</h1>
-
-	{# PATH FROM HOME #}
-
-	<a href="{{ path('app_index')}} ">
-		Home /
-	</a>
-
-	{% if selectedCategory.parent %}
-		{% if selectedCategory.parent.parent %}
-
-			{% if selectedCategory.parent.parent.parent %}
-				<a href="{{ path('category', {'id': selectedCategory.parent.parent.parent.id, 'slug': selectedCategory.parent.parent.parent.slug } ) }} ">
-					{{ selectedCategory.parent.parent.parent.name }}
-					/
-				</a>
-
-			{% endif %}
-
-			<a href="{{ path('category', {'id': selectedCategory.parent.parent.id, 'slug': selectedCategory.parent.parent.slug } ) }} ">
-				{{ selectedCategory.parent.parent.name }}
-				/
+			{% endfor %}
+			<a href="{{ path('category', {'id': category.id, 'slug': category.slug } ) }} ">
+				<strong class="text-primary">{{ category.name }}</strong>
 			</a>
 
-		{% endif %}
-
-		<a href="{{ path('category', {'id': selectedCategory.parent.id, 'slug': selectedCategory.parent.slug } ) }} ">
-			{{ selectedCategory.parent.name }}
-			/
-		</a>
-	{% endif %}
+		</div>
 
 
-	<a href="{{ path('category', {'id': selectedCategory.id, 'slug': selectedCategory.slug } ) }} ">
-		{{ selectedCategory.name }}</a>
+		{# END PATH FROM HOME #}
 
-	{# END PATH FROM HOME #}
-	<div class="row">
-		{% for product in products %}
-			{{ include('product/_card.html.twig') }}
-		{% endfor %}
-	</div>
 
-	<div class="pagination">
-		{{ knp_pagination_render(products) }}
-	</div>
-{% endblock %}
+		<div class="row">
+			{% for product in products %}
+				{{ include('product/_card.html.twig') }}
+			{% endfor %}
+		</div>
+		<div class="pagination">{{ knp_pagination_render(products) }}</div>
+	{% endblock %}

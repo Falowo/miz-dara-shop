@@ -32,7 +32,6 @@ class IndexController extends AbstractController
         MailerService $mailerService,
         PaginatorInterface $paginator,
         CartService $cartService,
-        EntityManagerInterface $em,
         Request $request
     ): Response {
 
