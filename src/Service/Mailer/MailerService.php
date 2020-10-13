@@ -26,7 +26,7 @@ class MailerService
     {
 
         $email = (new TemplatedEmail())
-            ->from('noreply@miz-dara-shop.com', 'Miz Dara Unique Shop')
+            ->from('noreply@miz-dara-shop.com')
             ->to(new Address($user->getEmail()))
             ->subject('Thanks for signing up!')
 
@@ -53,7 +53,7 @@ class MailerService
         
         $email = (new Email())
 
-            ->from('noreply@miz-dara-shop.com', 'Miz Dara Unique Shop')
+            ->from('noreply@miz-dara-shop.com')
             ->to('josselinkrikorian@yahoo.fr')
             ->subject($contact->getSubject())
 
@@ -92,7 +92,7 @@ class MailerService
 
             $this->cartService->setImages($lastPaidPurchase);
                 $email = (new TemplatedEmail())
-                ->from('noreply@miz-dara-shop.com', 'Miz Dara Unique Shop')
+                ->from('noreply@miz-dara-shop.com')
                 ->to(new Address($user->getEmail()))
                 ->subject('Congratulation for your purchase!')
     
