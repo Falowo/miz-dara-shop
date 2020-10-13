@@ -67,7 +67,7 @@ class RegistrationController extends AbstractController
      * @param User $user
      * @Route("/am/ready/to/buy/the/best/stuff/ever/{email}", name="app_confirmEmail")
      */
-    public function confirmEmail($email, UserRepository $userRepository)
+    public function confirmEmail(string $email, UserRepository $userRepository)
     {
         $user = $userRepository->findOneBy([
             'email' => $email
