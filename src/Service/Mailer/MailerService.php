@@ -60,7 +60,7 @@ class MailerService
         
         $email = (new Email())
 
-            ->from('noreply@miz-dara-shop.com')
+            ->from($contact->getEmail())
             ->to('josselinkrikorian@yahoo.fr')
             ->subject($contact->getSubject())
 
