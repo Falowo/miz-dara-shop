@@ -8,6 +8,7 @@ use App\Service\Cart\CartService;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
 
@@ -15,11 +16,17 @@ class MailerService
 {
     private $mailer;
     private $cartService;
+    private $flashBagInterface;
 
-    public function __construct(MailerInterface $mailer, CartService $cartService)
+    public function __construct(
+        MailerInterface $mailer, 
+    CartService $cartService,
+    FlashBagInterface $flashBagInterface
+    )
     {
         $this->mailer = $mailer;
         $this->cartService = $cartService;
+        $this->flashBagInterface = $flashBagInterface;
     }
 
     public function sendSignUpEmail(User $user)
@@ -109,7 +116,8 @@ class MailerService
             } catch (TransportExceptionInterface $e) {
                 // some error prevented the email sending; display an
                 // error message or try to resend the message
-                $this->mailer->send($email);
+                // $this->mailer->send($email);
+                $this->flashBagInterface->add('danger', 'Something happednd your confirmation email could not be sent bur your purchase is registered');
             }
             }
         }

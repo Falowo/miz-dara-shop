@@ -13,6 +13,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
+use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
+use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -65,13 +68,36 @@ class RegistrationController extends AbstractController
      * Undocumented function
      *
      * @param User $user
-     * @Route("/confirm_email/{email}", name="app_confirmEmail")
+     * @Route("/confirm_email/{email}/{token}", name="app_confirmEmail")
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * @param DeleteMemberResponder     $responder
+     * @param Request                   $request
+     * 
+     * @return Response
+     *
+     * @throws InvalidCsrfTokenException
      */
-    public function confirmEmail($email, UserRepository $userRepository)
+    public function confirmEmail(
+     string   $email,
+     UserRepository $userRepository,
+     CsrfTokenManagerInterface $csrfTokenManager,
+     Request $request): Response
     {
+         // "confirm_email" must be a unique token id for session storage inside application
+        $token = new CsrfToken('confirm_email', $request->attributes->get('token'));
+
+        // Action is stopped since token is not allowed!
+        if (!$csrfTokenManager->isTokenValid($token)) {
+            throw new InvalidCsrfTokenException('CSRF Token is not valid.');
+        }
+
+        
+
         $user = $userRepository->findOneBy([
             'email' => $email
         ]);
+
+
 
         if($user){           
                 $user->setConfirmedEmail(true);
