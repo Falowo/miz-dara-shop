@@ -82,7 +82,7 @@ class MailerService
 
     public function sendPurchasePaymentConfirmation($user)
     {
-        if (count($this->user->getPurchases()) > 0) {
+        if ((count($user->getPurchases())) > 0) {
             $paidPurchases = [];
             foreach ($user->getPurchases() as $purchase) {
                 if ($purchase->getPaid()) {
@@ -97,7 +97,16 @@ class MailerService
 
             if($lastPaidPurchase){
 
+                $total = $this->cartService->getTotalPurchaseLines($lastPaidPurchase);
+                
+                
+                if ($purchase->getDeliveryPrice()) {
+                    $total += $purchase->getDeliveryPrice();
+                }
+              
+
             $this->cartService->setImages($lastPaidPurchase);
+           
                 $email = (new TemplatedEmail())
                 ->from('noreply@miz-dara-shop.com')
                 ->to(new Address($user->getEmail()))
@@ -110,6 +119,7 @@ class MailerService
                 ->context([
                     'purchase' => $lastPaidPurchase,
                     'username' => $user->getFirstName(),
+                    'total' => $total,
                 ]);
             try {
                 $this->mailer->send($email);

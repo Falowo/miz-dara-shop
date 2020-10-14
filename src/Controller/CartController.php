@@ -266,7 +266,7 @@ class CartController extends AbstractController
         ]);
     }
 
-    public function showPurchaseAdress(CartService $cartService)
+    public function showPurchaseAddress(CartService $cartService)
     {
         if($purchase = $cartService->getPurchase()){
             return $this->render('cart/_address.html.twig', [
