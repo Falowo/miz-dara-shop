@@ -47,9 +47,13 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            //  send an email
-           $mailerService->sendSignUpEmail($user);
 
+        
+
+            //  send an email
+        //    $mailerService->sendSignUpEmail($user);
+
+            
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
@@ -66,31 +70,23 @@ class RegistrationController extends AbstractController
 
     /**
      * Undocumented function
-     *
-     * @param User $user
-     * @Route("/confirm_email/{email}/{token}", name="app_confirmEmail")
-     * @param CsrfTokenManagerInterface $csrfTokenManager
-     * @param DeleteMemberResponder     $responder
-     * @param Request                   $request
-     * 
+     *     
      * @return Response
-     *
-     * @throws InvalidCsrfTokenException
+     * @Route("/confirm_email/{token}", name="app_confirm_email")
      */
     public function confirmEmail(
      string   $email,
-     UserRepository $userRepository,
-     CsrfTokenManagerInterface $csrfTokenManager,
-     Request $request): Response
+     Request $request,
+     UserRepository $userRepository): Response
     {
-         // "confirm_email" must be a unique token id for session storage inside application
-        $token = new CsrfToken('confirm_email', $request->attributes->get('token'));
 
-        // Action is stopped since token is not allowed!
-        if (!$csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException('CSRF Token is not valid.');
+        $submittedToken = $request->request->get('token');
+        
+       
+        if ($this->isCsrfTokenValid('authenticate', $submittedToken)) {
+            // ... do something, like confirm Email
+            
         }
-
         
 
         $user = $userRepository->findOneBy([

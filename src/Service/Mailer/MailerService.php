@@ -11,6 +11,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
 
 class MailerService
 {
@@ -18,22 +19,24 @@ class MailerService
     private $cartService;
     private $flashBagInterface;
 
+
     public function __construct(
-        MailerInterface $mailer, 
-    CartService $cartService,
-    FlashBagInterface $flashBagInterface
-    )
-    {
+        MailerInterface $mailer,
+        CartService $cartService,
+        FlashBagInterface $flashBagInterface
+
+    ) {
         $this->mailer = $mailer;
         $this->cartService = $cartService;
         $this->flashBagInterface = $flashBagInterface;
     }
 
-    public function sendSignUpEmail(User $user)
+    public function sendSignUpEmail(User $user, PostAuthenticationGuardToken $token)
     {
 
+
         $email = (new TemplatedEmail())
-            ->from('noreply@miz-dara-shop.com')
+            ->from(new Address('noreply@miz-dara-shop.com', 'Miz Dara Unique'))
             ->to(new Address($user->getEmail()))
             ->subject('Thanks for signing up!')
 
@@ -42,6 +45,7 @@ class MailerService
 
             // pass variables (name => value) to the template
             ->context([
+                'token' => $token,
                 'expiration_date' => new \DateTime('+7 days'),
                 'username' => $user->getFirstName(),
             ]);
@@ -57,7 +61,7 @@ class MailerService
 
     public function sendContactEmail(Contact $contact)
     {
-        
+
         $email = (new Email())
 
             ->from($contact->getEmail())
@@ -68,7 +72,7 @@ class MailerService
             ->text($contact->getContent())
 
             // pass variables (name => value) to the template
-            ;
+        ;
         try {
             $this->mailer->send($email);
         } catch (TransportExceptionInterface $e) {
@@ -76,7 +80,6 @@ class MailerService
             // error message or try to resend the message
             $this->mailer->send($email);
             dump($email);
-
         }
     }
 
@@ -89,46 +92,46 @@ class MailerService
                     $paidPurchases[] = $purchase;
                 }
             }
-            foreach($paidPurchases as $paidPurchase){
-                if($paidPurchase === end($paidPurchases)){
+            foreach ($paidPurchases as $paidPurchase) {
+                if ($paidPurchase === end($paidPurchases)) {
                     $lastPaidPurchase = $paidPurchase;
                 }
             }
 
-            if($lastPaidPurchase){
+            if ($lastPaidPurchase) {
 
                 $total = $this->cartService->getTotalPurchaseLines($lastPaidPurchase);
-                
-                
+
+
                 if ($purchase->getDeliveryPrice()) {
                     $total += $purchase->getDeliveryPrice();
                 }
-              
 
-            $this->cartService->setImages($lastPaidPurchase);
-           
+
+                $this->cartService->setImages($lastPaidPurchase);
+
                 $email = (new TemplatedEmail())
-                ->from('noreply@miz-dara-shop.com')
-                ->to(new Address($user->getEmail()))
-                ->subject('Congratulation for your purchase!')
-    
-                // path of the Twig template to render
-                ->htmlTemplate('emails/purchase_payment_confirmation.html.twig')
-    
-                // pass variables (name => value) to the template
-                ->context([
-                    'purchase' => $lastPaidPurchase,
-                    'username' => $user->getFirstName(),
-                    'total' => $total,
-                ]);
-            try {
-                $this->mailer->send($email);
-            } catch (TransportExceptionInterface $e) {
-                // some error prevented the email sending; display an
-                // error message or try to resend the message
-                // $this->mailer->send($email);
-                $this->flashBagInterface->add('danger', 'Something happednd your confirmation email could not be sent bur your purchase is registered');
-            }
+                    ->from('noreply@miz-dara-shop.com')
+                    ->to(new Address($user->getEmail()))
+                    ->subject('Congratulation for your purchase!')
+
+                    // path of the Twig template to render
+                    ->htmlTemplate('emails/purchase_payment_confirmation.html.twig')
+
+                    // pass variables (name => value) to the template
+                    ->context([
+                        'purchase' => $lastPaidPurchase,
+                        'username' => $user->getFirstName(),
+                        'total' => $total,
+                    ]);
+                try {
+                    $this->mailer->send($email);
+                } catch (TransportExceptionInterface $e) {
+                    // some error prevented the email sending; display an
+                    // error message or try to resend the message
+                    // $this->mailer->send($email);
+                    $this->flashBagInterface->add('danger', 'Something happednd your confirmation email could not be sent bur your purchase is registered');
+                }
             }
         }
     }
