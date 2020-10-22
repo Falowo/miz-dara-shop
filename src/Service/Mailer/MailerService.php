@@ -31,7 +31,7 @@ class MailerService
         $this->flashBagInterface = $flashBagInterface;
     }
 
-    public function sendSignUpEmail(User $user, PostAuthenticationGuardToken $token)
+    public function sendSignUpEmail(User $user, $authentificate)
     {
 
 
@@ -45,7 +45,7 @@ class MailerService
 
             // pass variables (name => value) to the template
             ->context([
-                'token' => $token,
+                'authentificate' => $authentificate,
                 'expiration_date' => new \DateTime('+7 days'),
                 'username' => $user->getFirstName(),
             ]);
