@@ -4,7 +4,7 @@
     You signed up as {{ username }} the following email:
 </p>
 <p><code>{{ email.to[0].address }}</code></p>
-
+<p>{{authenticate.token}}</p>
 <p>>
     <a href="{{ url('app_confirm_email', {token: authenticate.token}) }}">Click here to activate your account</a>
     (this link is valid until {{ expiration_date|date('F jS') }})
