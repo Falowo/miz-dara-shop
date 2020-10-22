@@ -75,33 +75,40 @@ class RegistrationController extends AbstractController
      * @Route("/confirm_email/{token}", name="app_confirm_email")
      */
     public function confirmEmail(
-     string   $email,
      Request $request,
-     UserRepository $userRepository): Response
+     UserRepository $userRepository,
+     string $token = null
+     ): Response
     {
+        if($token === $this->get('security.csrf.token_manager')->getToken('authenticate')){
+              $this->getUser()->setConfirmEmail(true);
+              $em = $this->getDoctrine()->getManager();
+              $em->flush();
+              return $this->redirectToRoute('app_index');
+        }else{
+            return $this->redirectToRoute('app_logout');
+        }
 
-        $submittedToken = $request->request->get('token');
+       
         
        
         if ($this->isCsrfTokenValid('authenticate', $submittedToken)) {
             // ... do something, like confirm Email
+
             
-        }
-        
-
-        $user = $userRepository->findOneBy([
-            'email' => $email
-        ]);
-
-
-
-        if($user){           
-                $user->setConfirmedEmail(true);
-                $em = $this->getDoctrine()->getManager();
-                $em->flush();
-                return $this->redirectToRoute('app_index');
-           }
-        
+            
+           
+                
+                
+                
+                if($user){           
+                    $user->setConfirmedEmail(true);
+                    $em = $this->getDoctrine()->getManager();
+                    $em->flush();
+                    return $this->redirectToRoute('app_index');
+                }
+                
+            }
         else{
             // return $this->redirectToRoute('app_register');
             return $this->render('registration/confirmEmailFailed.html.twig', [
