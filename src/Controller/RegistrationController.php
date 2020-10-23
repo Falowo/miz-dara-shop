@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Repository\UserRepository;
 use App\Security\LoginFormAuthenticator;
 use App\Service\Mailer\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,9 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
-use Symfony\Component\Security\Csrf\CsrfToken;
-use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+
 
 class RegistrationController extends AbstractController
 {
@@ -48,12 +45,12 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
 
-        
+
 
             //  send an email
-        //    $mailerService->sendSignUpEmail($user);
+            //    $mailerService->sendSignUpEmail($user);
 
-            
+
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $user,
                 $request,
@@ -75,30 +72,27 @@ class RegistrationController extends AbstractController
      * @Route("/confirm_email/{token}", name="app_confirm_email")
      */
     public function confirmEmail(
-     Request $request,
-     UserRepository $userRepository,
-     string $token = null
-     ): Response
-    {
-        $user =$this->getUser();
-        if ($this->isCsrfTokenValid('authenticate', $token)) {
-            // ... do something, like confirm Email
+        // Request $request,
+        string $token = null
+    ): Response {
+        if($user = $this->getUser()){
+
+            if ($token) {
+                if ($this->isCsrfTokenValid('authenticate', $token)) {
+                    // ... do something, like confirm Email
                     
+    
                     $user->setConfirmedEmail(true);
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
                     return $this->redirectToRoute('app_index');
-                
-                
+                }
+            } else {
+                // return $this->redirectToRoute('app_register');
+                return $this->render('registration/confirmEmailFailed.html.twig', [
+                    'user' => $user,
+                ]);
             }
-        else{
-            // return $this->redirectToRoute('app_register');
-            return $this->render('registration/confirmEmailFailed.html.twig', [
-                'user' => $user,
-            ]);
         }
-
-
     }
-
 }

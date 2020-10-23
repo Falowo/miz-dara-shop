@@ -6,17 +6,13 @@ namespace App\Controller;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
-use App\Repository\UserRepository;
-use App\Security\LoginFormAuthenticator;
 use App\Service\Cart\CartService;
 use App\Service\Mailer\MailerService;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Csrf\CsrfToken;
 
 
 class IndexController extends AbstractController
@@ -40,8 +36,8 @@ class IndexController extends AbstractController
         if($user = $this->getUser()){
             if( !($user->getConfirmedEmail()) ){
                 $authenticate = $this->get('security.csrf.token_manager')->getToken('authenticate');
-                
-           
+              
+                         
 
                 $mailerService->sendSignUpEmail($user, $authenticate);
                 return $this->render('index/confirm_your_email.html.twig', [
