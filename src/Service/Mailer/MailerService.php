@@ -33,7 +33,7 @@ class MailerService
 
     public function sendSignUpEmail(User $user, $authenticate)
     {
-        dd($authenticate);
+    
 
         $email = (new TemplatedEmail())
             ->from(new Address('noreply@miz-dara-shop.com', 'Miz Dara Unique'))
