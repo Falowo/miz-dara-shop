@@ -31,9 +31,9 @@ class MailerService
         $this->flashBagInterface = $flashBagInterface;
     }
 
-    public function sendSignUpEmail(User $user, $authentificate)
+    public function sendSignUpEmail(User $user, $authenticate)
     {
-
+        dd($authenticate);
 
         $email = (new TemplatedEmail())
             ->from(new Address('noreply@miz-dara-shop.com', 'Miz Dara Unique'))
@@ -45,7 +45,7 @@ class MailerService
 
             // pass variables (name => value) to the template
             ->context([
-                'authentificate' => $authentificate,
+                'authenticate' => $authenticate,
                 'expiration_date' => new \DateTime('+7 days'),
                 'username' => $user->getFirstName(),
             ]);

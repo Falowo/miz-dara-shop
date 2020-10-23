@@ -34,14 +34,13 @@ class IndexController extends AbstractController
         MailerService $mailerService,
         PaginatorInterface $paginator,
         CartService $cartService,
-        LoginFormAuthenticator $authenticator,
         Request $request
     ): Response {
 
         if($user = $this->getUser()){
             if( !($user->getConfirmedEmail()) ){
                 $authenticate = $this->get('security.csrf.token_manager')->getToken('authenticate');
-
+                
            
 
                 $mailerService->sendSignUpEmail($user, $authenticate);

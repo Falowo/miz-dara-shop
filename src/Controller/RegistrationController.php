@@ -80,33 +80,15 @@ class RegistrationController extends AbstractController
      string $token = null
      ): Response
     {
-        if($token === $this->get('security.csrf.token_manager')->getToken('authenticate')){
-              $this->getUser()->setConfirmEmail(true);
-              $em = $this->getDoctrine()->getManager();
-              $em->flush();
-              return $this->redirectToRoute('app_index');
-        }else{
-            return $this->redirectToRoute('app_logout');
-        }
-
-       
-        
-       
-        if ($this->isCsrfTokenValid('authenticate', $submittedToken)) {
+        $user =$this->getUser();
+        if ($this->isCsrfTokenValid('authenticate', $token)) {
             // ... do something, like confirm Email
-
-            
-            
-           
-                
-                
-                
-                if($user){           
+                    
                     $user->setConfirmedEmail(true);
                     $em = $this->getDoctrine()->getManager();
                     $em->flush();
                     return $this->redirectToRoute('app_index');
-                }
+                
                 
             }
         else{
