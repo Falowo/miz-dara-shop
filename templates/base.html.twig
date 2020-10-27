@@ -63,7 +63,7 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="container-fluid text-uppercase font-weight-bold">
+		<div class="container-fluid text-uppercase font-weight-bold" style='font-size: 1.5rem'>
 			{% for type, messages in app.session.flashBag.all %}
 				{% for message in messages %}
 					{% if type=='error' %}
