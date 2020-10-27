@@ -123,17 +123,18 @@ class CartController extends AbstractController
 
 
     /**
-     * @Route("/transport/{edit}", name="cart_transport",defaults={"edit"="0"}, requirements={"edit"="0|1"})
+     * @Route("/transport/{edit}", name="cart_transport",defaults={"edit"=false})
      */
-    public function transport(CartService $cartService, LocaleService $localeService, bool $edit)
+    public function transport(CartService $cartService, LocaleService $localeService, bool $edit, Request $request)
     {
+        dump($edit);
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $purchase = $cartService->getPurchase();
         $user = $this->getUser();
         if ($purchase) {
             if ($purchase->getDeliveryFees() && $edit === false) {
                 return $this->redirectToRoute('cart_index');
-            }
+            }else($purchase->setDeliveryFees(null));
             if (!$purchase->getAddress() && $user->getAddress()) {
                 $purchase->setAddress($user->getAddress());
                 $em = $this->getDoctrine()->getManager();

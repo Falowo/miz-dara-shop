@@ -11,7 +11,7 @@ use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mime\Email;
-use Symfony\Component\Security\Guard\Token\PostAuthenticationGuardToken;
+
 
 class MailerService
 {
@@ -33,7 +33,7 @@ class MailerService
 
     public function sendSignUpEmail(User $user, $authenticate)
     {
-        // dd($authenticate->getId());
+       
 
         $email = (new TemplatedEmail())
             ->from(new Address('noreply@miz-dara-shop.com', 'Miz Dara Unique'))
@@ -79,7 +79,7 @@ class MailerService
             // some error prevented the email sending; display an
             // error message or try to resend the message
             $this->mailer->send($email);
-            dump($email);
+           
         }
     }
 

@@ -29,6 +29,7 @@ class AddressController extends AbstractController
         bool $edit
     ) {
         
+        dump($edit);
 
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
@@ -59,11 +60,10 @@ class AddressController extends AbstractController
             }
             if ($purchase = $cartService->getPurchase()) {
                 $purchase->setAddress($address);
-                dump($purchase);
+                
             }
             $em->persist($address);
             $em->flush();
-            dump($edit);
             return $this->redirectToRoute('cart_transport', ['edit'=>$edit]);
         }
 
