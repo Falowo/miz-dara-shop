@@ -1,4 +1,6 @@
 $(function(){
+
+    $('#purchase_line_size').focus();
     $('#purchase_line_tint').hide();
     $('#purchase_line_quantity').hide();
 
