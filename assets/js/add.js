@@ -13,9 +13,9 @@ $(function(){
         $.post($form.attr('action'), data).then(function (data) {
            let $input = $(data).find(target);
            $(target).replaceWith($input);
-           console.log($input);
-           console.log(target);
-            $(target).show().focus();    
+        //    console.log($input);
+        //    console.log(target);
+            $($input).show().focus();    
         });
     
     });
