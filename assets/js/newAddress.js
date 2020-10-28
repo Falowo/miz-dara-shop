@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     $('#address_cityJsonId').hide();
     $('label[for=address_cityJsonId]').hide();
     $('#address_phoneNumber').hide();

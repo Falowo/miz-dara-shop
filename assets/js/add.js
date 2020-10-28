@@ -1,4 +1,4 @@
-$(document).ready(function(){
+$(function(){
     $('#purchase_line_tint').hide();
     $('#purchase_line_quantity').hide();
 
@@ -13,8 +13,9 @@ $(document).ready(function(){
         $.post($form.attr('action'), data).then(function (data) {
            let $input = $(data).find(target);
            $(target).replaceWith($input);
-           $(target).show();
-            
+           console.log($input);
+           console.log(target);
+            $(target).show().focus();    
         });
     
     });

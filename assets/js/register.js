@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(function () {
     $('#registration_form_city').hide();
     $('label[for=registration_form_city]').hide();
     let country = $('#registration_form_country').val();
