@@ -20,7 +20,7 @@
 		{% endblock %}
 		<nav class="navbar navbar-expand-sm navbar-dark bg-success">
 			<div class="container-fluid text-uppercase font-weight-bold" style="font-size: 1.6rem">
-				<a href="{{ path('app_index') }}" class="navbar-brand mb-0 h1 font-weight-bolder">
+				<a href="{{ path('app_index') }}" class="navbar-brand mb-0">
 					<i class="fas fa-home fa-3x"></i>
 				</a>
 				<ul class="navbar-nav ml-3 mr-auto" >
@@ -29,33 +29,29 @@
 						{{ render(controller('App\\Controller\\IndexController::menu')) }}
 					{% endblock %}
 				</ul>
-				<ul class="navbar-nav">
+				<ul class="navbar-nav" style="color:pink">
 
 					{{ render(controller('App\\Controller\\CartController::link')) }}
 
 					{% if app.user is null %}
 
 
+						
 						<li class="nav-item">
-							<a href="{{ path('app_register') }}" class="nav-link">
-								Registrate
-							</a>
-						</li>
-						<li class="nav-item">
-							<a href="{{ path('app_login') }}" class="nav-link">
+							<a href="{{ path('app_login') }}" class="nav-link" style="color:black">
 								Login
 							</a>
 						</li>
 
 					{% else %}
 						<li class="nav-item">
-							<span class="nav-link">
+							<span class="nav-link" style="color:black">
 								{{ app.user.firstName }}
 							</span>
 						</li>
 						<li class="nav-item">
-							<a href="{{ path('app_logout') }}" class="nav-link">
-								Logout
+							<a href="{{ path('app_logout') }}" class="nav-link" style="color:darkgreen">
+								<i class="fas fa-power-off"></i>
 							</a>
 						</li>
 					{% endif %}
@@ -63,7 +59,7 @@
 				</ul>
 			</div>
 		</nav>
-		<div class="container-fluid text-uppercase font-weight-bold" style="font-size: 1.6rem">
+		<div class="container-fluid text-uppercase font-weight-bold" style="font-size: 1.6rem; min-height:59vh">
 			{% for type, messages in app.session.flashBag.all %}
 				{% for message in messages %}
 					{% if type=='error' %}

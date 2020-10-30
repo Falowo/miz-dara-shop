@@ -1,0 +1,16 @@
+{# templates/form/my_theme.html.twig #}
+{% extends 'bootstrap_4_layout.html.twig' %}
+
+
+{% block form_row %}
+
+	{# ... add all the HTML, CSS and JavaScript needed to render this field #}
+    <style>
+    .form-control{
+        font-size:2.2rem;
+    }
+    </style>
+
+     {{ parent() }}
+
+{% endblock %}

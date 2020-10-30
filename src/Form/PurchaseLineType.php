@@ -130,7 +130,7 @@ class PurchaseLineType extends AbstractType
     {
         $form->add('quantity', ChoiceType::class, [
 
-            'placeholder' => 'Quantity',
+            'placeholder' => 1,
             'label' => false,
             'data' => 1,
             'required' => false,

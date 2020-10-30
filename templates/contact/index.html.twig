@@ -6,44 +6,41 @@
 {% block body %}
 
 
-	<div class="row mt-5">
-		<div class="col-md-8">
+	<img src="{{ 'products/images/shop.jpg' | imagine_filter('big') }}" alt="Miz Dara Shop" style="width:100%">
 
-			<img src="{{ 'products/images/shop.jpg' | imagine_filter('big') }}" alt="Miz Dara Shop">
 
-		</div>
+	<div>
 
-		<div class="col-md-4">
+		{# <a href="#" class="btn btn-primary">Contact Miz Dara Shop</a> #}
+		<h1>Send us an email</h1>
 
-			<a href="#" class="btn btn-primary">Contact Miz Dara Shop</a>
-			<div id="contactForm" class="mt-4">
-				{{form_start(form)}}
-				<div class="row">
-					<div class="col-4">
-						{{form_row(form.firstName)}}
-					</div>
-					<div class="col-8">
-						{{form_row(form.email)}}
-					</div>
+		<div id="contactForm" class="mt-4">
+			{{form_start(form)}}
+			<div class="row">
+				<div class="col-4">
+					{{form_row(form.firstName)}}
 				</div>
-				<div class="row">
-					<div class="col">
-						{{form_row(form.subject)}}
-					</div>
+				<div class="col-8">
+					{{form_row(form.email)}}
 				</div>
-				<div class="row">
-					<div class="col">
-						{{form_row(form.content)}}
-					</div>
-				</div>
-				<div class="form-group">
-					<button class="btn btn-primary">Send</button>
-				</div>
-				{{form_end(form)}}
 			</div>
-
+			<div class="row">
+				<div class="col">
+					{{form_row(form.subject)}}
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					{{form_row(form.content)}}
+				</div>
+			</div>
+			<div class="form-group">
+				<button class="btn btn-primary p-3" style="font-size:2.2rem">Send</button>
+			</div>
+			{{form_end(form)}}
 		</div>
-
 
 	</div>
+
+
 {% endblock %}
