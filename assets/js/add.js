@@ -2,7 +2,7 @@ $(function () {
 
     $('#purchase_line_tint').hide();
     $('#purchase_line_quantity').hide();
-    $('button').hide();
+    $('button.btn').hide();
     $('#purchase_line_size').click();
 
     $(document).on('change', '#purchase_line_size, #purchase_line_tint', function () {
@@ -20,7 +20,7 @@ $(function () {
             console.log(target);
             $(target).show().focus();
             if (target === '#purchase_line_quantity') {
-                $('button').show();
+                $('button.btn').show();
             }
         });
 
