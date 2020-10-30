@@ -42,9 +42,12 @@ class ProductController extends AbstractController
             if(
                 !is_null($purchaseLine->getProduct()) &&
                 !is_null($purchaseLine->getSize()) &&
-                !is_null($purchaseLine->getTint()) &&
-                !is_null($purchaseLine->getQuantity())
+                !is_null($purchaseLine->getTint())
+               
             ){
+                if (is_null($purchaseLine->getQuantity())){
+                    $purchaseLine->setQuantity(1);
+                }
 
                 $cartService->add($purchaseLine);
                 return $this->redirectToRoute('cart_index');

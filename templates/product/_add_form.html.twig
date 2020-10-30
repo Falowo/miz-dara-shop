@@ -1,4 +1,20 @@
 {{ form_start(form) }}
- {{ form_widget(form) }}
-    <button type="submit" class="btn btn-success p-3" style='font-size: 2rem'>{{ button_label|default('Add to cart') }}</button>
+<div class="row">
+	<div class="col">
+		{{ form_row(form.size) }}
+	</div>
+	<div class="col">
+		{{ form_row(form.tint) }}
+	</div>
+	<div class="col">
+		{{ form_row(form.quantity) }}
+	</div>
+</div>
+<div class="row">
+	<div class="col"></div>
+	<div class="col"></div>
+	<div class="col">
+		<button type="submit" class="btn btn-success p-3" style='font-size: 2rem'>{{ button_label|default('Add to cart') }}</button>
+	</div>
+</div>
 {{ form_end(form) }}

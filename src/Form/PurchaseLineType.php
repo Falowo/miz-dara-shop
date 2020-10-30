@@ -65,7 +65,10 @@ class PurchaseLineType extends AbstractType
                 'mapped' => true,
                 'required' => true,
                 'auto_initialize' => false,
-                'choices' => $this->addSizeChoices($product)
+                'choices' => $this->addSizeChoices($product),
+                'attr' =>[
+                    'autofocus'=>true
+                ]
             ]
         );
 
@@ -147,15 +150,41 @@ class PurchaseLineType extends AbstractType
 
     public function addSizeChoices(Product $product)
     {
+        $sizes = [];
+        foreach($product->getSizes() as $size){
+            if($stocks = $this->stockRepository->findBy([
+                'product'=>$product,
+                'size'=>$size
+            ])){
+                foreach($stocks as $stock){
 
-        return $product->getSizes();
+                    if($stock->getQuantity()>0){
+                        $sizes[] = $size;
+                    }
+                }
+            }
+        }
+        return $sizes;
     }
 
 
     private function addTintChoices(Product $product, ?Size $size)
     {
         if ($size) {
-            return $product->getTintsBySize($size);
+            $tints = [];
+            foreach($product->getTintsBySize($size) as $tint){
+                if($stock = $this->stockRepository->findOneBy([
+                    'product'=>$product,
+                    'size'=>$size,
+                    'tint'=>$tint
+                ])){
+                    if($stock->getQuantity() >0){
+                        $tints[] = $tint;
+                    }
+                }
+            }
+
+            return $tints;
         }
 
         return [];
