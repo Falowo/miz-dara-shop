@@ -137,9 +137,11 @@ class PurchaseLine
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
-
-        if($this->quantity > $this->product->getStocK($this->size, $this->tint)){
-            $this->quantity = $this->product->getStocK($this->size, $this->tint);
+        if($this->size && $this->tint){
+            // we make sure we don't add more quantity than available
+            if($this->quantity > $this->product->getStock($this->size, $this->tint)){
+                $this->quantity = $this->product->getStock($this->size, $this->tint);
+            }
         }
 
         return $this;

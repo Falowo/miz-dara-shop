@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Entity\PurchaseLine;
 use App\Form\PurchaseLineType;
+use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,45 +26,92 @@ class ProductController extends AbstractController
      * @param CartService $cartService
      * @return Response
      */
-    public function add(Product $product, Request $request, CartService $cartService)
+    public function add(Product $product, Request $request, CartService $cartService, StockRepository $stockRepository)
     {
 
-            $product->setHasStock(null);
-            $this->getDoctrine()->getManager()->persist($product);
-            $this->getDoctrine()->getManager()->flush();
-
+        $product->setHasStock(null);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($product);
+        $em->flush();
+        if ($product->getHasStock() === false) {
+            // do something like redirect
+        }
         $purchaseLine = new PurchaseLine();
-        $purchaseLine->setProduct($product);
+        $purchaseLine
+            ->setProduct($product)
+            // ->setQuantity(1)
+            ;
+        $sizes = [];
+        if (count($product->getStocks()) === 1) {
+            $stock = $stockRepository->findOneBy(['product' => $product]);
+            $sizes[] = $stock->getSize();
+
+            $purchaseLine
+                ->setSize($stock->getSize())
+                ->setTint($stock->getTint());
+        } elseif (count($stocks = $product->getStocks()) > 1) {
+            $tints = [];
+            foreach ($stocks as $stock) {
+                if ($stock->getQuantity() > 0) {
+                    if (!(in_array($size = $stock->getSize(), $sizes))) {
+                        $sizes[] = $size;
+                    }
+                    if (!(array_search($tint = $stock->getTint(), $tints))) {
+                        $tints[] = $tint;
+                    }
+                }
+            }
+
+            if (count($sizes) === 1) {
+                $purchaseLine->setSize($sizes[0]);
+            }
+            if (count($tints) === 1) {
+                $purchaseLine->setTint($tints[0]);
+            }
+        }
+        $tints = [];
+        foreach ($sizes  as $size) {
+            $stocks = $stockRepository->findBy(['product' => $product, 'size' => $size]);
+            $tints[$size->getName()] = [];
+            foreach ($stocks as $stock) {
+                if ($stock->getQuantity() > 0) {
+                    if (!in_array($tint = $stock->getTint(),  $tints[$size->getName()])) {
+                        $tints[$size->getName()][] = $tint;
+                    }
+                }
+            }
+        }
+
+
+
+
+
 
         $form = $this->createForm(PurchaseLineType::class, $purchaseLine);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if(
+            if (
                 !is_null($purchaseLine->getProduct()) &&
                 !is_null($purchaseLine->getSize()) &&
                 !is_null($purchaseLine->getTint())
-               
-            ){
-                if (is_null($purchaseLine->getQuantity())){
+
+            ) {
+                if (is_null($purchaseLine->getQuantity())) {
                     $purchaseLine->setQuantity(1);
                 }
 
                 $cartService->add($purchaseLine);
                 return $this->redirectToRoute('cart_index');
-
             }
-
-
         }
 
         return $this->render('product/add.html.twig', [
             'controller_name' => 'ProductController',
             'product' => $product,
             'purchaseLine' => $purchaseLine,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tints' => $tints
         ]);
     }
-
-
 }

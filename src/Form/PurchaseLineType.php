@@ -7,6 +7,7 @@ use App\Entity\PurchaseLine;
 use App\Entity\Size;
 use App\Entity\Tint;
 use App\Repository\StockRepository;
+use Doctrine\DBAL\Types\ObjectType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -17,12 +18,18 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PurchaseLineType extends AbstractType
-{
+{   
+    
+    private $data;
+   
+
     private $stockRepository;
 
-    public function __construct(StockRepository $stockRepository)
+    public function __construct(StockRepository $stockRepository, ?ObjectType $data)
     {
         $this->stockRepository = $stockRepository;
+       
+        $this->data = $data;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -31,16 +38,18 @@ class PurchaseLineType extends AbstractType
         $builder->addEventListener(
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
-                $data = $event->getData();
-                $product = $data->getProduct();
+                $this->data = $event->getData();
                 $form = $event->getForm();
-                $size = $data->getSize();
-                $tint = $data->getTint();
+                $product = $this->data->getProduct();
+                $size = $this->data->getSize();
+                $tint = $this->data->getTint();
+                
+               
 
-
+                
                 $this->addSizeField($form, $product, $size, $tint);
-                $this->addTintField($form, $product, $size, $tint);
-                $this->addQuantityField($form, $product, $size, $tint);
+                $this->addTintField($form,  $product, $size, $tint);
+                $this->addQuantityField($form,  $product, $size, $tint);
             }
         );
     }
@@ -53,7 +62,7 @@ class PurchaseLineType extends AbstractType
      * @param Tint|null $tint
      */
     private function addSizeField(FormInterface $form, Product $product, ?Size $size, ?Tint $tint)
-    {
+    {        
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
             'size',
             EntityType::class,
@@ -61,14 +70,13 @@ class PurchaseLineType extends AbstractType
             [
                 'class' => Size::class,
                 'label' => false,
-                'placeholder' => 'select your size',
+                'placeholder' => 'Size',
                 'mapped' => true,
-                'required' => true,
+                'required' => false,
+                'empty_data' => $size = $this->data->getSize() ?? $size, 
                 'auto_initialize' => false,
                 'choices' => $this->addSizeChoices($product),
-                'attr' =>[
-                    'autofocus'=>true
-                ]
+                'attr' => $size = $this->data->getSize() ? ['autofocus'=>false, 'value'=>$size] : ['autofocus'=>true]
             ]
         );
 
@@ -100,8 +108,7 @@ class PurchaseLineType extends AbstractType
             [
                 'class' => Tint::class,
                 'label' => false,
-                'placeholder' => 'Select your color',
-
+                'placeholder' => 'Color',
                 'mapped' => true,
                 'required' => false,
                 'auto_initialize' => false,
@@ -128,11 +135,10 @@ class PurchaseLineType extends AbstractType
 
     private function addQuantityField(FormInterface $form, Product $product, ?Size $size, ?Tint $tint)
     {
+        dump($this->data->getQuantity());
         $form->add('quantity', ChoiceType::class, [
 
-            'placeholder' => 1,
             'label' => false,
-            'data' => 1,
             'required' => false,
             'choices' => $tint ? $this->addQuantityChoices($product, $size, $tint) : []
 

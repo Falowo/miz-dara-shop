@@ -260,7 +260,8 @@ class Product
             if ($stock->getTint() === $tint && $stock->getSize() === $size) {
                 return $stock->getQuantity();
             }
-        }
+        }         
+                
     }
 
     public function addStock(Stock $stock): self

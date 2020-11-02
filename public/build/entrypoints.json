@@ -8,7 +8,7 @@
         "/build/app.9f720c5e.js"
       ],
       "css": [
-        "/build/app.842c1955.css"
+        "/build/app.3589eece.css"
       ]
     },
     "add": {
@@ -16,7 +16,7 @@
         "/build/runtime.d94b3b43.js",
         "/build/0.b9e94bd1.js",
         "/build/1.626e70d2.js",
-        "/build/add.c3cc85fd.js"
+        "/build/add.6d1ab715.js"
       ]
     },
     "newAddress": {
@@ -24,7 +24,7 @@
         "/build/runtime.d94b3b43.js",
         "/build/0.b9e94bd1.js",
         "/build/1.626e70d2.js",
-        "/build/newAddress.c76725fc.js"
+        "/build/newAddress.118e934d.js"
       ]
     }
   }

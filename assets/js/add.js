@@ -1,9 +1,26 @@
 $(function () {
 
-    $('#purchase_line_tint').hide();
+    
+
+    if (!($('#purchase_line_size').val())) {
+        $('div#button  button.btn.btn-success').hide().attr('disabled', true);
+        $('#purchase_line_tint').hide();
+        $('#purchase_line_quantity').hide();
+        
+    }
+    else if(!($('#purchase_line_tint').val())){
+        $('div#button  button.btn.btn-success').hide().attr('disabled', true);
+        $('#purchase_line_tint').focus();
     $('#purchase_line_quantity').hide();
-    $('div#button  button.btn.btn-success').hide();
-    $('#purchase_line_size').click();
+
+    }
+    else{
+        $('#purchase_line_quantity').focus();
+    }
+    
+   
+
+    
 
     $(document).on('change', '#purchase_line_size, #purchase_line_tint', function () {
         let $field = $(this);
@@ -13,14 +30,21 @@ $(function () {
         let data = {};
         data[$sizeField.attr('name')] = $sizeField.val();
         data[$field.attr('name')] = $field.val();
+
+        console.log($('#purchase_line_size').val());
+        console.log($('#purchase_line_tint').val());
+        console.log($('#purchase_line_quantity').val());
         $.post($form.attr('action'), data).then(function (data) {
             let $input = $(data).find(target);
             $(target).replaceWith($input);
-            console.log($input);
-            console.log(target);
+            // console.log($input);
+            // console.log(target);
             $(target).show().focus();
-            if (target === '#purchase_line_quantity') {
-                $('div#button  button.btn.btn-success').show();
+            if ($('#purchase_line_size').val() && $('#purchase_line_tint').val()) {
+                if(!($('#purchase_line_quantity').val())){
+                    $('#purchase_line_quantity').val(1);
+                }
+                $('div#button  button.btn.btn-success').show().attr('disabled', false);
             }
         });
 
