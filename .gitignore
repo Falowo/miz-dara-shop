@@ -7,7 +7,6 @@
 /public/bundles/
 /var/
 /vendor/
-/webpack.config.js
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
