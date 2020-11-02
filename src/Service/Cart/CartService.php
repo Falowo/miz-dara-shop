@@ -33,10 +33,6 @@ class CartService
     private $session;
 
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
 
     /**
      * @var PurchaseRepository
@@ -94,8 +90,8 @@ class CartService
         $purchase = $this->getPurchaseOrCreate();
 
         $purchase->addPurchaseLine($purchaseLine);
-        $this->manager->persist($purchase);
-        $this->manager->flush();
+        $this->em->persist($purchase);
+        $this->em->flush();
         return;
     }
 
@@ -139,15 +135,15 @@ class CartService
         $purchaseId = $this->session->get('purchaseId', []);
         if ($purchaseId === []) {
             $purchase = new Purchase();
-            $this->manager->persist($purchase);
-            $this->manager->flush();
+            $this->em->persist($purchase);
+            $this->em->flush();
             $this->session->set('purchaseId', $purchase->getId());
         } else {
             $purchase = $this->purchaseRepository->find($purchaseId);
             if (is_null($purchase)) {
                 $purchase = new Purchase();
-                $this->manager->persist($purchase);
-                $this->manager->flush();
+                $this->em->persist($purchase);
+                $this->em->flush();
                 $this->session->set('purchaseId', $purchase->getId());
             }
         }
