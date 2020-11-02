@@ -16,6 +16,8 @@ $(function () {
     }
     else{
         $('#purchase_line_quantity').focus();
+        $('#purchase_line_quantity').val(1);
+
     }
     
    
