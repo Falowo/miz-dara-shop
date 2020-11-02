@@ -12,8 +12,11 @@ use App\Entity\Continent;
 use App\Entity\Image;
 use App\Entity\User;
 use App\Repository\ContinentRepository;
+// use App\Repository\CountryRepository;
 use App\Repository\DeliveryFeesRepository;
 use App\Repository\ImageRepository;
+use App\Repository\NgCityRepository;
+use App\Repository\NgStateRepository;
 use App\Repository\PurchaseRepository;
 use App\Repository\StockRepository;
 use App\Repository\TransportRepository;
@@ -39,38 +42,43 @@ class CartService
      * @var PurchaseRepository
      */
     private $purchaseRepository;
-
-
     private $deliveryFeesRepository;
-    private $continentRepository;
     private $localeService;
     private $transportRepository;
     private $stockRepository;
     private $imageRepository;
+    private $ngCityRepository;
+    private $ngStateRepository;
+    // private $countryRepository;
+    private $continentRepository;
     private $em;
 
     public function __construct(
         SessionInterface $session,
-        EntityManagerInterface $manager,
         PurchaseRepository $purchaseRepository,
         LocaleService $localeService,
         DeliveryFeesRepository $deliveryFeesRepository,
-        ContinentRepository $continentRepository,
         TransportRepository $transportRepository,
         StockRepository $stockRepository,
         ImageRepository $imageRepository,
+        NgCityRepository $ngCityRepository,
+        NgStateRepository $ngStateRepository,
+        // CountryRepository $countryRepository,
+        ContinentRepository $continentRepository,
         EntityManagerInterface $em
 
     ) {
         $this->session = $session;
-        $this->manager = $manager;
         $this->purchaseRepository = $purchaseRepository;
         $this->localeService = $localeService;
         $this->deliveryFeesRepository = $deliveryFeesRepository;
-        $this->continentRepository = $continentRepository;
         $this->transportRepository = $transportRepository;
         $this->stockRepository = $stockRepository;
         $this->imageRepository = $imageRepository;
+        $this->ngCityRepository = $ngCityRepository;
+        $this->ngStateRepository = $ngStateRepository;
+        // $this->countryRepository = $countryRepository;
+        $this->continentRepository = $continentRepository;
         $this->em = $em;
     }
 
@@ -211,7 +219,8 @@ class CartService
          * @var Country $country
          */
         $country = $purchase->getAddress()->getCountry();
-        if ($country && $country === 'NG') {
+       
+        if ($country && $country->getCode() === 'NG') {
             $ngCityName = $purchase->getAddress()->getCityName();
             $ngCityNames = array_column(LocaleService::getArrayNgCities(), 'city');
             $ngCityJsonId = array_search($ngCityName, $ngCityNames);
@@ -282,7 +291,6 @@ class CartService
             }
             $this->em->flush();
         }
-
         return $deliveryFeess;
     }
 
