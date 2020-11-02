@@ -29,8 +29,7 @@ class AddressController extends AbstractController
         bool $edit
     ) {
         
-        dump($edit);
-
+        
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $user = $this->getUser();
        

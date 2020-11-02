@@ -127,7 +127,7 @@ class CartController extends AbstractController
      */
     public function transport(CartService $cartService, LocaleService $localeService, bool $edit, Request $request)
     {
-        dump($edit);
+    
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $purchase = $cartService->getPurchase();
         $user = $this->getUser();
