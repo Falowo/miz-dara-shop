@@ -90,11 +90,6 @@ class User implements UserInterface
      */
     private $confirmedEmail = false;
 
-    /**
-    * @ORM\Column(type="string", unique=true, nullable=true)
-      */
-     private $apiToken;
-    
 
     public function __construct()
     {
@@ -323,25 +318,5 @@ class User implements UserInterface
         return $this;
     }
 
-   
 
-     /**
-      * Get the value of apiToken
-      */ 
-     public function getApiToken()
-     {
-          return $this->apiToken;
-     }
-
-     /**
-      * Set the value of apiToken
-      *
-      * @return  self
-      */ 
-     public function setApiToken($apiToken)
-     {
-          $this->apiToken = $apiToken;
-
-          return $this;
-     }
 }

@@ -37,10 +37,7 @@ class ProductController extends AbstractController
             // do something like redirect
         }
         $purchaseLine = new PurchaseLine();
-        $purchaseLine
-            ->setProduct($product)
-            // ->setQuantity(1)
-            ;
+        $purchaseLine->setProduct($product);            ;
         $sizes = [];
         if (count($product->getStocks()) === 1) {
             $stock = $stockRepository->findOneBy(['product' => $product]);
