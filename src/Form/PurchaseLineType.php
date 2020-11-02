@@ -135,7 +135,7 @@ class PurchaseLineType extends AbstractType
 
     private function addQuantityField(FormInterface $form, Product $product, ?Size $size, ?Tint $tint)
     {
-        dump($this->data->getQuantity());
+        
         $form->add('quantity', ChoiceType::class, [
 
             'label' => false,

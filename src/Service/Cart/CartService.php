@@ -162,7 +162,6 @@ class CartService
                 foreach($purchases as $purchase){
                     
                     if (!($purchase->getPaid())){
-                            dump($purchase);
                             $notPaidPurchases[] = $purchase;                            
                         }                        
                     }

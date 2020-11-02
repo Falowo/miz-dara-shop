@@ -37,8 +37,7 @@ $(function () {
         $.post($form.attr('action'), data).then(function (data) {
             let $input = $(data).find(target);
             $(target).replaceWith($input);
-            // console.log($input);
-            // console.log(target);
+
             $(target).show().focus();
             if ($('#purchase_line_size').val() && $('#purchase_line_tint').val()) {
                 if(!($('#purchase_line_quantity').val())){
