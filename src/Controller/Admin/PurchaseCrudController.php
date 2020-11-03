@@ -24,7 +24,7 @@ class PurchaseCrudController extends AbstractCrudController
         return $crud
             ->setEntityLabelInSingular('Purchase')
             ->setEntityLabelInPlural('Purchases')
-            ->setSearchFields(['id', 'deliveryPrice', 'maxDays', 'totalPurchaseLines']);
+            ->setSearchFields(['id', 'user', 'deliveryPrice', 'maxDays', 'totalPurchaseLines']);
     }
 
     public function configureFields(string $pageName): iterable
@@ -36,11 +36,12 @@ class PurchaseCrudController extends AbstractCrudController
         $deliveryFees = AssociationField::new('deliveryFees');
         $purchaseLines = AssociationField::new('purchaseLines')->setTemplatePath('easy_admin/purchaseLines.html.twig');
         $user = AssociationField::new('user')->setTemplatePath('easy_admin/user.html.twig');
+        $address = AssociationField::new('address')->setTemplatePath('easy_admin/address.html.twig');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $purchaseDate, $status, $paid];
+            return [$id, $user, $purchaseDate, $status, $paid];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $purchaseDate, $deliveryFees, $paid, $status, $purchaseLines, $user];
+            return [$id, $user, $purchaseDate, $deliveryFees, $paid, $status, $address, $purchaseLines, $user];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [];
         } elseif (Crud::PAGE_EDIT === $pageName) {

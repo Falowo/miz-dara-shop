@@ -1,0 +1,28 @@
+{% if entity.instance.address %}
+
+{% set address = entity.instance.address %}
+	<p>
+		{{address.firstName}}
+		{{address.lastName}}
+		<br>
+		{{address.street}}
+		<br>
+
+		{% if address.zipCode %}
+			{{address.zipCode}}
+		{% endif %}
+
+		{{address.cityName}}
+		<br>
+		{{address.country | capitalize}}
+		<br>
+		{% if address.phoneNumber %}
+			Phone : +
+			{{address.phoneNumber.countryCode}}
+			{{address.phoneNumber.nationalNumber}}
+		{% endif %}
+		<br>
+	</p>
+
+	
+{% endif %}

@@ -190,7 +190,7 @@ class Purchase
 
     public function getTotal()
     {
-        return $this->getTotalPurchaseLines() + $this->deliveryFees;
+        return $this->getTotalPurchaseLines() + $this->getAmountDeliveryFees();
     }
 
     public function getStatus(): ?Status
@@ -226,8 +226,8 @@ class Purchase
             }
         }
         
-        if($this->deliveryFees->getVariableAmount()){
-            $total += $this->getTotalPurchaseLines() * $this->deliveryFees->getVariableAmount();
+        if($this->deliveryFees->getPercentOfRawPrice()){
+            $total += $this->getTotalPurchaseLines() * $this->deliveryFees->getPercentOfRawPrice();
         }
 
         if($this->deliveryFees->getFixedAmount()){

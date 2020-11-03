@@ -1,5 +1,4 @@
-{% if value is not null %}
-  
+
       <table class="table table-dark">
   <thead>
     <tr>
@@ -13,7 +12,11 @@
     </tr>
   </thead>
   <tbody>
-   {% for purchaseLine in value %}
+{# <pre>
+  {{ dump(entity.instance) }}
+</pre> #}
+
+   {% for purchaseLine in entity.instance.purchaseLines %}
     <tr>
       <td> {{ purchaseLine.id }} </td>
       <td> {{ purchaseLine.product }} </td>
@@ -27,14 +30,19 @@
     {% if loop.last %}
          <tr>
       <th colspan="6">Total for Items</th>
-      <td > {{ purchaseLine.purchase.totalPurchaseLines | format_number }} </td>
+      <td > {{ entity.instance.totalPurchaseLines | format_number }} </td>
+    </tr>
+         <tr>
+      <th colspan="6">Amount delivery fees</th>
+      <td > {{ entity.instance.amountDeliveryFees | format_number }} </td>
     </tr>
          <tr>
       <th colspan="6">Total with delivery fees</th>
-      <td > {{ purchaseLine.purchase.total |  format_number }} </td>
+      <pre>
+      </pre>
+      <td > {{ entity.instance.total |  format_number }} </td>
     </tr>
     {% endif %}
    {% endfor %} 
   </tbody>
 </table>
-{% endif %}
