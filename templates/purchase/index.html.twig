@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MDS My purchases
+{% endblock %}
+
+{% block body %}
+	{% if app.user.purchases %}
+
+
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th scope="col">Purchase date</th>
+						<th scope="col" class="text-right">Amount</th>
+						<th scope="col"></th>
+						<th scope="col" class="text-center">Status</th>
+						<th scope="col"></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for purchase in app.user.purchases %}
+						{% if purchase.paid %}
+							<tr>
+								<th scope="row">
+		<a href="">
+									{{purchase.purchaseDate | date("m/d/Y")}}
+		</a>
+								</th>
+								<td class="text-right">
+                                {{ purchase.total | number_format(0, '.', ',') }} 
+                                <td class="text-left">
+                                &nbsp₦
+                                
+                                </td>
+                                </td>
+								<td class="text-center">
+									{% if purchase.status %}
+										{{purchase.status}}
+									{% else %}
+										In preparation
+									{% endif %}
+								</td>
+
+                                <td>
+                                <a href="#">
+                                <i class="far fa-eye"></i>
+                                </a>
+                                </td>
+							</tr>
+
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+	{% endif %}
+
+{% endblock %}

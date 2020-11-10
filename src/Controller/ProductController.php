@@ -7,9 +7,11 @@ use App\Entity\PurchaseLine;
 use App\Form\PurchaseLineType;
 use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
+use Egulias\EmailValidator\Warning\Warning;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -26,7 +28,13 @@ class ProductController extends AbstractController
      * @param CartService $cartService
      * @return Response
      */
-    public function add(Product $product, Request $request, CartService $cartService, StockRepository $stockRepository)
+    public function add(Product $product, 
+    Request $request, 
+    CartService $cartService, 
+    StockRepository $stockRepository,
+    FlashBagInterface $flashBagInterface
+    )
+
     {
 
         $product->setHasStock(null);
@@ -101,6 +109,7 @@ class ProductController extends AbstractController
                 $cartService->add($purchaseLine);
                 $purchase = $cartService->getPurchase();
                 if($purchase->getDeliveryFees()){
+                    $flashBagInterface->add('error', 'Your delivery service has been deleted because you modified your cart');
                     return $this->redirectToRoute('cart_transport', ['edit'=>true]);
                 }
                 return $this->redirectToRoute('cart_index');

@@ -17,6 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -53,51 +54,63 @@ class CartController extends AbstractController
             'total' => $total
         ]);
     }
-     /**
+    /**
      *
      * @Route("/minus/{id}", name="cart_minus")
      * @param PurchaseLine $purchaseLine
      * @return RedirectResponse
      */
-    public function minus(PurchaseLine $purchaseLine, CartService $cartService)
-    {
+    public function minus(
+        PurchaseLine $purchaseLine,
+        CartService $cartService,
+        FlashBagInterface $flashBagInterface
+    ) {
         $em = $this->getDoctrine()->getManager();
         $q = $purchaseLine->getQuantity();
-        if($q>0){
+        if ($q > 0) {
             $q--;
             $purchaseLine->setQuantity($q);
             // $em->persist($purchaseLine());
             $em->flush();
         }
 
-        $purchase=$cartService->getPurchase();
-        if($purchase->getDeliveryFees()){
-            return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+        $purchase = $cartService->getPurchase();
+        if ($purchase->getDeliveryFees()) {
+            
+            $flashBagInterface->add('error', 'Your delivery service has been deleted because you modified your cart');
+            return $this->redirectToRoute('cart_transport', ['edit' => true]);
         }
 
         return $this->redirectToRoute("cart_index");
     }
 
-     /**
+    /**
      *
      * @Route("/plus/{id}", name="cart_plus")
      * @param PurchaseLine $purchaseLine
      * @return RedirectResponse
      */
-    public function plus(PurchaseLine $purchaseLine, CartService $cartService){
+
+    public function plus(
+        PurchaseLine $purchaseLine,
+        CartService $cartService,
+        FlashBagInterface $flashBagInterface
+    ) {
         $em = $this->getDoctrine()->getManager();
         $s = $purchaseLine->getProduct()->getStock($purchaseLine->getSize(), $purchaseLine->getTint());
         $q = $purchaseLine->getQuantity();
-       
-        if($s>$q){
+
+        if ($s > $q) {
             $q++;
             $purchaseLine->setQuantity($q);
             // $em->persist($purchaseLine());
             $em->flush();
         }
-        $purchase=$cartService->getPurchase();
-        if($purchase->getDeliveryFees()){
-            return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+        $purchase = $cartService->getPurchase();
+        if ($purchase->getDeliveryFees()) {
+
+            $flashBagInterface->add('error', 'Your delivery service has been deleted because you modified your cart');
+            return $this->redirectToRoute('cart_transport', ['edit' => true]);
         }
 
         return $this->redirectToRoute("cart_index");
@@ -111,8 +124,12 @@ class CartController extends AbstractController
      * @param PurchaseLine $purchaseLine
      * @return RedirectResponse
      */
-    public function delete(Request $request, PurchaseLine $purchaseLine, CartService $cartService)
-    {
+    public function delete(
+        Request $request,
+        PurchaseLine $purchaseLine,
+        CartService $cartService,
+        FlashBagInterface $flashBagInterface
+    ) {
 
 
         if ($this->isCsrfTokenValid('delete' . $purchaseLine->getId(), $request->request->get('_token'))) {
@@ -121,9 +138,11 @@ class CartController extends AbstractController
             $entityManager->flush();
         }
 
-        $purchase=$cartService->getPurchase();
-        if($purchase->getDeliveryFees()){
-            return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+        $purchase = $cartService->getPurchase();
+        if ($purchase->getDeliveryFees()) {
+            $flashBagInterface->add('error', 'Your delivery service has been deleted because you modified your cart');
+
+            return $this->redirectToRoute('cart_transport', ['edit' => true]);
         }
 
 
@@ -188,7 +207,7 @@ class CartController extends AbstractController
         if ($purchase) {
             if ($purchase->getDeliveryFees() && $edit === false) {
                 return $this->redirectToRoute('cart_index');
-            }else($purchase->setDeliveryFees(null));
+            } else ($purchase->setDeliveryFees(null));
             if (!$purchase->getAddress() && $user->getAddress()) {
                 $purchase->setAddress($user->getAddress());
                 $em = $this->getDoctrine()->getManager();
@@ -287,7 +306,7 @@ class CartController extends AbstractController
     public function cart(CartService $cartService, ImageRepository $imageRepository)
     {
         if ($purchase = $cartService->getPurchase()) {
-            
+
             $total = $cartService->getTotalPurchaseLines($purchase);
             if ($purchase->getTotalPurchaseLines() !== $total)
                 $purchase->setTotalPurchaseLines($total);
@@ -323,11 +342,10 @@ class CartController extends AbstractController
 
     public function showPurchaseAddress(CartService $cartService)
     {
-        if($purchase = $cartService->getPurchase()){
+        if ($purchase = $cartService->getPurchase()) {
             return $this->render('cart/_address.html.twig', [
                 'purchase' => $purchase
             ]);
         }
     }
-
 }
