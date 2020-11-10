@@ -10,6 +10,9 @@
 		{% if app.user.address %}
 
 			<h2>Validate your address</h2>
+			<div class="row">
+			<div class="col-9">
+			
 			<p>
 				{{app.user.address.street}}
 				<br>
@@ -29,8 +32,12 @@
 				{% endif %}
 			</p>
 			<a href="{{ path('address_new', {'case':'modify'}) }}" class="btn btn-success">Modify</a>
-			<a href="{{ path('cart_transport') }}" class="btn btn-success">Use this address</a>
-			<a href="{{ path('address_new') }}" class="btn btn-success">Add a new address</a>
+			<a href="{{ path('address_new') }}" class="btn btn-success">Use another address for this purchase only</a>
+			</div>
+			<div class="col-3">
+			<a href="{{ path('cart_transport') }}" class="btn btn-primary p-4">Use this address</a>
+			</div>
+			</div>
 		{% else %}
 			<a href="{{ path('address_new') }}" class="btn btn-success">Create a new address</a>
 

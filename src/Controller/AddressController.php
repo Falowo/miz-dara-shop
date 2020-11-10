@@ -19,14 +19,13 @@ class AddressController extends AbstractController
 {
 
     /**
-     * @Route("/new/{case}/{edit}", name="address_new", defaults={"case": "new", "edit":false}) )
+     * @Route("/new/{case}", name="address_new", defaults={"case": "new"}) )
      */
     public function new(
         Request $request,
         CartService $cartService,
         PurchaseRepository $purchaseRepository,
-        string $case,
-        bool $edit
+        string $case
     ) {
         
         
@@ -63,6 +62,12 @@ class AddressController extends AbstractController
             }
             $em->persist($address);
             $em->flush();
+            if($purchase->getDeliveryFees()){
+                $edit=true;
+            }else{
+                $edit = false;
+            }
+
             return $this->redirectToRoute('cart_transport', ['edit'=>$edit]);
         }
 

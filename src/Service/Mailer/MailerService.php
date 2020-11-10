@@ -64,7 +64,7 @@ class MailerService
 
         $email = (new Email())
 
-            ->from($contact->getEmail())
+            ->from(new Address($contact->getEmail(), 'Miz Dara Client'))
             ->to('josselinkrikorian@yahoo.fr')
             ->subject($contact->getSubject())
 
@@ -74,11 +74,24 @@ class MailerService
             // pass variables (name => value) to the template
         ;
         try {
-            $this->mailer->send($email);
+            if ($this->mailer->send($email)){
+                $this->flashBagInterface->add('succes', 'Your message has been sent');
+                }
         } catch (TransportExceptionInterface $e) {
             // some error prevented the email sending; display an
             // error message or try to resend the message
-            $this->mailer->send($email);
+            try {
+                if ($this->mailer->send($email)){
+                $this->flashBagInterface->add('succes', 'Your message has been sent');
+                }
+            } catch (TransportExceptionInterface $e) {
+                // some error prevented the email sending; display an
+                // error message or try to resend the message
+                $this->flashBagInterface->add('error', 'Something happend, your message has not been sent');
+
+               
+            }
+           
            
         }
     }
@@ -111,7 +124,7 @@ class MailerService
                 $this->cartService->setImages($lastPaidPurchase);
 
                 $email = (new TemplatedEmail())
-                    ->from('noreply@miz-dara-shop.com')
+                    ->from(new Address('noreply@miz-dara-shop.com', 'Miz Dara Shop'))
                     ->to(new Address($user->getEmail()))
                     ->subject('Congratulation for your purchase!')
 
@@ -125,12 +138,34 @@ class MailerService
                         'total' => $total,
                     ]);
                 try {
-                    $this->mailer->send($email);
+                    if($this->mailer->send($email)){
+
+                        $this->flashBagInterface->add('success', 'A confirmation email has been
+                         sent to' . $user->getEmail());
+                    }
+
                 } catch (TransportExceptionInterface $e) {
                     // some error prevented the email sending; display an
                     // error message or try to resend the message
                     // $this->mailer->send($email);
-                    $this->flashBagInterface->add('danger', 'Something happednd your confirmation email could not be sent bur your purchase is registered');
+                    try {
+                        if($this->mailer->send($email)){
+
+                            $this->flashBagInterface->add('success', 'A confirmation email has been
+                             sent to' . $user->getEmail());
+                        }
+    
+                    } catch (TransportExceptionInterface $e) {
+                        // some error prevented the email sending; display an
+                        // error message or try to resend the message
+
+
+                        
+                            $this->flashBagInterface->add('error', 'Something happend, your confirmation email could not be sent but your purchase is registered');
+
+                    
+
+                    }
                 }
             }
         }

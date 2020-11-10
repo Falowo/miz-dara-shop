@@ -53,6 +53,55 @@ class CartController extends AbstractController
             'total' => $total
         ]);
     }
+     /**
+     *
+     * @Route("/minus/{id}", name="cart_minus")
+     * @param PurchaseLine $purchaseLine
+     * @return RedirectResponse
+     */
+    public function minus(PurchaseLine $purchaseLine, CartService $cartService)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $q = $purchaseLine->getQuantity();
+        if($q>0){
+            $q--;
+            $purchaseLine->setQuantity($q);
+            // $em->persist($purchaseLine());
+            $em->flush();
+        }
+
+        $purchase=$cartService->getPurchase();
+        if($purchase->getDeliveryFees()){
+            return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+        }
+
+        return $this->redirectToRoute("cart_index");
+    }
+
+     /**
+     *
+     * @Route("/plus/{id}", name="cart_plus")
+     * @param PurchaseLine $purchaseLine
+     * @return RedirectResponse
+     */
+    public function plus(PurchaseLine $purchaseLine, CartService $cartService){
+        $em = $this->getDoctrine()->getManager();
+        $s = $purchaseLine->getProduct()->getStock($purchaseLine->getSize(), $purchaseLine->getTint());
+        $q = $purchaseLine->getQuantity();
+       
+        if($s>$q){
+            $q++;
+            $purchaseLine->setQuantity($q);
+            // $em->persist($purchaseLine());
+            $em->flush();
+        }
+        $purchase=$cartService->getPurchase();
+        if($purchase->getDeliveryFees()){
+            return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+        }
+
+        return $this->redirectToRoute("cart_index");
+    }
 
 
     /**
@@ -62,7 +111,7 @@ class CartController extends AbstractController
      * @param PurchaseLine $purchaseLine
      * @return RedirectResponse
      */
-    public function delete(Request $request, PurchaseLine $purchaseLine)
+    public function delete(Request $request, PurchaseLine $purchaseLine, CartService $cartService)
     {
 
 
@@ -71,6 +120,12 @@ class CartController extends AbstractController
             $entityManager->remove($purchaseLine);
             $entityManager->flush();
         }
+
+        $purchase=$cartService->getPurchase();
+        if($purchase->getDeliveryFees()){
+            return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+        }
+
 
         return $this->redirectToRoute("cart_index");
     }
@@ -127,7 +182,6 @@ class CartController extends AbstractController
      */
     public function transport(CartService $cartService, LocaleService $localeService, bool $edit, Request $request)
     {
-    
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_REMEMBERED');
         $purchase = $cartService->getPurchase();
         $user = $this->getUser();

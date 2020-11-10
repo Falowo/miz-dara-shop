@@ -7,7 +7,6 @@
 
 {% block body %}
 
-	{{ render(controller('App\\Controller\\CartController::cart')) }}
 
 	
 {% if deliveryFeess is defined %}
@@ -45,4 +44,5 @@
 </table>
 
 {% endif %}
+	{{ render(controller('App\\Controller\\CartController::cart')) }}
 {% endblock %}

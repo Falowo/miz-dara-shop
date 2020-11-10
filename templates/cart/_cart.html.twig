@@ -1,7 +1,7 @@
 {% if purchase %}
 	{% if not purchase.paid %}
-		
-	<h1>Your cart</h1>
+
+		<h1>Your cart</h1>
 	{% else %}
 		<h1>Congratulations ! Your Purchase is registered</h1>
 	{% endif %}
@@ -42,13 +42,33 @@
 					{% else %}
 						<td>{{ purchaseLine.product.formatedPrice }}&nbsp₦</td>
 					{% endif %}
-					<td class="text-center">{{ purchaseLine.quantity }}</td>
-					{% if purchaseLine.product.discountPrice %}
-						<td>{{ (purchaseLine.product.discountPrice * purchaseLine.quantity)|number_format(0, '.', ',') }}&nbsp₦
-						</td>
-					{% else %}
-						<td>{{ (purchaseLine.product.price * purchaseLine.quantity)|number_format(0, '.', ',') }}&nbsp₦</td>
-					{% endif %}
+
+					<td class="text-center">
+						{% if not purchase.paid %}
+							<a href="{{ path('cart_minus', {'id': purchaseLine.id } ) }}">
+								<i class="fas fa-folder-minus"></i>
+							</a>
+						{% endif %}
+						<span class="p-3">
+							{{ purchaseLine.quantity }}
+						</span>
+						{% if not purchase.paid %}
+							<a href="{{ path('cart_plus', {'id': purchaseLine.id } ) }}">
+								<i class="fas fa-folder-plus"></i>
+							</a>
+						{% endif %}
+					</td>
+
+
+					<td class="text-right" style="font-weight:bold">
+						{% if purchaseLine.product.discountPrice %}
+							{{ (purchaseLine.product.discountPrice * purchaseLine.quantity)|number_format(0, '.', ',') }}&nbsp₦
+						{% else %}
+							{{ (purchaseLine.product.price * purchaseLine.quantity)|number_format(0, '.', ',') }}&nbsp₦
+
+						{% endif %}
+					</td>
+
 					{% if not purchase.paid %}
 
 						<td>
@@ -74,39 +94,43 @@
 						<strong>Delivery Service :
 							{{ purchase.deliveryFees.transport.name }}</strong>
 					</td>
-					<td colspan="4">
+					<td colspan="4" class="text-center">
 
 						delivered within
 						{{ purchase.maxDays }}
 						days
 					</td>
-					<td>
+					<td class="text-right" style="font-weight:bold">
 						{{ purchase.deliveryPrice | number_format(0, '.', ',') }}&nbsp₦
 					</td>
-					{% if not purchase.paid %}						
-					<td>
-					<a href="{{path('cart_transport', {'edit': true} ) }} ">
-					<button class="btn btn-danger btn-sm">
+					{% if not purchase.paid %}
+						<td>
+							<a href="{{path('cart_transport', {'edit': true} ) }} ">
+								<button class="btn btn-danger btn-sm">
 									<i class="fas fa-trash"></i>
 								</button>
-					</a>
-					</td>
+							</a>
+						</td>
 					{% endif %}
 
 				</tr>
 			{% endif %}
-			<tr style="font-size: 1.1rem; font-weight: bold">
-				<td colspan="4" class="text-success text-right">Total :</td>
-				<td colspan="2" class="text-success " style="font-size: 1.3rem; font-weight: bold">
+			<tr style="font-size: 1.6rem; font-weight: bold">
+				<td colspan="5" class="text-success text-right">Total :</td>
+				<td colspan="2" class="text-success text-right" style="font-size: 1.6rem; font-weight: bold">
 					{{ total | number_format(0, '.', ',') }}&nbsp₦
 				</td>
-
+				<td></td>
+			</tr>
+			<tr>
+				<td colspan="1"></td>
 				{% if not purchase.paid  %}
 
 					{% if purchase.deliveryFees %}
-						<td>
 
-							<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
+						<td colspan="5">
+
+							<a href="{{ path('app_index') }}">Continue shopping</a>
 						</td>
 						<td>
 							<a href="{{ path('cart_pay') }}" class="text-right text-primary">
@@ -115,35 +139,31 @@
 							</a>
 
 						{% elseif purchase.address %}
-							<td class="text-center">
+							<td class="text-center" colspan="5">
 								<a href="{{ path('app_index') }}">Continue shopping</a>
 							</td>
 
 
 						{% else %}
-						<td>
+							<td>
 
-							<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
-						</td>
-						{% if not purchase.address %}
-							
-							<td class="text-right pl-auto">
-
-								<a  href="{{ path('cart_validate') }}" class="text-success text-right">
-									<i class="fas fa-cart-arrow-down fa-3x"></i>
-								</a>
+								<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
 							</td>
-						{% endif %}
+							{% if not purchase.address and not deliveryFeess %}
+
+								<td class="text-right pl-auto">
+
+									<a href="{{ path('cart_validate') }}" class="text-success text-right">
+										<i class="fas fa-cart-arrow-down fa-3x"></i>
+									</a>
+								</td>
+							{% endif %}
 
 						{% endif %}
 					{% endif %}
 				</tr>
 			</tr>
-			
+
 		</tfoot>
 	</tr>
-</tfoot></table>
-			
-
-
-{% else %}<p>Your cart is empty !</p>{% endif %}
+</tfoot></table>{% else %}<p>Your cart is empty !</p>{% endif %}

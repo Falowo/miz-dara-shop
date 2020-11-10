@@ -99,6 +99,10 @@ class ProductController extends AbstractController
                 }
 
                 $cartService->add($purchaseLine);
+                $purchase = $cartService->getPurchase();
+                if($purchase->getDeliveryFees()){
+                    return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+                }
                 return $this->redirectToRoute('cart_index');
             }
         }

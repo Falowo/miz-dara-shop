@@ -22,6 +22,7 @@
 		{% endif %}
 		<br>
 	</p>
-
-	<a href="{{ path('address_new', {'edit': true}) }}" class="btn btn-warning">Change the delivery address</a>
+	{% if not purchase.paid %}
+		<a href="{{ path('address_new') }}" class="btn btn-warning">Change the delivery address</a>
+	{% endif %}
 {% endif %}

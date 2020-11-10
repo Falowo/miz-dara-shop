@@ -16,7 +16,15 @@
 	</head>
 	<body>
 		{% block header %}
+		{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('dashboard_index') }}">
 			<img src="{{ '/base/header.jpeg' | imagine_filter('big') }}" class="card-img-top" alt="mi">
+				</a>
+				{% else %}
+			<img src="{{ '/base/header.jpeg' | imagine_filter('big') }}" class="card-img-top" alt="mi">
+		{% endif %}
+		
+
 		{% endblock %}
 		<nav class="navbar navbar-expand-sm navbar-dark bg-success">
 			<div class="container-fluid text-uppercase" style="font-size: 1.6rem">

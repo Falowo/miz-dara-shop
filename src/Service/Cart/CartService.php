@@ -12,7 +12,6 @@ use App\Entity\Continent;
 use App\Entity\Image;
 use App\Entity\User;
 use App\Repository\ContinentRepository;
-// use App\Repository\CountryRepository;
 use App\Repository\DeliveryFeesRepository;
 use App\Repository\ImageRepository;
 use App\Repository\NgCityRepository;
@@ -24,19 +23,10 @@ use App\Service\Locale\LocaleService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-
 class CartService
 {
-    /**
-     * @var SessionInterface
-     */
+    
     private $session;
-
-
-
-    /**
-     * @var PurchaseRepository
-     */
     private $purchaseRepository;
     private $deliveryFeesRepository;
     private $localeService;
@@ -45,7 +35,6 @@ class CartService
     private $imageRepository;
     private $ngCityRepository;
     private $ngStateRepository;
-    // private $countryRepository;
     private $continentRepository;
     private $em;
 
@@ -59,7 +48,6 @@ class CartService
         ImageRepository $imageRepository,
         NgCityRepository $ngCityRepository,
         NgStateRepository $ngStateRepository,
-        // CountryRepository $countryRepository,
         ContinentRepository $continentRepository,
         EntityManagerInterface $em
 
@@ -73,13 +61,12 @@ class CartService
         $this->imageRepository = $imageRepository;
         $this->ngCityRepository = $ngCityRepository;
         $this->ngStateRepository = $ngStateRepository;
-        // $this->countryRepository = $countryRepository;
         $this->continentRepository = $continentRepository;
         $this->em = $em;
     }
 
 
-    public function add(PurchaseLine $purchaseLine): void
+    public function add(PurchaseLine $purchaseLine)
     {
         $stock = $this->stockRepository->findOneBy([
             'product' => $purchaseLine->getProduct(),
@@ -92,7 +79,7 @@ class CartService
         $purchase->addPurchaseLine($purchaseLine);
         $this->em->persist($purchase);
         $this->em->flush();
-        return;
+
     }
 
 
