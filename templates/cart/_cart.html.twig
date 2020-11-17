@@ -5,6 +5,10 @@
 	{% elseif detail is defined %}
 		<h1>{{detail}}</h1>
 		<span>{{ purchase.purchaseDate | date("m/d/Y h:i") }}</span>
+	{% elseif contact is defined and contact.purchase %}
+	<h1>Purchase # {{purchase.id}}</h1>
+		<span>{{ purchase.purchaseDate | date("m/d/Y h:i") }}</span>
+		<sup>{{purchase.status}}</sup>
 	{% else %}
 		<h1>Congratulations ! Your Purchase is registered</h1>
 	{% endif %}

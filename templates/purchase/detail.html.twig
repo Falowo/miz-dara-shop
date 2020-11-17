@@ -10,6 +10,6 @@
         {{ include('cart/_address.html.twig') }}
     {% endif %}
 
-    <a href="{{ path('contact')}}" class="btn btn-primary p-3">Send us a message about this purchase</a>
+    <a href="{{ path('contact_index', {'id': purchase.id })}}" class="btn btn-primary p-3">Send us a message about this purchase</a>
 
 {% endblock %}

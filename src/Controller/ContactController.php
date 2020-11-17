@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Entity\Purchase;
 use App\Form\ContactType;
+use App\Repository\PurchaseRepository;
 use App\Service\Mailer\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,15 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends AbstractController
 {
     /**
-     * @Route("/", name="contact_index")
+     * @Route("/{id}", name="contact_index", defaults={"id": null})
      */
     public function index(
         Request $request,
         ?Purchase $purchase,
-        MailerService $mailerService
+        MailerService $mailerService, 
+        PurchaseRepository $purchaseRepository
     ): Response {
         $contact = new Contact();
-        if ($purchase) {
+        if ($purchase){
             $contact->setPurchase($purchase);
         }
         if ($user = $this->getUser()) {

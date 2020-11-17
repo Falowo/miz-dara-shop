@@ -6,6 +6,7 @@
 
 {% block body %}
   {% if contact.purchase %}
+  {% set purchase = contact.purchase %}
     {{ include('cart/_cart.html.twig') }}
     {% if purchase.address %}
       {{ include('cart/_address.html.twig') }}
