@@ -61,38 +61,38 @@ class MailerService
 
     public function sendContactEmail(Contact $contact)
     {
-
-        $email = (new Email())
+       
+        $email = (new TemplatedEmail())
 
             ->from(new Address($contact->getEmail(), 'Miz Dara Client'))
             ->to('josselinkrikorian@yahoo.fr')
             ->subject($contact->getSubject())
 
-            // path of the Twig template to render
-            ->text($contact->getContent())
+            ->htmlTemplate('emails/contact.html.twig')
 
             // pass variables (name => value) to the template
-        ;
+            ->context([
+               'contact'=>$contact
+            ]);
         try {
             if ($this->mailer->send($email)){
-                $this->flashBagInterface->add('succes', 'Your message has been sent');
+                $this->flashBagInterface->add('success', 'Your message has been sent');
                 }
         } catch (TransportExceptionInterface $e) {
             // some error prevented the email sending; display an
             // error message or try to resend the message
             try {
                 if ($this->mailer->send($email)){
-                $this->flashBagInterface->add('succes', 'Your message has been sent');
+                $this->flashBagInterface->add('success', 'Your message has been sent');
                 }
             } catch (TransportExceptionInterface $e) {
                 // some error prevented the email sending; display an
                 // error message or try to resend the message
                 $this->flashBagInterface->add('error', 'Something happend, your message has not been sent');
-
-               
+                
             }
-           
-           
+            
+            
         }
     }
 
@@ -113,14 +113,6 @@ class MailerService
 
             if ($lastPaidPurchase) {
 
-                $total = $this->cartService->getTotalPurchaseLines($lastPaidPurchase);
-
-
-                if ($purchase->getDeliveryPrice()) {
-                    $total += $purchase->getDeliveryPrice();
-                }
-
-
                 $this->cartService->setImages($lastPaidPurchase);
 
                 $email = (new TemplatedEmail())
@@ -134,8 +126,7 @@ class MailerService
                     // pass variables (name => value) to the template
                     ->context([
                         'purchase' => $lastPaidPurchase,
-                        'username' => $user->getFirstName(),
-                        'total' => $total,
+                        'username' => $user->getFirstName()
                     ]);
                 try {
                     if($this->mailer->send($email)){

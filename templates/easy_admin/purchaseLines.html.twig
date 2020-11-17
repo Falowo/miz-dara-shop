@@ -1,48 +1,86 @@
-
-      <table class="table table-dark">
+<table class="table table-dark">
   <thead>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Product</th>
-      <th scope="col">Size</th>
-      <th scope="col">Color</th>
-      <th scope="col">Quantity</th>
-      <th scope="col">Product Price</th>
-      <th scope="col">Total Price</th>
+      <th scope="col">
+        #
+      </th>
+      <th scope="col">
+        Product
+      </th>
+      <th scope="col">
+        Size
+      </th>
+      <th scope="col">
+        Color
+      </th>
+      <th scope="col">
+        Quantity
+      </th>
+      <th scope="col">
+        Product Price
+      </th>
+      <th scope="col">
+        Total Price
+      </th>
     </tr>
   </thead>
   <tbody>
-{# <pre>
+    {# <pre>
   {{ dump(entity.instance) }}
 </pre> #}
 
-   {% for purchaseLine in entity.instance.purchaseLines %}
-    <tr>
-      <td> {{ purchaseLine.id }} </td>
-      <td> {{ purchaseLine.product }} </td>
-      <td> {{ purchaseLine.size }} </td>
-      <td> {{ purchaseLine.tint }} </td>
-      <td> {{ purchaseLine.quantity }} </td>
-      <td> {{ purchaseLine.productPrice |  format_number }} </td>
-      <td> {{ purchaseLine.price |  format_number }} </td>
-    </tr>
-    
-    {% if loop.last %}
-         <tr>
-      <th colspan="6">Total for Items</th>
-      <td > {{ entity.instance.totalPurchaseLines | format_number }} </td>
-    </tr>
-         <tr>
-      <th colspan="6">Amount delivery fees</th>
-      <td > {{ entity.instance.amountDeliveryFees | format_number }} </td>
-    </tr>
-         <tr>
-      <th colspan="6">Total with delivery fees</th>
-      <pre>
-      </pre>
-      <td > {{ entity.instance.total |  format_number }} </td>
-    </tr>
-    {% endif %}
-   {% endfor %} 
+    {% for purchaseLine in entity.instance.purchaseLines %}
+      <tr>
+        <td>
+          {{ purchaseLine.id }}
+        </td>
+        <td>
+          {{ purchaseLine.product }}
+        </td>
+        <td>
+          {{ purchaseLine.size }}
+        </td>
+        <td>
+          {{ purchaseLine.tint }}
+        </td>
+        <td>
+          {{ purchaseLine.quantity }}
+        </td>
+        <td>
+          {{ purchaseLine.productPrice|format_number }}
+        </td>
+        <td>
+          {{ purchaseLine.price|format_number }}
+        </td>
+      </tr>
+
+      {% if loop.last %}
+        <tr>
+          <th colspan="6">
+            Total for Items
+          </th>
+          <td>
+            {{ entity.instance.totalPurchaseLines|format_number }}
+          </td>
+        </tr>
+        <tr>
+          <th colspan="6">
+            Amount delivery fees
+          </th>
+          <td>
+            {{ entity.instance.deliveryPrice|format_number }}
+          </td>
+        </tr>
+        <tr>
+          <th colspan="6">
+            Total with delivery fees
+          </th>
+          <pre></pre>
+          <td>
+            {{ entity.instance.total|format_number }}
+          </td>
+        </tr>
+      {% endif %}
+    {% endfor %}
   </tbody>
 </table>

@@ -1,0 +1,20 @@
+<h1>contact {{contact.user.id}}
+        Message from&nbsp: {{ contact.firstName }} 
+    {% if contact.user %}
+        &nbsp
+        {{contact.user.lastName}}
+        # {{contact.user.id}}
+    {% endif %}
+</h1>
+<h2>{{contact.email}}</h2>
+{% if contact.purchase %}
+    {% set purchase = contact.purchase %}
+    <h1>purchase # {{purchase.id}}</h1>
+    {{ include('cart/_cart.html.twig') }}    
+    {% if purchase.address %}
+        {{ include('cart/_address.html.twig') }}
+    {% endif %}
+    
+
+{% endif %}
+

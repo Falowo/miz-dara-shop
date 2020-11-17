@@ -83,4 +83,11 @@ class IndexController extends AbstractController
             ]
         );
     }
+
+    
+    public function user()
+    {       
+        return $this->render('index/user.html.twig');
+    }
+
 }

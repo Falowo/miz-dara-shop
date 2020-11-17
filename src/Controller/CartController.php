@@ -42,16 +42,13 @@ class CartController extends AbstractController
             if ($purchase->getAddress() && !$purchase->getDeliveryFees()) {
                 return $this->redirectToRoute('cart_transport');
             }
-
-            $total = $cartService->getTotalPurchaseLines($purchase);
         } else {
             $purchase = new Purchase();
-            $total = 0;
         }
 
         return $this->render('cart/index.html.twig', [
             'purchase' => $purchase,
-            'total' => $total
+
         ]);
     }
     /**
@@ -76,7 +73,7 @@ class CartController extends AbstractController
 
         $purchase = $cartService->getPurchase();
         if ($purchase->getDeliveryFees()) {
-            
+
             $flashBagInterface->add('error', 'Your delivery service has been deleted because you modified your cart');
             return $this->redirectToRoute('cart_transport', ['edit' => true]);
         }
@@ -182,12 +179,10 @@ class CartController extends AbstractController
             }
 
 
-            $total = $cartService->getTotalPurchase($purchase);
 
 
             return $this->render('cart/validate.html.twig', [
-                'purchase' => $purchase,
-                'total' => $total
+                'purchase' => $purchase
             ]);
         } else {
             return $this->redirectToRoute('app_index');
@@ -240,20 +235,15 @@ class CartController extends AbstractController
     public function setDeliveryFees(
         DeliveryFees $deliveryFees,
         CartService $cartService,
-        EntityManagerInterface $em,
-        LocaleService $localeService
+        EntityManagerInterface $em
     ) {
         if ($deliveryFees) {
             $purchase = $cartService->getPurchase();
-            if ($deliveryFees->getMaxDays()) {
-                $maxDays = $deliveryFees->getMaxDays();
-            } else {
-                $maxDays = $deliveryFees->getTransport()->getMaxDaysByKm() *
-                    $localeService->getDistanceFromIlobuInKm($purchase->getAddress());
-            }
-            $purchase->setDeliveryFees($deliveryFees);
-            $purchase->setMaxDays($maxDays);
-            $purchase->setDeliveryPrice($cartService->getDeliveryPrice($deliveryFees, $purchase));
+
+            $purchase
+                ->setDeliveryFees($deliveryFees)
+                ->setMaxDays($cartService->getMaxDays($purchase))
+                ->setDeliveryPrice($cartService->getDeliveryPrice($deliveryFees, $purchase));
             $em->flush();
         }
         return $this->redirectToRoute('cart_index');
@@ -267,22 +257,30 @@ class CartController extends AbstractController
      * @return Response
      * @Route("/pay", name="cart_pay")
      */
-    public function pay(CartService $cartService, MailerService $mailerService, SessionInterface $session)
-    {
+    public function pay(
+        CartService $cartService,
+        MailerService $mailerService,
+        SessionInterface $session
+    ) {
 
         $purchase = $cartService->getPurchase();
         if ($purchase) {
 
-            $purchase->setPaid(true);
+            $purchase
+                ->setPaid(true)
+                ->setDeliveryPrice($cartService->getDeliveryPrice($purchase->getDeliveryFees(), $purchase))
+                ->setTotalPurchaseLines($cartService->getTotalPurchaseLines($purchase))
+                ->setTotal($cartService->getTotalPurchase($purchase))
+                ->setMaxDays($cartService->getMaxDays($purchase));                
+                $cartService->setImages($purchase);
             foreach ($purchase->getPurchaseLines() as $purchaseLine) {
                 $stock = $purchaseLine->getStock();
                 $stock->setQuantity($stock->getQuantity() - $purchaseLine->getQuantity());
+                $purchaseLine->setPrice($cartService->getPurchaseLinePrice($purchaseLine));
             }
-            $total = $purchase->getTotalPurchaseLines() + $purchase->getDeliveryPrice();
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $cartService->setImages($purchase);
 
             $mailerService->sendPurchasePaymentConfirmation($this->getUser());
 
@@ -290,8 +288,7 @@ class CartController extends AbstractController
             $session->remove('purchaseId');
 
             return $this->render('cart/paid.html.twig', [
-                'purchase' => $purchase,
-                'total' => $total
+                'purchase' => $purchase
             ]);
         }
 
@@ -307,25 +304,21 @@ class CartController extends AbstractController
     {
         if ($purchase = $cartService->getPurchase()) {
 
-            $total = $cartService->getTotalPurchaseLines($purchase);
-            if ($purchase->getTotalPurchaseLines() !== $total)
-                $purchase->setTotalPurchaseLines($total);
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
-            if ($purchase->getDeliveryPrice()) {
-                $total += $purchase->getDeliveryPrice();
+                $cartService->setImages($purchase);
+           
+            if (!($purchase->getPaid())) {
+                $purchase->setTotal($cartService->getTotalPurchase($purchase));
+                $em = $this->getDoctrine()->getManager();
+                $em->flush();
             }
-            $cartService->setImages($purchase);
-        } else {
-            $purchase = new Purchase();
-            $total = 0;
+        }else {
+                $purchase = new Purchase();
         }
 
 
 
         return $this->render('cart/_cart.html.twig', [
             'purchase' => $purchase,
-            'total' => $total
         ]);
     }
 

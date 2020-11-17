@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}MDS Register{% endblock %}
+
+{% block body %}
+{% if app.user.address %}
+
+    {% set address = app.user.address %}
+
+    <h1>My Address</h1>
+        <p>
+            {{address.firstName}}
+            {{address.lastName}}
+            <br>
+            {{address.street}}
+            <br>
+
+            {% if address.zipCode %}
+                {{address.zipCode}}
+            {% endif %}
+
+            {{address.cityName}}
+            <br>
+            {{address.country | capitalize}}
+            <br>
+            {% if address.phoneNumber %}
+                Phone : +
+                {{address.phoneNumber.countryCode}}
+                {{address.phoneNumber.nationalNumber}}
+            {% endif %}
+            <br>
+        </p>
+
+        <a class="btn btn-secondary" href="{{path('address_new', {'case':  'user_address'} ) }}">Modify</a>
+{% endif %}
+
+{% endblock %}

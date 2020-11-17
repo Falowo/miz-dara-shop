@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Contact;
+use App\Entity\Purchase;
 use App\Form\ContactType;
 use App\Service\Mailer\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,32 +19,40 @@ class ContactController extends AbstractController
     /**
      * @Route("/", name="contact_index")
      */
-    public function index(Request $request, MailerService $mailerService): Response
-    {
+    public function index(
+        Request $request,
+        ?Purchase $purchase,
+        MailerService $mailerService
+    ): Response {
         $contact = new Contact();
-        if($user = $this->getUser()){
+        if ($purchase) {
+            $contact->setPurchase($purchase);
+        }
+        if ($user = $this->getUser()) {
             $contact
-            ->setFirstName($user->getFirstName())
-            ->setEmail($user->getEmail());
+                ->setUser($user)
+                ->setFirstName($user->getFirstName())
+                ->setEmail($user->getEmail());
         }
         $form = $this->createForm(ContactType::class, $contact);
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $mailerService->sendContactEmail($contact);
-            $this->addFlash('success', 'Your message has been successfully sent');
-            return $this->redirectToRoute('contact_index');
+            if(!($contact->getPurchase())){
+                return $this->redirectToRoute('contact_index');
+            }else{
+                return $this->redirectToRoute('purchase_detail', [
+                    'id'=>$contact->getPurchase()->getId()
+                    ]);
+            }
         }
-
 
         return $this->render('contact/index.html.twig', [
             'controller_name' => 'ContactController',
+            'contact' => $contact,
             'form' => $form->createView()
         ]);
     }
-
-    
-
-    
 }

@@ -2,9 +2,13 @@
 	{% if not purchase.paid %}
 
 		<h1>Your cart</h1>
+	{% elseif detail is defined %}
+		<h1>{{detail}}</h1>
+		<span>{{ purchase.purchaseDate | date("m/d/Y h:i") }}</span>
 	{% else %}
 		<h1>Congratulations ! Your Purchase is registered</h1>
 	{% endif %}
+
 {% endif %}
 
 {% if purchase.purchaseLines | length > 0 %}
@@ -118,50 +122,41 @@
 			<tr style="font-size: 1.6rem; font-weight: bold">
 				<td colspan="5" class="text-success text-right">Total :</td>
 				<td colspan="2" class="text-success text-right" style="font-size: 1.6rem; font-weight: bold">
-					{{ total | number_format(0, '.', ',') }}&nbsp₦
+					{{ purchase.total | number_format(0, '.', ',') }}&nbsp₦
 				</td>
 				<td></td>
 			</tr>
 			<tr>
-				<td colspan="1"></td>
+					<td colspan="1"></td>
 				{% if not purchase.paid  %}
 
-					{% if purchase.deliveryFees %}
-
-						<td colspan="5">
-
-							<a href="{{ path('app_index') }}">Continue shopping</a>
-						</td>
-						<td>
-							<a href="{{ path('cart_pay') }}" class="text-right text-primary">
-								<i class="fas fa-credit-card fa-5x"></i>
-
-							</a>
-
-						{% elseif purchase.address %}
 							<td colspan="5">
+
 								<a href="{{ path('app_index') }}">Continue shopping</a>
 							</td>
+						{% if purchase.deliveryFees %}
 
-
-						{% else %}
 							<td>
+								<a href="{{ path('cart_pay') }}" class="text-right text-primary">
+									<i class="fas fa-credit-card fa-5x"></i>
 
-								<a href="{{ path('app_index') }}" class="text-left">Continue shopping</a>
+								</a>
+
+							
+						{% elseif not purchase.address and deliveryFeess is not defined %}
+
+							<td class="text-right pl-auto">
+
+								<a href="{{ path('cart_validate') }}" class="text-success text-right">
+									<i class="fas fa-cart-arrow-down fa-3x"></i>
+								</a>
 							</td>
-							{% if not purchase.address and not deliveryFeess %}
-
-								<td class="text-right pl-auto">
-
-									<a href="{{ path('cart_validate') }}" class="text-success text-right">
-										<i class="fas fa-cart-arrow-down fa-3x"></i>
-									</a>
-								</td>
-							{% endif %}
+						
+						
 
 						{% endif %}
-					{% endif %}
-				</tr>
+				{% endif %}
+				
 			</tr>
 
 		</tfoot>

@@ -6,8 +6,10 @@
 {% block body %}
     {{ render(controller('App\\Controller\\CartController::cart')) }}
 
-    {{ render(controller('App\\Controller\\CartController::showPurchaseAddress')) }}
+{% if purchase.address %}
 
+    {{ render(controller('App\\Controller\\CartController::showPurchaseAddress')) }}
+{% endif %}
 
 {% endblock %}
 

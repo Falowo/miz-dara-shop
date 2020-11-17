@@ -1,0 +1,15 @@
+    {% extends 'base.html.twig' %}
+
+{% block title %}
+    MDS Purchase detail
+{% endblock %}
+
+{% block body %}
+        {{ include('cart/_cart.html.twig') }}
+    {% if purchase.address %}
+        {{ include('cart/_address.html.twig') }}
+    {% endif %}
+
+    <a href="{{ path('contact')}}" class="btn btn-primary p-3">Send us a message about this purchase</a>
+
+{% endblock %}

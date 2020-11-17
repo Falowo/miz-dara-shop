@@ -8,6 +8,7 @@ use App\Repository\PurchaseRepository;
 use App\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 
@@ -25,7 +26,8 @@ class AddressController extends AbstractController
         Request $request,
         CartService $cartService,
         PurchaseRepository $purchaseRepository,
-        string $case
+        string $case,
+        FlashBagInterface $flashBagInterface
     ) {
         
         
@@ -43,6 +45,26 @@ class AddressController extends AbstractController
                     ->setFirstName($user->getFirstName())
                     ->setLastName($user->getLastName());
                 }
+
+            if($case==='user_address'){
+                if($previousAddress = $user->getAddress()){
+                    if (count($previousAddress->getPurchases())===0){
+                        $removePreviousAddress = true;
+                    }
+                }
+                $user->setAddress($address);
+                if(isset($removePreviousAddress)){
+                    $em->remove($previousAddress);
+                }
+
+                $em->persist($address);
+                $em->flush();
+
+
+                $flashBagInterface->add('success', 'Your address has been successfuly changed, but your former purchases delivery addresses remain unchanged');
+            return $this->redirectToRoute('address_user');
+
+            }  
             if ($case === 'modify' && $user->getAddress()) {
                 $previousAddress = $user->getAddress();
                 $user->setAddress($address);
@@ -76,6 +98,11 @@ class AddressController extends AbstractController
         ]);
     }
 
-
-    
+    /**
+     * @Route("/user", name="address_user") )
+     */
+    public function user()
+    {
+        return $this->render('address/user.html.twig');
+    }
 }

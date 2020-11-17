@@ -16,8 +16,6 @@ class Contact
      */
     private $firstName;
 
-
-
     
     /**
      * @var string
@@ -45,11 +43,22 @@ class Contact
      * @var string
      * @Assert\NotBlank()
      * @Assert\Length(min=5)
-     * 
-     * 
      */
     private $content;
 
+    /**
+     * Undocumented variable
+     *
+     * @var ?Purchase
+     */
+    private $purchase;
+
+    /**
+     * Undocumented variable
+     *
+     * @var ?User
+     */
+    private $user;
 
     public function getEmail(): ?string
     {
@@ -137,4 +146,52 @@ class Contact
     }
 
    
+
+    /**
+     * Get undocumented variable
+     *
+     * @return  ?Purchase
+     */ 
+    public function getPurchase()
+    {
+        return $this->purchase;
+    }
+
+    /**
+     * Set undocumented variable
+     *
+     * @param  ?Purchase  $purchase  Undocumented variable
+     *
+     * @return  self
+     */ 
+    public function setPurchase(?Purchase $purchase)
+    {
+        $this->purchase = $purchase;
+
+        return $this;
+    }
+
+    /**
+     * Get undocumented variable
+     *
+     * @return  ?User
+     */ 
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set undocumented variable
+     *
+     * @param  ?User  $user  Undocumented variable
+     *
+     * @return  self
+     */ 
+    public function setUser(?User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }

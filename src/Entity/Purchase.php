@@ -77,6 +77,11 @@ class Purchase
      */
     private $totalPurchaseLines;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $total;
+
    
 
     public function __toString()
@@ -178,20 +183,7 @@ class Purchase
         return $this;
     }
 
-    public function getTotalPurchaseLines()
-    {
-        $total = 0;
-        foreach($this->purchaseLines as $item){
-            $total += $item->getPrice();
-        }
-
-        return $total;
-    }
-
-    public function getTotal()
-    {
-        return $this->getTotalPurchaseLines() + $this->getAmountDeliveryFees();
-    }
+      
 
     public function getStatus(): ?Status
     {
@@ -217,24 +209,24 @@ class Purchase
         return $this;
     }
 
-    public function getAmountDeliveryFees()
-    {
-        $total = 0;
-        if($this->deliveryFees->getFreeForMoreThan()){
-            if($this->getTotalPurchaseLines() > $this->deliveryFees->getFreeForMoreThan()){
-                return $total;
-            }
-        }
+    // public function getAmountDeliveryFees()
+    // {
+    //     $total = 0;
+    //     if($this->deliveryFees->getFreeForMoreThan()){
+    //         if($this->getTotalPurchaseLines() > $this->deliveryFees->getFreeForMoreThan()){
+    //             return $total;
+    //         }
+    //     }
         
-        if($this->deliveryFees->getPercentOfRawPrice()){
-            $total += $this->getTotalPurchaseLines() * $this->deliveryFees->getPercentOfRawPrice();
-        }
+    //     if($this->deliveryFees->getPercentOfRawPrice()){
+    //         $total += $this->getTotalPurchaseLines() * $this->deliveryFees->getPercentOfRawPrice();
+    //     }
 
-        if($this->deliveryFees->getFixedAmount()){
-            $total += $this->deliveryFees->getFixedAmount();
-        }
-            return $total;
-    }
+    //     if($this->deliveryFees->getFixedAmount()){
+    //         $total += $this->deliveryFees->getFixedAmount();
+    //     }
+    //         return $total;
+    // }
 
     public function getAddress(): ?Address
     {
@@ -272,12 +264,48 @@ class Purchase
         return $this;
     }
 
-    public function setTotalPurchaseLines(?int $totalPurchaseLines): self
+   
+
+    
+
+
+    /**
+     * Get the value of totalPurchaseLines
+     */ 
+    public function getTotalPurchaseLines()
+    {
+        return $this->totalPurchaseLines;
+    }
+
+    /**
+     * Set the value of totalPurchaseLines
+     *
+     * @return  self
+     */ 
+    public function setTotalPurchaseLines($totalPurchaseLines)
     {
         $this->totalPurchaseLines = $totalPurchaseLines;
 
         return $this;
     }
 
-    
+    /**
+     * Get the value of total
+     */ 
+    public function getTotal()
+    {
+        return $this->total;
+    }
+
+    /**
+     * Set the value of total
+     *
+     * @return  self
+     */ 
+    public function setTotal($total)
+    {
+        $this->total = $total;
+
+        return $this;
+    }
 }

@@ -95,11 +95,12 @@ class AddressType extends AbstractType
            
             ->add('cityJsonId', ChoiceType::class, [
                 'label'=>'City',
+                'required'=>true, 
                 'placeholder'=>'Choose the closest city in the list',
                 'choices' => $countryCode ? LocaleService::getCityChoices($countryCode) : [],
             ])
             ->add('phoneNumber', PhoneNumberType::class, [
-                'required'=>false,
+                'required'=>true,
                 'widget' => PhoneNumberType::WIDGET_COUNTRY_CHOICE,
                 'country_choices' => $countryCode ? [$countryCode] : [],
                 // 'preferred_country_choices' => ['NG', 'UK', 'US', 'FR'],

@@ -104,11 +104,7 @@ class CartService
 
     public function getTotalPurchase(Purchase $purchase): int
     {
-        if ($deliveryFees = $purchase->getDeliveryFees()) {
-            return $this->getTotalPurchaseLines($purchase) + $this->getDeliveryPrice($deliveryFees, $purchase);
-        } else {
-            return $this->getTotalPurchaseLines($purchase);
-        }
+            return $this->getTotalPurchaseLines($purchase) + $this->getDeliveryPrice($purchase->getDeliveryFees(), $purchase);
     }
 
 
@@ -287,23 +283,27 @@ class CartService
      * @return integer
      */
     public function getDeliveryPrice(
-        DeliveryFees $deliveryFees,
+        ?DeliveryFees $deliveryFees,
         Purchase $purchase
-    ): int {
+    ): int
+    {
         $price = 0;
-        if ($freeForMoreThan = $deliveryFees->getFreeForMoreThan()) {
-            if ($this->getTotalPurchaseLines($purchase) > $freeForMoreThan) {
-                return 0;
+        if($deliveryFees){
+
+            if ($freeForMoreThan = $deliveryFees->getFreeForMoreThan()) {
+                if ($this->getTotalPurchaseLines($purchase) > $freeForMoreThan) {
+                    return 0;
+                }
             }
-        }
-        if ($fixedAmount = $deliveryFees->getFixedAmount()) {
-            $price += $fixedAmount;
-        }
-        if ($amountByKm = $deliveryFees->getAmountByKm()) {
-            $price += $amountByKm * $this->localeService->getDistanceFromIlobuInKm($purchase->getAddress());
-        }
-        if ($percentOfRawPrice = $deliveryFees->getPercentOfRawPrice()) {
-            $price += $percentOfRawPrice * $this->getTotalPurchaseLines($purchase) / 100;
+            if ($fixedAmount = $deliveryFees->getFixedAmount()) {
+                $price += $fixedAmount;
+            }
+            if ($amountByKm = $deliveryFees->getAmountByKm()) {
+                $price += $amountByKm * $this->localeService->getDistanceFromIlobuInKm($purchase->getAddress());
+            }
+            if ($percentOfRawPrice = $deliveryFees->getPercentOfRawPrice()) {
+                $price += $percentOfRawPrice * $this->getTotalPurchaseLines($purchase) / 100;
+            }
         }
         return $price;
     }
@@ -332,5 +332,31 @@ class CartService
                 $purchaseLine->setImage($image);
             }
         }
+    }
+
+    public function getMaxDays(Purchase $purchase)
+    {
+        if($deliveryFees = $purchase->getDeliveryFees()){
+            if($maxDays = $deliveryFees->getMaxDays()){
+                return $maxDays;
+            }
+            else {
+                return $deliveryFees->getTransport()->getMaxDaysByKm() * $this->localeService->getDistanceFromIlobuInKm($purchase->getAddress());
+
+            } 
+        }else{
+            return null;
+        }
+    }
+
+    public function getPurchaseLinePrice(PurchaseLine $purchaseLine)
+    {
+        $product = $purchaseLine->getProduct();
+        if (!empty($product->getDiscountPrice())) {
+            $price = $product->getDiscountPrice() * $purchaseLine->getQuantity();
+        } else {
+            $price = $product->getPrice() * $purchaseLine->getQuantity();
+        }
+    return $price;
     }
 }

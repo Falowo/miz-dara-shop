@@ -33,8 +33,7 @@ class Address
 
      /**
      * @Assert\NotBlank()
-     * @ORM\Column(type="integer", nullable=true)
-     * @Assert\NotBlank
+     * @ORM\Column(type="integer", nullable=false)
      */
     private $cityJsonId;
 
@@ -52,9 +51,9 @@ class Address
     private $zipCode;
 
      /**
-     * @ORM\Column(type="phone_number", nullable=true)
+     * @ORM\Column(type="phone_number", nullable=false)
      * @AssertPhoneNumber
-     * @Assert\NotBlank
+     * @Assert\NotBlank()
      * 
      */
     private $phoneNumber;
@@ -69,7 +68,7 @@ class Address
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
      */
-    private $FirstName;
+    private $firstName;
 
     /**
      * @ORM\Column(type="string", length=50, nullable=true)
@@ -197,12 +196,12 @@ class Address
 
     public function getFirstName(): ?string
     {
-        return $this->FirstName;
+        return $this->firstName;
     }
 
-    public function setFirstName(?string $FirstName): self
+    public function setFirstName(?string $firstName): self
     {
-        $this->FirstName = $FirstName;
+        $this->firstName = $firstName;
 
         return $this;
     }
