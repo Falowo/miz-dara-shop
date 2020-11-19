@@ -84,11 +84,8 @@
 						</a>
 					</div>
 				{% elseif product.mainImage %}
-				<h2>HEllo</h2>
-				<pre>
-					{{ dump(product.mainImage) }}
-				</pre>
-					{# <img class="d-block w-100" src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('big') }}" alt="{{ product.name }}"> #}
+
+					<img class="d-block w-100" src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('big') }}" alt="{{ product.name }}">
 				{% else %}
 					<img class="card-img-top img-fluid " src="{{ 'products/images/empty.jpg' | imagine_filter('big') }}" alt="{{ product.name }}">
 				{% endif %}

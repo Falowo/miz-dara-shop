@@ -12,6 +12,7 @@
 				{{ product.name }}
 			</h1>
 
+					<img class="d-block w-100" src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('big') }}" alt="{{ product.name }}">
 			
 		</div>
 	</div>
