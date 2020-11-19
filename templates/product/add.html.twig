@@ -12,14 +12,11 @@
 				{{ product.name }}
 			</h1>
 
-			<div
-				class="card mt-4">
+			<div class="card mt-4">
 
-
-				{#             <img class="card-img-top img-fluid " src="{{ asset('images/' ~ product.mainImage) }}" alt="">#}
 				{% if product.images | length > 0 %}
 
-			
+
 					<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
 
 						<ol class="carousel-indicators">
@@ -64,7 +61,7 @@
 												<h5>{{ image.tint }}</h5>
 											{% else %}
 												<h5>{{ image.product.name }}</h5>
-												
+
 											{% endif %}
 										</div>
 									</div>
