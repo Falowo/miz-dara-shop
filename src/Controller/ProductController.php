@@ -7,7 +7,6 @@ use App\Entity\PurchaseLine;
 use App\Form\PurchaseLineType;
 use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
-use Egulias\EmailValidator\Warning\Warning;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,15 +27,16 @@ class ProductController extends AbstractController
      * @param CartService $cartService
      * @return Response
      */
-    public function add(Product $product, 
-    Request $request, 
-    CartService $cartService, 
-    StockRepository $stockRepository,
-    FlashBagInterface $flashBagInterface
-    )
+    public function add(
+        Product $product,
+        Request $request,
+        CartService $cartService,
+        StockRepository $stockRepository,
+        FlashBagInterface $flashBagInterface
+    ) {
 
-    {
-
+        var_dump($product);
+        die;
         $product->setHasStock(null);
         $em = $this->getDoctrine()->getManager();
         $em->persist($product);
@@ -45,7 +45,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         $purchaseLine = new PurchaseLine();
-        $purchaseLine->setProduct($product);            ;
+        $purchaseLine->setProduct($product);;
         $sizes = [];
         if (count($product->getStocks()) === 1) {
             $stock = $stockRepository->findOneBy(['product' => $product]);
@@ -108,9 +108,9 @@ class ProductController extends AbstractController
 
                 $cartService->add($purchaseLine);
                 $purchase = $cartService->getPurchase();
-                if($purchase->getDeliveryFees()){
+                if ($purchase->getDeliveryFees()) {
                     $flashBagInterface->add('error', 'Your delivery service has been deleted because you modified your cart');
-                    return $this->redirectToRoute('cart_transport', ['edit'=>true]);
+                    return $this->redirectToRoute('cart_transport', ['edit' => true]);
                 }
                 return $this->redirectToRoute('cart_index');
             }
