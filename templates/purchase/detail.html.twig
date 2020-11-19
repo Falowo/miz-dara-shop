@@ -1,15 +1,22 @@
-    {% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
-    MDS Purchase detail
+	MDS Purchase detail
 {% endblock %}
-
 {% block body %}
-        {{ include('cart/_cart.html.twig') }}
-    {% if purchase.address %}
-        {{ include('cart/_address.html.twig') }}
-    {% endif %}
+	{{ include('cart/_cart.html.twig') }}
+	<div class="row">
+		<div class="col-8">
 
-    <a href="{{ path('contact_index', {'id': purchase.id })}}" class="btn btn-primary p-3">Send us a message about this purchase</a>
+			{% if purchase.address %}
+				{{ include('cart/_address.html.twig') }}
+			{% endif %}
 
+        </div>
+        <div class="col-4">
+
+            <a href="{{ path('contact_index', {'id': purchase.id })}}" class="btn btn-primary p-3" style="font-size:1.4rem">Send us a message about this purchase</a>
+        </div>
+
+	</div>
 {% endblock %}

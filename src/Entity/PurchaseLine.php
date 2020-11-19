@@ -75,7 +75,7 @@ class PurchaseLine
     private $price;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Image::class)
+     * @ORM\ManyToOne(targetEntity=Image::class, cascade={"persist"})
      */
     private $image;
 

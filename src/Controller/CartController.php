@@ -271,7 +271,7 @@ class CartController extends AbstractController
                 ->setDeliveryPrice($cartService->getDeliveryPrice($purchase->getDeliveryFees(), $purchase))
                 ->setTotalPurchaseLines($cartService->getTotalPurchaseLines($purchase))
                 ->setTotal($cartService->getTotalPurchase($purchase))
-                ->setMaxDays($cartService->getMaxDays($purchase));                
+                ->setMaxDays($cartService->getMaxDays($purchase));                 
                 $cartService->setImages($purchase);
             foreach ($purchase->getPurchaseLines() as $purchaseLine) {
                 $stock = $purchaseLine->getStock();

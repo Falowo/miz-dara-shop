@@ -8,6 +8,7 @@ use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Entity\Stock;
+use App\Repository\ImageRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
@@ -50,13 +51,21 @@ class EasyAdminSubscriber implements EventSubscriberInterface
      */
     private $stockRepository;
 
+    /**
+     * Undocumented variable
+     *
+     * @var ImageRepository
+     */
+    private $imageRepository;
+
     public function __construct(
 
         CacheManager $cacheManager,
         UploaderHelper $uploaderHelper,
         FlashBagInterface $flashBagInterface,
         EntityManagerInterface $em,
-        StockRepository $stockRepository
+        StockRepository $stockRepository,
+        ImageRepository $imageRepository
 
     ) {
 
@@ -65,6 +74,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->flashBagInterface = $flashBagInterface;
         $this->em = $em;
         $this->stockRepository = $stockRepository;
+        $this->imageRepository = $imageRepository;
     }
 
     public static function getSubscribedEvents()
@@ -91,6 +101,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
+        $this->registrateMainImageInImages($entity);
+
 
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
 
@@ -105,6 +117,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->makeSureOneLocalFieldIsCompletedInDeliveryFees($entity);
         $this->avoidCreatePurchase($entity);
         $this->avoidUncompleteStock($entity);
+        $this->registrateMainImageInImages($entity);
         return;
     }
 
@@ -117,6 +130,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setCategory($entity);
 
         $this->setProductForImages($entity);
+        $this->registrateMainImageInImages($entity);
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
@@ -313,6 +327,29 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                 $this->flashBagInterface->add('danger', 'You need to complete all entities even as Unique or else (prepare your sizes and colors before) or 0 for the quantity');
                 $this->em->remove($entity);
                 $this->em->flush();
+            }
+        }
+    }
+
+    private function registrateMainImageInImages($entity)
+    {
+        if ($entity instanceof Product){
+
+            if($name = $entity->getMainImage()){
+                if(!$this->imageRepository->findOneBy([
+                    'product'=>$entity,
+                    'name'=>$name
+                    ])){
+
+                        $image = new Image();
+                        $image
+                        ->setProduct($entity)
+                        ->setName($name)
+                        ;
+                        $this->em->persist($image);
+                        $this->em->flush();
+                    }
+
             }
         }
     }

@@ -47,6 +47,7 @@ class IndexController extends AbstractController
 
            $cartService->getLastNotPaidPurchase($user);
         }
+
        
         $products = $paginator->paginate(
             $repository->findAllByRandomQuery(null), /* query NOT result */

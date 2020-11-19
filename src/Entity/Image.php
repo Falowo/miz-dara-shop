@@ -43,24 +43,10 @@ class Image
      */
     private $name;
 
-
-
-    public function __toString()
-    {
-        if ($this->name) {
-            return $this->name;
-        } else return '';
-    }
-
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
-
-
+    
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Tint")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $tint;
 
@@ -68,6 +54,25 @@ class Image
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+
+    public function __toString()
+    {
+        if ($this->name) {
+            return $this->name;
+        } else return '';    
+    }    
+
+    public function __construct()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }    
+
 
 
 

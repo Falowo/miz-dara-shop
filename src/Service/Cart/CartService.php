@@ -313,23 +313,45 @@ class CartService
     {
         foreach ($purchase->getPurchaseLines() as $purchaseLine) {
             if(!($purchaseLine->getImage())){
-                $image = new Image;
-                if ($name = $purchaseLine->getProduct()->getMainImage()) {
-                    $image->setName($name);
-                } elseif (!$image->getName()) {
-                    if ($image = $this->imageRepository->findOneBy([
-                        'product' => $purchaseLine->getProduct(),
-                        'tint' => $purchaseLine->getTint()
-                    ])) {
-                       
-                    } else {
-                        $image = $this->imageRepository->findOneBy([
-                            'product' => $purchaseLine->getProduct()
-                        ]);
+                if ($image = $this->imageRepository->findOneBy([
+                    'product' => $purchaseLine->getProduct(),
+                    'tint' => $purchaseLine->getTint()
+                ])) {
+                   
+                } 
+                elseif($name= $purchaseLine->getProduct()->getMainImage()){
+                    if($image = $this->imageRepository->findOneBy([
+                        'name'=>$name,
+                        'product'=>$purchaseLine->getProduct()
+                        ])
+                    ){}
+                    else{
+                        $image = new Image();
+                        $image
+                        ->setProduct($purchaseLine->getProduct())
+                        ->setName($name);
                     }
                 }
                 
+                
+                elseif (
+                    $image = $this->imageRepository->findOneBy([
+                        'product' => $purchaseLine->getProduct()
+                    ]))
+                {}
+
+                else{
+                    $image = null;
+                }
+
+                // if ($name = $purchaseLine->getProduct()->getMainImage()) {
+                //     dd($name);
+                //     $image->setName($name);}
+              
+                
                 $purchaseLine->setImage($image);
+                $this->em->persist($purchaseLine);
+                $this->em->flush();
             }
         }
     }
