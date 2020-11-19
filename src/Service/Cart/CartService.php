@@ -330,7 +330,7 @@ class CartService
                         $image
                         ->setProduct($purchaseLine->getProduct())
                         ->setName($name)
-                        ->setUpdatedAt();
+                        ;
                     }
                 }
                 
