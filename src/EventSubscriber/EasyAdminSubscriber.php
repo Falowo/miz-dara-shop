@@ -12,6 +12,7 @@ use App\Repository\ImageRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
+use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityDeletedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\BeforeEntityUpdatedEvent;
@@ -83,7 +84,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             BeforeEntityPersistedEvent::class => ['beforePersist'],
             BeforeEntityUpdatedEvent::class => ['beforeUpdate'],
             BeforeEntityDeletedEvent::class => ['beforeDelete'],
-            AfterEntityPersistedEvent::class => ['afterPersist']
+            AfterEntityPersistedEvent::class => ['afterPersist'],
+            AfterEntityUpdatedEvent::class=>['afterUpdate']
 
         ];
     }
@@ -130,7 +132,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setCategory($entity);
 
         $this->setProductForImages($entity);
-        $this->registrateMainImageInImages($entity);
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
@@ -142,6 +143,14 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
 
         return;
+    }
+
+    public function afterUpdate(AfterEntityUpdatedEvent $event)
+    {
+        $entity = $event->getEntityInstance();
+        $this->registrateMainImageInImages($entity);
+
+
     }
 
     public function beforeDelete(BeforeEntityDeletedEvent $event)

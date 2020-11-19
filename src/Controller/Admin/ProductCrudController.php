@@ -79,11 +79,4 @@ class ProductCrudController extends AbstractCrudController
             ->add(Crud::PAGE_EDIT, Action::SAVE_AND_ADD_ANOTHER);
     }
 
-    // public function createEntity(string $entityFqcn)
-    // {
-    //     $product = new Product();
-    //     $product->????();
-
-    //     return $product;
-    // }
 }
