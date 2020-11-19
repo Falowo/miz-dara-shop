@@ -1,0 +1,31 @@
+{
+  "entrypoints": {
+    "app": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.b9e94bd1.js",
+        "/build/2.0dbf8d07.js",
+        "/build/app.9f720c5e.js"
+      ],
+      "css": [
+        "/build/app.3589eece.css"
+      ]
+    },
+    "add": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.b9e94bd1.js",
+        "/build/1.626e70d2.js",
+        "/build/add.8834ef61.js"
+      ]
+    },
+    "newAddress": {
+      "js": [
+        "/build/runtime.d94b3b43.js",
+        "/build/0.b9e94bd1.js",
+        "/build/1.626e70d2.js",
+        "/build/newAddress.3b7eda7a.js"
+      ]
+    }
+  }
+}
