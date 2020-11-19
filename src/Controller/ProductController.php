@@ -116,19 +116,13 @@ class ProductController extends AbstractController
             }
         }
 
-        return $this->render('product/add2.html.twig', [
+        return $this->render('product/add.html.twig', [
             'controller_name' => 'ProductController',
             'product' => $product,
             'purchaseLine' => $purchaseLine,
             'form' => $form->createView(),
             'tints' => $tints
         ]);
-        // return $this->render('product/add.html.twig', [
-        //     'controller_name' => 'ProductController',
-        //     'product' => $product,
-        //     'purchaseLine' => $purchaseLine,
-        //     'form' => $form->createView(),
-        //     'tints' => $tints
-        // ]);
+        
     }
 }
