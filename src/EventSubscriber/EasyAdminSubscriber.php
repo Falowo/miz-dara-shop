@@ -101,7 +101,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
-        $this->registrateMainImageInImages($entity);
+        
 
 
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
