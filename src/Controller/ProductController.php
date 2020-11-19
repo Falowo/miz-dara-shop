@@ -42,7 +42,7 @@ class ProductController extends AbstractController
         $em->persist($product);
         $em->flush();
         if ($product->getHasStock() === false) {
-            // do something like redirect
+            return $this->redirectToRoute('app_index');
         }
         $purchaseLine = new PurchaseLine();
         $purchaseLine->setProduct($product);            ;
