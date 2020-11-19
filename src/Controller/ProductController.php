@@ -35,12 +35,12 @@ class ProductController extends AbstractController
         FlashBagInterface $flashBagInterface
     ) {
 
-        var_dump($product);
-        die;
+        
         $product->setHasStock(null);
         $em = $this->getDoctrine()->getManager();
         $em->persist($product);
         $em->flush();
+
         if ($product->getHasStock() === false) {
             return $this->redirectToRoute('app_index');
         }
@@ -116,12 +116,19 @@ class ProductController extends AbstractController
             }
         }
 
-        return $this->render('product/add.html.twig', [
+        return $this->render('product/add2.html.twig', [
             'controller_name' => 'ProductController',
             'product' => $product,
             'purchaseLine' => $purchaseLine,
             'form' => $form->createView(),
             'tints' => $tints
         ]);
+        // return $this->render('product/add.html.twig', [
+        //     'controller_name' => 'ProductController',
+        //     'product' => $product,
+        //     'purchaseLine' => $purchaseLine,
+        //     'form' => $form->createView(),
+        //     'tints' => $tints
+        // ]);
     }
 }

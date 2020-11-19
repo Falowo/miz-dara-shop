@@ -19,6 +19,7 @@
 				{#             <img class="card-img-top img-fluid " src="{{ asset('images/' ~ product.mainImage) }}" alt="">#}
 				{% if product.images | length > 0 %}
 
+			
 					<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
 
 						<ol class="carousel-indicators">
@@ -63,9 +64,7 @@
 												<h5>{{ image.tint }}</h5>
 											{% else %}
 												<h5>{{ image.product.name }}</h5>
-												<pre>
-													{{ dump(image) }}
-												</pre>
+												
 											{% endif %}
 										</div>
 									</div>
@@ -85,7 +84,11 @@
 						</a>
 					</div>
 				{% elseif product.mainImage %}
-					<img class="d-block w-100" src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('big') }}" alt="{{ product.name }}">
+				<h2>HEllo</h2>
+				<pre>
+					{{ dump(product.mainImage) }}
+				</pre>
+					{# <img class="d-block w-100" src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('big') }}" alt="{{ product.name }}"> #}
 				{% else %}
 					<img class="card-img-top img-fluid " src="{{ 'products/images/empty.jpg' | imagine_filter('big') }}" alt="{{ product.name }}">
 				{% endif %}
