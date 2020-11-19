@@ -55,7 +55,7 @@
 
 							{% for image in product.images %}
 								{% if not loop.first %}
-								
+
 									<div class="carousel-item">
 										<img class="d-block w-100" src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('big') }}" alt="{{ product.name }}">
 										<div class="carousel-caption d-none d-md-block">
