@@ -329,7 +329,8 @@ class CartService
                         $image = new Image();
                         $image
                         ->setProduct($purchaseLine->getProduct())
-                        ->setName($name);
+                        ->setName($name)
+                        ->setUpdatedAt();
                     }
                 }
                 
@@ -344,10 +345,6 @@ class CartService
                     $image = null;
                 }
 
-                // if ($name = $purchaseLine->getProduct()->getMainImage()) {
-                //     dd($name);
-                //     $image->setName($name);}
-              
                 
                 $purchaseLine->setImage($image);
                 $this->em->persist($purchaseLine);

@@ -312,13 +312,7 @@ class Product
                 $image->setProduct($this);
             }
         } 
-        // else {
-        //     if ($this->images->contains($image)) {
-        //         $this->removeImage($image);
-        //     }
-        // }
-
-
+       
         return $this;
     }
 

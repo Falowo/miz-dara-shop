@@ -63,10 +63,6 @@ class Image
         } else return '';    
     }    
 
-    public function __construct()
-    {
-        $this->updated_at = new \DateTime('now');
-    }
 
     public function getId(): ?int
     {
