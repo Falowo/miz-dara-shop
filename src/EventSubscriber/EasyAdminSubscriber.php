@@ -117,7 +117,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->makeSureOneLocalFieldIsCompletedInDeliveryFees($entity);
         $this->avoidCreatePurchase($entity);
         $this->avoidUncompleteStock($entity);
-        // $this->registrateMainImageInImages($entity);
+        $this->registrateMainImageInImages($entity);
         return;
     }
 
@@ -130,7 +130,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setCategory($entity);
 
         $this->setProductForImages($entity);
-        // $this->registrateMainImageInImages($entity);
+        $this->registrateMainImageInImages($entity);
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
@@ -331,26 +331,26 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
     }
 
-    // private function registrateMainImageInImages($entity)
-    // {
-    //     if ($entity instanceof Product){
+    private function registrateMainImageInImages($entity)
+    {
+        if ($entity instanceof Product){
 
-    //         if($name = $entity->getMainImage()){
-    //             if(!$this->imageRepository->findOneBy([
-    //                 'product'=>$entity,
-    //                 'name'=>$name
-    //                 ])){
+            if($name = $entity->getMainImage()){
+                if(!$this->imageRepository->findOneBy([
+                    'product'=>$entity,
+                    'name'=>$name
+                    ])){
 
-    //                     $image = new Image();
-    //                     $image
-    //                     ->setProduct($entity)
-    //                     ->setName($name)
-    //                     ;
-    //                     $this->em->persist($image);
-    //                     $this->em->flush();
-    //                 }
+                        $image = new Image();
+                        $image
+                        ->setProduct($entity)
+                        ->setName($name)
+                        ;
+                        $this->em->persist($image);
+                        $this->em->flush();
+                    }
 
-    //         }
-    //     }
-    // }
+            }
+        }
+    }
 }
