@@ -1,0 +1,49 @@
+easy_admin:
+  entities:
+    Product:
+      controller: App\Controller\EasyAdmin\ProductController
+      class: App\Entity\Product
+      list:
+        actions: ['show', 'edit', 'delete']
+          
+      show:
+        fields: 
+          - 'name'
+          - 'info'
+          - 'tags'
+          - 'categories'
+          - 'stocks'
+          - {property: 'mainImage', type: 'image', base_path: '%app.path.product_mainImage%'}
+          - {property: 'images', template: 'easy_admin/images.html.twig'}
+
+      form:  # <-- 'form' is applied to both 'new' and 'edit' views
+        fields:
+          - 'name'
+          - 'info'
+          - 'tags'
+          - 'price'
+          - 'discountPrice'
+          - 
+            property: 'categories'
+            type: 'easyadmin_autocomplete'
+          - { type: 'group', icon: 'clip', label: 'images', css_class: 'col-sm-12' }
+          - { property: 'mainImageFile', type: 'vich_image' }
+          -
+            property: 'images'
+            type: 'collection'
+            type_options:
+                entry_type: App\Form\ImageEmbeddableType
+                allow_delete: true
+                allow_add: true
+                by_reference: false
+          - { type: 'group', label: 'Stocks', css_class: 'col-sm-12' }
+          - 
+            property: 'stocks'
+            type: 'collection'
+            type_options:
+                entry_type: App\Form\StockEmbeddableType
+                allow_delete: true
+                allow_add: true
+                by_reference: false
+      
+      

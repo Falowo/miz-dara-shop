@@ -1,0 +1,7 @@
+easy_admin:
+  entities:
+    Tag:
+      class: App\Entity\Tag
+      form:  # <-- 'form' is applied to both 'new' and 'edit' views
+        fields:
+          - 'name'

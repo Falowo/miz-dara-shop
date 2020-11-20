@@ -1,0 +1,19 @@
+easy_admin:
+  entities:
+    Transport:
+      class: App\Entity\Transport
+      list:
+        actions: ['show', 'edit', 'delete']
+      form:  # <-- 'form' is applied to both 'new' and 'edit' views      
+        fields:
+          - 'name'
+          - 'speed'
+          - 
+             property: 'maxDaysByKm'
+             label: 'Default max days by km from Ilobu'
+          - 
+             property: 'defaultAmountByKm'
+             type: 'money'
+             type_options: { currency: 'NGN' }
+             label: 'Default amount by km from Ilobu'
+    

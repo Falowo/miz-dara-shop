@@ -1,0 +1,25 @@
+easy_admin:
+  design: 
+    menu:
+      - label: 'Product Attributs (set 1st)'
+        icon: 'pen'
+        children: 
+          - {entity: 'Size', icon: 'pen'}
+          - {entity: 'Tint', icon: 'pen', label: 'Colors'}
+          - {entity: 'Tag', icon: 'pen', label: 'tags'}
+          - {entity: 'Category', icon: 'inbox', label: 'Categories'}
+      - label: 'Products'
+        icon: 'sun'
+        children: 
+          - {entity: 'Image', icon: 'camera', label: 'Images'}
+          - {entity: 'Stock', icon: 'pen', label: 'Stocks'}
+          - {entity: 'Product', icon: 'sun', label: 'Products'}
+      - label: 'Purchases'
+        icon: 'money'
+        children:
+          - {entity: 'Transport', icon: 'pen', label: 'Transport services'}
+          - {entity: 'DeliveryFees', icon: 'pen', label: 'Delivery Fees'}
+          - {entity: 'Status', icon: 'pen', label: 'Purchase Status Entries'}
+          - {entity: 'Purchase', icon: 'money', label: 'Purchases'}
+
+      

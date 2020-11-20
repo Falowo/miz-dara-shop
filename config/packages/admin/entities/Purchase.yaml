@@ -1,0 +1,34 @@
+easy_admin:
+  entities:
+    Purchase:
+      class: App\Entity\Purchase
+      list:
+        actions: ['show', 'edit', 'delete']
+        fields:
+          - 'id'
+          - 'purchaseDate'
+          - 'status'
+          - 
+            property: 'paid'
+            type: 'boolean'
+            type_options: 'disabled'
+
+          
+      show:
+        fields:
+          - 'id'
+          - 'purchaseDate'
+          - 'deliveryFees'
+          - 'paid'
+          - 'status'
+          - {property: 'purchaseLines', label: 'Details', template: 'easy_admin/purchaseLines.html.twig'}
+          - {property: 'user', template: 'easy_admin/user.html.twig'}
+      form:  # <-- 'form' is applied to both 'new' and 'edit' views
+        fields:
+          - 'paid'
+          - 'status'
+         
+      
+            
+         
+
