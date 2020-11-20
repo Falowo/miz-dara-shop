@@ -1,0 +1,5 @@
+{% if entity.instance is not null %}
+
+	 <img src="{{ vich_uploader_asset(entity.instance, 'imageFile') | imagine_filter('thumb')}} " style="width:30px;height:30px" alt="">
+
+{% endif %}

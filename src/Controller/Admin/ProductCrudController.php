@@ -45,26 +45,42 @@ class ProductCrudController extends AbstractCrudController
         $categories = AssociationField::new('categories');
         $panel2 = FormField::addPanel('images');
         $mainImageFile = ImageField::new('mainImageFile');
-        // $images = CollectionField::new('images')
-            // ->setTemplatePath('admin/field/images.html.twig')
-            // ->allowAdd()
-            // ->allowDelete()
-            // ->setEntryType(ImageEmbeddableType::class)
-            // ;
+        $imagesDetail = AvatarField::new('images')
+            ->setTemplatePath('admin/field/images_detail.html.twig');            
+        $images = CollectionField::new('images')
+            ->allowAdd()
+            ->allowDelete()
+            ->setEntryType(ImageEmbeddableType::class)
+            ;
         $panel3 = FormField::addPanel('Stocks');
         $stocks = CollectionField::new('stocks')
             ->allowAdd()
             ->allowDelete()
             ->setEntryType(StockEmbeddableType::class);
-        $mainImage = AvatarField::new('mainImage')->setTemplatePath('admin/field/mainImage.html.twig');
+            
+        $mainImage = AvatarField::new('mainImage');
+        $mainImageIndex = AvatarField::new('mainImage')
+            ->setTemplatePath('admin/field/main_image_index.html.twig');
+        $mainImageDetail = AvatarField::new('mainImage')
+            ->setTemplatePath('admin/field/main_image_detail.html.twig');
         $id = IntegerField::new('id', 'ID');
         $creationDate = DateTimeField::new('creationDate');
         $hasStock = Field::new('hasStock');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $name, $info, $price, $discountPrice, $creationDate, $hasStock];
+            return [$id, $name, $mainImageIndex, $hasStock];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$name, $info, $tags, $categories, $stocks, $mainImage, $images];
+            return [
+                $name, 
+                $creationDate, 
+                $info, 
+                $tags, 
+                $price, 
+                $discountPrice, 
+                $categories, 
+                $stocks, 
+                $mainImageDetail, 
+                $imagesDetail];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [
                 $panel1, 
@@ -76,7 +92,7 @@ class ProductCrudController extends AbstractCrudController
                 $categories, 
                 $panel2, 
                 $mainImageFile, 
-                // $images, 
+                $images, 
                 $panel3, 
                 $stocks
             ];
@@ -92,7 +108,7 @@ class ProductCrudController extends AbstractCrudController
                 $panel2, 
                 $mainImage, 
                 $mainImageFile, 
-                // $images, 
+                $images, 
                 $panel3, 
                 $stocks];
         }

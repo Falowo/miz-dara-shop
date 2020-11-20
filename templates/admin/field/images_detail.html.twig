@@ -1,0 +1,10 @@
+
+
+
+{% if ea.entity.instance.images is not null %}
+   {% for image in ea.entity.instance.images %}
+      
+       <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb') }} " class="easyadmin-lightbox" alt="">
+      
+   {% endfor %}
+{% endif %}

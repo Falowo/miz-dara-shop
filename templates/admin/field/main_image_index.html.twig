@@ -1,0 +1,12 @@
+{% if entity.instance.mainImage is not null %}
+
+	<img src="{{ vich_uploader_asset(entity.instance, 'mainImageFile') | imagine_filter('thumb')}}" style="width:30px; height:30px" alt="">
+{% elseif entity.instance.images | length > 0 %}
+	{% for image in entity.instance.images %}
+	{% if loop.first %}
+	<img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb')}}" style="width:30px; height:30px" alt="">
+
+    {% endif %}
+    
+    {% endfor %}
+{% endif %}

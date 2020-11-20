@@ -1,7 +1,0 @@
-easy_admin:                    
-  entities:
-      Tint:
-        class: App\Entity\Tint
-        form:
-          fields:
-            - 'name'

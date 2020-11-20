@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class ImageCrudController extends AbstractCrudController
 {
@@ -30,25 +31,27 @@ class ImageCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $imageFile = ImageField::new('imageFile')
-        // ->setBasePath($this->getParameter('app.path.product_images'))->onlyOnIndex()
-        // ->setFormType(ImageType::class)
-        ;
+        $imageFile = ImageField::new('imageFile');
         $product = AssociationField::new('product');
         $tint = AssociationField::new('tint');
         $id = IntegerField::new('id', 'ID');
-        $name = AvatarField::new('name')
-        ->setTemplatePath('admin/field/image.html.twig');
+        $name = TextField::new('name');
+        
+        $imageIndex = AvatarField::new('imageFile')
+            ->setTemplatePath('admin/field/image_index.html.twig')
+            ;
+        $imageDetail = AvatarField::new('imageFile')
+            ->setTemplatePath('admin/field/image_detail.html.twig');
         $updatedAt = DateTimeField::new('updated_at');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $name, $updatedAt, $product, $tint];
+            return [$id, $imageIndex, $updatedAt, $product, $tint];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $name, $updatedAt, $product, $tint];
+            return [$id, $updatedAt, $product, $tint, $imageDetail];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [$imageFile, $product, $tint];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$imageFile, $product, $tint];
+            return [$name, $imageFile, $product, $tint];
         }
     }
 

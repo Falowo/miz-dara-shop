@@ -1,7 +1,0 @@
-easy_admin:
-  entities:
-    Size:
-      class: App\Entity\Size
-      form:
-        fields:
-          - 'name'
