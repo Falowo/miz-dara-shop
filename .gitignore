@@ -37,5 +37,3 @@ yarn-error.log
 easyadmin-config.backup
 ###< easyadmin ###
 
-# copy of add.js b4 changes
-assets/js/add2.js

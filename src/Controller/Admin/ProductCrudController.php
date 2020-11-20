@@ -65,9 +65,9 @@ class ProductCrudController extends AbstractCrudController
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$name, $info, $tags, $categories, $stocks, $mainImage, $images];
         } elseif (Crud::PAGE_NEW === $pageName) {
-            return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImageFile, $images, $panel3, $stocks];
+            return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImageFile, $panel3, $stocks];
         } elseif (Crud::PAGE_EDIT === $pageName) {
-            return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImage, $mainImageFile, $images, $panel3, $stocks];
+            return [$panel1, $name, $info, $tags, $price, $discountPrice, $categories, $panel2, $mainImage, $mainImageFile, $panel3, $stocks];
         }
     }
 
