@@ -35,11 +35,11 @@ class PurchaseCrudController extends AbstractCrudController
         $purchaseDate = DateTimeField::new('purchaseDate');
         $deliveryFees = AssociationField::new('deliveryFees');
         $purchaseLines = AssociationField::new('purchaseLines')
-            ->setTemplatePath('admin/purchase_lines.html.twig');
+            ->setTemplatePath('admin/field/purchase_lines.html.twig');
         $user = AssociationField::new('user')
-            ->setTemplatePath('admin/user.html.twig');
+            ->setTemplatePath('admin/field/user.html.twig');
         $address = AssociationField::new('address')
-            ->setTemplatePath('admin/address.html.twig');
+            ->setTemplatePath('admin/field/address.html.twig');
 
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $user, $purchaseDate, $status, $paid];
