@@ -24,8 +24,8 @@ class ImageCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setEntityLabelInSingular('Image')
-            ->setEntityLabelInPlural('Image')
+            ->setEntityLabelInSingular('image')
+            ->setEntityLabelInPlural('image')
             ->setSearchFields(['id', 'name']);
     }
 
