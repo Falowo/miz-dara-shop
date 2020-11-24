@@ -5,46 +5,48 @@
 {% endblock %}
 
 {% block menu %}
+	<div style="font-size:1.4rem">
 
 
-	{% for sibling in parent.categories %}
+		{% for sibling in parent.categories %}
 
-		{% if sibling.categories | length > 0 %}
-			<li class="nav-item dropdown" style="display: flex">
+			{% if sibling.categories | length > 0 %}
+				<li class="nav-item dropdown" style="display: flex">
 
-				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					{{ sibling.name }}</a>
-
-
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('category', {'id': sibling.id, 'slug': sibling.slug}) }}">
+					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 						{{ sibling.name }}</a>
 
-				{% endif %}
-				<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-					{% if sibling.categories | length > 0 %}
-						<div class="dropdown-divider"></div>
-						{% for child in sibling.categories %}
 
-							<a class="dropdown-item-text" {# {% if child.categories | length > 0 %} #} style="font-weight:bold" {# {% endif %} #} href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">{{ child.name }}</a>
+				{% else %}
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('category', {'id': sibling.id, 'slug': sibling.slug}) }}">
+							{{ sibling.name }}</a>
 
-							{% if child.categories | length > 0 %}
-
-								{% for baby in child.categories %}
-
-									<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}">{{ baby.name }}</a>
-
-
-								{% endfor %}
-
-							{% endif %}
-
-						{% endfor %}
 					{% endif %}
-				</div>
-			</li>
-		{% endfor %}
+					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+						{% if sibling.categories | length > 0 %}
+							<div class="dropdown-divider"></div>
+							{% for child in sibling.categories %}
+
+								<a class="dropdown-item-text" {# {% if child.categories | length > 0 %} #} style="font-weight:bold" {# {% endif %} #} href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">{{ child.name }}</a>
+
+								{% if child.categories | length > 0 %}
+
+									{% for baby in child.categories %}
+
+										<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}">{{ baby.name }}</a>
+
+
+									{% endfor %}
+
+								{% endif %}
+
+							{% endfor %}
+						{% endif %}
+					</div>
+				</li>
+			{% endfor %}
+		</div>
 	{% endblock %}
 	{% block body %}
 
@@ -60,7 +62,7 @@
 					<a href="{{ path('category', {'id': ancestor.id, 'slug': ancestor.slug } ) }} ">
 						{{ ancestor.name }}
 					</a>
-									<span class="text-primary">&nbsp/&nbsp</span>
+					<span class="text-primary">&nbsp/&nbsp</span>
 
 				{% endif %}
 

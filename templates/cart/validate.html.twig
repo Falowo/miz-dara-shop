@@ -31,35 +31,28 @@
                 {{ app.user.address.phoneNumber.nationalNumber }}
               {% endif %}
             </p>
-            <a href="{{
-              path(
-                'address_new',
-                {
-                  case: 'modify'
-                }
-              )
-              }}"
-              class="btn btn-success">
-              Modify
+            <a href="{{ path('address_new', {case: 'modify'}) }}"
+              class="btn btn-success" style="font-size:1.3rem">
+              Modify your address
             </a>
-            <a href="{{ path('address_new') }}" class="btn btn-success">
-              Use another address for this purchase only
+            <a href="{{ path('address_new') }}" class="btn btn-success" style="font-size:1.3rem">
+              Add another address for this purchase
             </a>
           </div>
           <div class="col-3">
-            <a href="{{ path('cart_transport') }}" class="btn btn-primary p-4">
+            <a href="{{ path('cart_transport') }}" class="btn btn-primary p-4" style="font-size:1.6rem">
               Use this address
             </a>
           </div>
         </div>
         {% else %}
-        <a href="{{ path('address_new') }}" class="btn btn-success">
+        <a href="{{ path('address_new') }}" class="btn btn-success" style="font-size:1.6rem">
           Create a new address
         </a>
     {% endif %}
       </div>
 
-    {{ render(controller('App\\Controller\\CartController::cart')) }}
+    {# {{ render(controller('App\\Controller\\CartController::cart')) }} #}
   {% else %}
     <p>
       Your cart is empty !

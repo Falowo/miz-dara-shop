@@ -5,7 +5,7 @@
 } 
 
 html body div.content-panel-body.with-background,
-/* html body div.content-panel-body.with-background span.select2-dropdown, */
+/* html body div.content-panel-body.with-background div.form-widget span.selection span.select2-selection, */
 html body div.content-panel-body.with-background input,
 html body div.content-panel-body.with-background div.field-collection-item.field-collection-item-complex
 {
@@ -66,5 +66,4 @@ div.content-panel div.content-panel-header
 {
     background-color: yellow;
     color: black;
-}
 }
