@@ -4,9 +4,9 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
-    # upload_dir: '%kernel.project_dir%/public/images/'
+    # upload_dir: '%kernel.project_dir%/public/products/images/'
     app.path.product_images: /products/images
-    app.path.product_mainImage: '%app.path.product_images%/main'
+    app.path.product_mainImage: '%app.path.product_images%'
 
 
 services:

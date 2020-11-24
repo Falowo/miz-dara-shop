@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Admin\Field\VichImageField;
 use App\Entity\Product;
 use App\Form\ImageEmbeddableType;
 use App\Form\StockEmbeddableType;
@@ -44,7 +45,7 @@ class ProductCrudController extends AbstractCrudController
         $discountPrice = IntegerField::new('discountPrice');
         $categories = AssociationField::new('categories');
         $panel2 = FormField::addPanel('images');
-        $mainImageFile = ImageField::new('mainImageFile');
+        $mainImageFile = VichImageField::new('mainImageFile');
         $imagesDetail = AvatarField::new('images')
             ->setTemplatePath('admin/field/images_detail.html.twig');            
         $images = CollectionField::new('images')
@@ -58,7 +59,7 @@ class ProductCrudController extends AbstractCrudController
             ->allowDelete()
             ->setEntryType(StockEmbeddableType::class);
             
-        $mainImage = AvatarField::new('mainImage');
+        $mainImage = TextField::new('mainImage');
         $mainImageIndex = AvatarField::new('mainImage')
             ->setTemplatePath('admin/field/main_image_index.html.twig');
         $mainImageDetail = AvatarField::new('mainImage')
