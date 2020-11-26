@@ -78,10 +78,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::subMenu('Purchases', 'far fa-money-bill-alt')->setSubItems($submenu3);
     }
 
-    public function configureAssets(): Assets
-    {
-        return Assets::new()->addCssFile('css/admin.css');
-    }
 
     /**
      *

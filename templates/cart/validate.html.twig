@@ -6,7 +6,7 @@
 
 {% block body %}
   {% if (purchase.purchaseLines|length) > 0 %}
-      <div class="container mt-3 mb-5">
+      <div class="container mt-5">
     {% if app.user.address %}
         <h2>
           Validate your address
@@ -32,11 +32,11 @@
               {% endif %}
             </p>
             <a href="{{ path('address_new', {case: 'modify'}) }}"
-              class="btn btn-success" style="font-size:1.3rem">
+              class="btn btn-success mb-3" style="font-size:1.3rem">
               Modify your address
             </a>
-            <a href="{{ path('address_new') }}" class="btn btn-success" style="font-size:1.3rem">
-              Add another address for this purchase
+            <a href="{{ path('address_new') }}" class="btn btn-success mb-3" style="font-size:1.3rem">
+              Use another address
             </a>
           </div>
           <div class="col-3">
@@ -47,7 +47,7 @@
         </div>
         {% else %}
         <a href="{{ path('address_new') }}" class="btn btn-success" style="font-size:1.6rem">
-          Create a new address
+          Create address
         </a>
     {% endif %}
       </div>

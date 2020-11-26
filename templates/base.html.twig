@@ -80,9 +80,17 @@
 			{% endfor %}
 			{% block body %}{% endblock %}
 		</div>
-		{% block footer %}
+    {% block footer %}
 			<div class="mt-5">
-				<a href="{{ path('contact_index') }}">
+        <a href="{{ path('contact_index') }}">
+          <hr style="width: 70%; margin-left: auto; margin-right: auto; background-color: #b7d0e2">
+    <h2 class="text-center">
+      <i class="fas fa-at"></i>
+      <i class="fas fa-envelope"></i>
+    CONTACT US
+    <i class="fas fa-envelope"></i>
+    <i class="fas fa-at"></i>
+    </h2>
 					<img src="{{ '/base/footer.jpeg'|imagine_filter('big') }}" class="card-img-top mb-4"/>
 				</a>
 			</div>
