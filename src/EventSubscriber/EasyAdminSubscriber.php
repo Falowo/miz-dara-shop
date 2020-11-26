@@ -212,6 +212,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             foreach ($entity->getImages() as $image) {
                 $image->setProduct($entity);
                 if (!($image->getName()) && !($image->getImageFile())) {
+                    
                     $entity->removeImage($image);
                 }
             }
@@ -354,6 +355,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                         $image
                         ->setProduct($entity)
                         ->setName($name)
+                        ->setUpdatedAt('now')
                         ;
                         $this->em->persist($image);
                         $this->em->flush();

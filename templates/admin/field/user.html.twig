@@ -1,8 +1,14 @@
+{% if entity.instance.user %}
+
 
 <a href="#">
-{{ ea.user.firstName}}
+    {{ entity.instance.user.firstName}}
 
-{{ ea.user.lastName}} 
+{{ entity.instance.user.lastName}} 
 
- {{ ea.user.email}}
+ {{ entity.instance.user.email}}
 </a>
+{% else %}
+   <span>none</span> 
+{% endif %}
+

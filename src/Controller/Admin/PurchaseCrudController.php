@@ -44,7 +44,7 @@ class PurchaseCrudController extends AbstractCrudController
         if (Crud::PAGE_INDEX === $pageName) {
             return [$id, $user, $purchaseDate, $status, $paid];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
-            return [$id, $user, $purchaseDate, $deliveryFees, $paid, $status, $address, $purchaseLines, $user];
+            return [$id, $user, $purchaseDate, $deliveryFees, $paid, $status, $address, $purchaseLines];
         } elseif (Crud::PAGE_NEW === $pageName) {
             return [];
         } elseif (Crud::PAGE_EDIT === $pageName) {
