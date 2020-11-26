@@ -76,14 +76,14 @@ class MailerService
             ]);
         try {
             if ($this->mailer->send($email)){
-                $this->flashBagInterface->add('success', 'Your message has been sent');
+                $this->flashBagInterface->add('success', 'Your message has successfully been sent');
                 }
         } catch (TransportExceptionInterface $e) {
             // some error prevented the email sending; display an
             // error message or try to resend the message
             try {
                 if ($this->mailer->send($email)){
-                $this->flashBagInterface->add('success', 'Your message has been sent');
+                $this->flashBagInterface->add('success', 'Your message has successfully been sent');
                 }
             } catch (TransportExceptionInterface $e) {
                 // some error prevented the email sending; display an

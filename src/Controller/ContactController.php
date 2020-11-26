@@ -43,11 +43,9 @@ class ContactController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $mailerService->sendContactEmail($contact);
             if(!($contact->getPurchase())){
-                return $this->redirectToRoute('contact_index');
+                return $this->redirectToRoute('app_index');
             }else{
-                return $this->redirectToRoute('purchase_detail', [
-                    'id'=>$contact->getPurchase()->getId()
-                    ]);
+                return $this->redirectToRoute('purchase_list');
             }
         }
 
