@@ -65,7 +65,7 @@ class MailerService
         $email = (new TemplatedEmail())
 
             ->from(new Address($contact->getEmail(), 'Miz Dara Client'))
-            ->to('josselinkrikorian@yahoo.fr')
+            ->to('babalolaomotayo31@gmail.com')
             ->subject($contact->getSubject())
 
             ->htmlTemplate('emails/contact.html.twig')
