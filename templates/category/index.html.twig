@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block menu %}
-	<div style="font-size:1.2rem">
+	<div style="font-size:1.4rem">
 
 
 		{% for sibling in parent.categories %}
@@ -28,13 +28,13 @@
 							<div class="dropdown-divider"></div>
 							{% for child in sibling.categories %}
 
-								<a class="dropdown-item-text" {# {% if child.categories | length > 0 %} #} style="font-weight:bold; font-size:1.2rem" {# {% endif %} #} href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">{{ child.name }}</a>
+								<a class="dropdown-item-text" {# {% if child.categories | length > 0 %} #} style="font-weight:bold; font-size:1.5rem" {# {% endif %} #} href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">{{ child.name }}</a>
 
 								{% if child.categories | length > 0 %}
 
 									{% for baby in child.categories %}
 
-										<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}" style="font-size:1.2rem">{{ baby.name }}</a>
+										<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}" style="font-size:1.5rem">{{ baby.name }}</a>
 
 									{% endfor %}
 
