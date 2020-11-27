@@ -85,7 +85,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             BeforeEntityUpdatedEvent::class => ['beforeUpdate'],
             BeforeEntityDeletedEvent::class => ['beforeDelete'],
             AfterEntityPersistedEvent::class => ['afterPersist'],
-            AfterEntityUpdatedEvent::class=>['afterUpdate']
+            AfterEntityUpdatedEvent::class => ['afterUpdate']
 
         ];
     }
@@ -103,7 +103,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
-        
+
 
 
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
@@ -149,8 +149,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
         $this->registrateMainImageInImages($entity);
-
-
     }
 
     public function beforeDelete(BeforeEntityDeletedEvent $event)
@@ -167,8 +165,19 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         if ($entity instanceof Product) {
             if ($entity->getMainImageFile() instanceof UploadedFile) {
                 $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'mainImageFile'));
+                if(
+
+                    $image = $this->imageRepository->findOneBy([
+                        'name' => $entity->getMainImage(),
+                        'product'=>$entity->getId()
+                        ]
+                    )
+                ){
+                    $image->setProduct(null);
+                    $this->em->remove($image);
+                    $this->em->flush();
+                }
             }
-            
         }
         if ($entity instanceof Image) {
             if ($entity->getImageFile() instanceof UploadedFile) {
@@ -177,16 +186,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
     }
 
-    private function removeImage($entity)
-    {
-        if ($entity instanceof Product) {
-            if ($entity->getMainImageFile() instanceof UploadedFile) {
-                $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'mainImageFile'));
-            }
-            
-        }
-        
-    }
+   
 
     private function setCategory($entity)
     {
@@ -224,7 +224,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             foreach ($entity->getImages() as $image) {
                 $image->setProduct($entity);
                 if (!($image->getName()) && !($image->getImageFile())) {
-                    
+
                     $entity->removeImage($image);
                 }
             }
@@ -259,7 +259,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
             if ((count($entity->getProducts()) > 0)) {
                 $this->flashBagInterface->add('warning', 'Warning ! You may have to edit the categories for the related products!');
-                foreach($entity->getProducts() as $product){
+                foreach ($entity->getProducts() as $product) {
                     $this->setCategoriesForProduct($product);
                 }
             }
@@ -355,24 +355,22 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     private function registrateMainImageInImages($entity)
     {
-        if ($entity instanceof Product){
+        if ($entity instanceof Product) {
 
-            if($name = $entity->getMainImage()){
-                if(!$this->imageRepository->findOneBy([
-                    'product'=>$entity,
-                    'name'=>$name
-                    ])){
+            if ($name = $entity->getMainImage()) {
+                if (!$this->imageRepository->findOneBy([
+                    'product' => $entity,
+                    'name' => $name
+                ])) {
 
-                        $image = new Image();
-                        $image
+                    $image = new Image();
+                    $image
                         ->setProduct($entity)
                         ->setName($name)
-                        ->setUpdatedAt('now')
-                        ;
-                        $this->em->persist($image);
-                        $this->em->flush();
-                    }
-
+                        ->setUpdatedAt('now');
+                    $this->em->persist($image);
+                    $this->em->flush();
+                }
             }
         }
     }
