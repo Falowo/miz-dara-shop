@@ -168,12 +168,24 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             if ($entity->getMainImageFile() instanceof UploadedFile) {
                 $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'mainImageFile'));
             }
+            
         }
         if ($entity instanceof Image) {
             if ($entity->getImageFile() instanceof UploadedFile) {
                 $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'imageFile'));
             }
         }
+    }
+
+    private function removeImage($entity)
+    {
+        if ($entity instanceof Product) {
+            if ($entity->getMainImageFile() instanceof UploadedFile) {
+                $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'mainImageFile'));
+            }
+            
+        }
+        
     }
 
     private function setCategory($entity)

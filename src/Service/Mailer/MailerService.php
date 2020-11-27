@@ -113,8 +113,6 @@ class MailerService
 
             if ($lastPaidPurchase) {
 
-                $this->cartService->setImages($lastPaidPurchase);
-
                 $email = (new TemplatedEmail())
                     ->from(new Address('noreply@miz-dara-shop.com', 'Miz Dara Shop'))
                     ->to(new Address($user->getEmail()))
