@@ -93,7 +93,7 @@ class ProductController extends AbstractController
         if($name = $product->getMainImage()){
             if(!($image = $imageRepository->findOneBy([
                 'name'=>$name, 
-                '$product'=> $product
+                'product'=> $product
             ]))){
                 $image=new Image();
                 $image
