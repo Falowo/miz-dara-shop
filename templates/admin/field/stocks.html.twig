@@ -1,0 +1,20 @@
+{% if entity.instance.stocks | length > 0 %}
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th scope="col">Size</th>
+				<th scope="col">Color</th>
+				<th scope="col">Quantity</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for stock in entity.instance.stocks %}
+				<tr>
+					<td>{{stock.size}}</td>
+					<td>{{stock.tint}}</td>
+					<td>{{stock.quantity}}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endif %}

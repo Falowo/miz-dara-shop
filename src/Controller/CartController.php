@@ -277,6 +277,10 @@ class CartController extends AbstractController
                 $stock = $purchaseLine->getStock();
                 $stock->setQuantity($stock->getQuantity() - $purchaseLine->getQuantity());
                 $purchaseLine->setPrice($cartService->getPurchaseLinePrice($purchaseLine));
+                $purchaseLine->getProduct()
+                    ->setHasStock(null)
+                    ->setLowStock(null)
+                    ;
             }
             $em = $this->getDoctrine()->getManager();
             $em->flush();

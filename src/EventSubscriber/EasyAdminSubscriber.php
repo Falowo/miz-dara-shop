@@ -160,6 +160,12 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         return;
     }
 
+    /**
+     * remove cache and related image for mainImage
+     *
+     * @param [type] $entity
+     * @return void
+     */
     private function removeCache($entity)
     {
         if ($entity instanceof Product) {
@@ -266,15 +272,26 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
     }
 
+    /**
+     * setHasStock(null) and setLowStock(null)
+     *
+     * @param [type] $entity
+     * @return void
+     */
     public function setHasStockForProduct($entity)
     {
         if ($entity instanceof Product) {
-            $entity->setHasStock(null);
+            $entity
+            ->setHasStock(null)
+            ->setLowStock(null);
         }
 
         if ($entity instanceof Stock) {
             if ($product = $entity->getProduct()) {
-                $product->setHasStock(null);
+                $product
+                    ->setHasStock(null)
+                    ->setLowStock(null)
+                ;
             }
         }
     }

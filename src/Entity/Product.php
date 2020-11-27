@@ -75,11 +75,11 @@ class Product
     private $hasStock = false;
 
 
-    /**
-     *
-     * @ORM\Column(type="boolean")
-     */
-    private $hasMainImage = false;
+    // /**
+    //  *
+    //  * @ORM\Column(type="boolean")
+    //  */
+    // private $hasMainImage = false;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag")
@@ -108,6 +108,11 @@ class Product
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $updated_at;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $lowStock;
 
 
 
@@ -480,11 +485,11 @@ class Product
     public function setMainImage(?string $mainImage): self
     {
         $this->mainImage = $mainImage;
-        if (!is_null($this->mainImage)) {
-            $this->hasMainImage = true;
-        } else {
-            $this->hasMainImage = false;
-        }
+        // if (!is_null($this->mainImage)) {
+        //     $this->hasMainImage = true;
+        // } else {
+        //     $this->hasMainImage = false;
+        // }
 
         return $this;
     }
@@ -523,13 +528,45 @@ class Product
         return $this;
     }
 
-    /**
-     * Undocumented function
-     *
-     * @return boolean
-     */
-    public function hasMainImage()
+    // /**
+    //  * Undocumented function
+    //  *
+    //  * @return boolean
+    //  */
+    // public function hasMainImage()
+    // {
+    //     return $this->hasMainImage;
+    // }
+
+    public function getLowStock(): ?bool
     {
-        return $this->hasMainImage;
+        return $this->lowStock;
+    }
+
+    public function setLowStock(?bool $lowStock): self
+    {
+        
+
+        if (!is_null($lowStock)) {
+            $this->lowStock = $lowStock;
+            return $this;
+        }
+        if(count($this->stocks)>0){
+
+            $this->lowStock = false;
+        }else{
+            $this->lowStock = true; 
+            return $this;
+        }
+
+        foreach($this->stocks as $stock){
+            if($stock->getQuantity()<6){
+                $this->lowStock=true;
+                return $this;
+            }
+
+        }     
+        
+        return $this;
     }
 }
