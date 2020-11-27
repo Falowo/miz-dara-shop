@@ -29,7 +29,7 @@
 							{% for child in sibling.categories %}
 
 								<a class="dropdown-item-text" 
-									style="font-weight:bold; font-size:1.6rem" 
+									style="font-weight:bold; font-size:2.2rem" 
 									href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">
 									{{ child.name }}
 								</a>
@@ -40,7 +40,7 @@
 
 										<a class="dropdown-item-text" 
 											href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}" 
-											style="font-size:1.6rem">
+											style="font-size:2.2rem">
 											{{ baby.name }}
 										</a>
 
