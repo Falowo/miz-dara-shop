@@ -2,9 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\PurchaseLine;
 use App\Form\PurchaseLineType;
+use App\Repository\ImageRepository;
 use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,7 +34,8 @@ class ProductController extends AbstractController
         Request $request,
         CartService $cartService,
         StockRepository $stockRepository,
-        FlashBagInterface $flashBagInterface
+        FlashBagInterface $flashBagInterface,
+        ImageRepository $imageRepository
     ) {
 
         
@@ -85,6 +88,26 @@ class ProductController extends AbstractController
                     }
                 }
             }
+        }
+
+        if($name = $product->getMainImage()){
+            if(!($image = $imageRepository->findOneBy([
+                'name'=>$name, 
+                '$product'=> $product
+            ]))){
+                $image=new Image();
+                $image
+                ->setName($name)
+                ->setProduct($product)
+                ->setUpdatedAt('now')
+                ;
+
+                $product->addImage($image);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($image);
+                $em->flush();
+            }
+
         }
 
 
