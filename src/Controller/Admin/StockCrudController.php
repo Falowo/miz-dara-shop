@@ -32,7 +32,7 @@ class StockCrudController extends AbstractCrudController
         $id = IntegerField::new('id', 'ID');
 
         if (Crud::PAGE_INDEX === $pageName) {
-            return [$id, $quantity, $product, $size, $tint];
+            return [$id, $product, $size, $tint, $quantity];
         } elseif (Crud::PAGE_DETAIL === $pageName) {
             return [$id, $quantity, $product, $size, $tint];
         } elseif (Crud::PAGE_NEW === $pageName) {

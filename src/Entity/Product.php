@@ -75,11 +75,6 @@ class Product
     private $hasStock = false;
 
 
-    // /**
-    //  *
-    //  * @ORM\Column(type="boolean")
-    //  */
-    // private $hasMainImage = false;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Tag")
@@ -485,12 +480,7 @@ class Product
     public function setMainImage(?string $mainImage): self
     {
         $this->mainImage = $mainImage;
-        // if (!is_null($this->mainImage)) {
-        //     $this->hasMainImage = true;
-        // } else {
-        //     $this->hasMainImage = false;
-        // }
-
+       
         return $this;
     }
 
@@ -528,16 +518,7 @@ class Product
         return $this;
     }
 
-    // /**
-    //  * Undocumented function
-    //  *
-    //  * @return boolean
-    //  */
-    // public function hasMainImage()
-    // {
-    //     return $this->hasMainImage;
-    // }
-
+   
     public function getLowStock(): ?bool
     {
         return $this->lowStock;

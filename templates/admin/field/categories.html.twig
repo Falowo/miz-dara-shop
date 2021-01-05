@@ -1,0 +1,6 @@
+{% if entity.instance.categories | length > 0 %}
+
+    {% for category in entity.instance.categories %}
+        <span>{{category}}</span><br>
+    {% endfor %}
+{% endif %}
