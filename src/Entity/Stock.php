@@ -25,6 +25,8 @@ class Stock
      * @ORM\ManyToOne(targetEntity="App\Entity\Product", inversedBy="stocks")
      * @ORM\JoinColumn(nullable=true)
      * @Assert\NotBlank()
+     * 
+     * 
      */
     private $product;
 
@@ -32,6 +34,8 @@ class Stock
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Size")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
+     * 
      */
     private $size;
 

@@ -9,6 +9,7 @@ use App\Entity\Product;
 use App\Entity\Purchase;
 use App\Entity\Stock;
 use App\Repository\ImageRepository;
+use App\Repository\PurchaseRepository;
 use App\Repository\StockRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
@@ -52,6 +53,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
      */
     private $stockRepository;
 
+    private $purchaseRepository;
+
     /**
      * Undocumented variable
      *
@@ -66,7 +69,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         FlashBagInterface $flashBagInterface,
         EntityManagerInterface $em,
         StockRepository $stockRepository,
-        ImageRepository $imageRepository
+        ImageRepository $imageRepository,
+        PurchaseRepository $purchaseRepository
 
     ) {
 
@@ -76,6 +80,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->em = $em;
         $this->stockRepository = $stockRepository;
         $this->imageRepository = $imageRepository;
+        $this->purchaseRepository = $purchaseRepository;
     }
 
     public static function getSubscribedEvents()
@@ -157,7 +162,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
         $this->removeCache($entity);
         $this->setHasStockForProduct($entity);
-        return;
+        $this->setProductToNullForStock($entity);
     }
 
     /**
@@ -391,4 +396,14 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             }
         }
     }
+
+    private function setProductToNullForStock($entity)
+    {
+        if($entity instanceof Stock){
+            if (!$this->purchaseRepository->findOneBy(['product'=>$entity->getProduct()])){
+                $entity->setProduct(null);
+            }
+        }
+    }
+
 }
