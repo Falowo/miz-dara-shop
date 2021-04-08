@@ -16,7 +16,7 @@
 		{% endblock %}
 	</head>
 	<body>
-		<div class="container-fluid">
+		<div class="container-fluid container-lg">
 			{% block header %}
 				{% if is_granted('ROLE_ADMIN') %}
 					<a href="{{ path('dashboard_index') }}">
