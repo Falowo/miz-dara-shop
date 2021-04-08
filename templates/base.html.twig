@@ -16,91 +16,93 @@
 		{% endblock %}
 	</head>
 	<body>
-		{% block header %}
-			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('dashboard_index') }}">
+		<div class="container-fluid">
+			{% block header %}
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('dashboard_index') }}">
+						<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
+					</a>
+				{% else %}
 					<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
-				</a>
-			{% else %}
-				<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
-			{% endif %}
-		{% endblock %}
-		<nav class="navbar navbar-expand-sm navbar-dark bg-success">
-			<div class="container-fluid text-uppercase" style="font-size: 2rem">
-				<a href="{{ path('app_index') }}" class="navbar-brand mb-0">
-					<i class="fas fa-home fa-3x"></i>
-				</a>
-				<ul class="navbar-nav ml-3 mr-auto">
-					{% block menu %}
-						{# show the method menu() of IndexCategoryController #}
+				{% endif %}
+			{% endblock %}
+			<nav class="navbar navbar-expand-sm navbar-dark bg-success">
+				<div class="container-fluid text-uppercase" style="font-size: 2rem">
+					<a href="{{ path('app_index') }}" class="navbar-brand mb-0">
+						<i class="fas fa-home fa-3x"></i>
+					</a>
+					<ul class="navbar-nav ml-3 mr-auto">
+						{% block menu %}
+							{# show the method menu() of IndexCategoryController #}
 
-						{{ render(controller('App\\Controller\\IndexController::menu')) }}
+							{{ render(controller('App\\Controller\\IndexController::menu')) }}
 
-					{% endblock %}
-				</ul>
-				<ul class="navbar-nav" style="color:pink">
-					{{ render(controller('App\\Controller\\CartController::link')) }}
+						{% endblock %}
+					</ul>
+					<ul class="navbar-nav" style="color:pink">
+						{{ render(controller('App\\Controller\\CartController::link')) }}
 
-					{% if app.user is null %}
-						<li class="nav-item">
-							<a href="{{ path('app_login') }}" class="nav-link" style="color:black">
-								Login
-							</a>
-						</li>
-					{% else %}
-						{{ render(controller('App\\Controller\\IndexController::user')) }}
+						{% if app.user is null %}
+							<li class="nav-item">
+								<a href="{{ path('app_login') }}" class="nav-link" style="color:black">
+									Login
+								</a>
+							</li>
+						{% else %}
+							{{ render(controller('App\\Controller\\IndexController::user')) }}
 
-						<li class="nav-item">
-							<a href="{{ path('app_logout') }}" class="nav-link" style="color:darkgreen">
-								<i class="fas fa-power-off"></i>
-							</a>
-						</li>
-					{% endif %}
-				</ul>
-			</div>
-		</nav>
-		<div class="container-fluid text-uppercase" style="font-size: 1.6rem; min-height:59vh">
-			{% for type, messages in app.session.flashBag.all %}
-				{% for message in messages %}
-					{% if type == 'error' %}
-						{% set type = 'danger' %}
-
-						<div class="alert alert-{{ type }} mt-2">
-							{{ message|raw }}
-						</div>
-					{% endif %}
-					{% if type == 'success' %}
-						{% set type = 'success' %}
-
-						<div class="alert alert-{{ type }} mt-2">
-							{{ message|raw }}
-						</div>
-					{% endif %}
-				{% endfor %}
-			{% endfor %}
-			{% block body %}{% endblock %}
-		</div>
-		{% block footer %}
-			<div class="mt-5">
-				<a href="{{ path('contact_index') }}">
-					<hr style="width: 70%; margin-left: auto; margin-right: auto; background-color: #b7d0e2">
-					<h2 class="text-center">
-						<i class="fas fa-at"></i>
-						<i class="fas fa-envelope"></i>
-						CONTACT US
-						<i class="fas fa-envelope"></i>
-						<i class="fas fa-at"></i>
-					</h2>
-					<img src="{{ '/base/footer.jpeg'|imagine_filter('big') }}" class="card-img-top mb-4"/>
-				</a>
-				<div class="bg-success text-center">
-					All rights reserved ©2020 Miz-Dara-Shop,  by Josselin Krikorian 
+							<li class="nav-item">
+								<a href="{{ path('app_logout') }}" class="nav-link" style="color:darkgreen">
+									<i class="fas fa-power-off"></i>
+								</a>
+							</li>
+						{% endif %}
+					</ul>
 				</div>
-			</div>
+			</nav>
+			<div class="container-fluid text-uppercase" style="font-size: 1.6rem; min-height:59vh">
+				{% for type, messages in app.session.flashBag.all %}
+					{% for message in messages %}
+						{% if type == 'error' %}
+							{% set type = 'danger' %}
 
-		{% endblock %}
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
+							<div class="alert alert-{{ type }} mt-2">
+								{{ message|raw }}
+							</div>
+						{% endif %}
+						{% if type == 'success' %}
+							{% set type = 'success' %}
+
+							<div class="alert alert-{{ type }} mt-2">
+								{{ message|raw }}
+							</div>
+						{% endif %}
+					{% endfor %}
+				{% endfor %}
+				{% block body %}{% endblock %}
+			</div>
+			{% block footer %}
+				<div class="mt-5">
+					<a href="{{ path('contact_index') }}">
+						<hr style="width: 70%; margin-left: auto; margin-right: auto; background-color: #b7d0e2">
+						<h2 class="text-center">
+							<i class="fas fa-at"></i>
+							<i class="fas fa-envelope"></i>
+							CONTACT US
+							<i class="fas fa-envelope"></i>
+							<i class="fas fa-at"></i>
+						</h2>
+						<img src="{{ '/base/footer.jpeg'|imagine_filter('big') }}" class="card-img-top mb-4"/>
+					</a>
+					<div class="bg-success text-center">
+						All rights reserved ©2020 Miz-Dara-Shop,  by Josselin Krikorian
+					</div>
+				</div>
+
+			{% endblock %}
+			{% block javascripts %}
+				{{ encore_entry_script_tags('app') }}
+			{% endblock %}
+		</div>
 	</body>
 </html>
