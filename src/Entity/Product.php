@@ -41,12 +41,10 @@ class Product
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Stock", mappedBy="product", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @ORM\Embedded(class="Stock")
      */
     private $stocks;
 
     /**
-     * @ORM\Embedded(class="Image")
      * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="product", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $images;
