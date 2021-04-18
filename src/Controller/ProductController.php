@@ -38,7 +38,7 @@ class ProductController extends AbstractController
         ImageRepository $imageRepository
     ) {
 
-        
+
         $product->setHasStock(null);
         $em = $this->getDoctrine()->getManager();
         $em->persist($product);
@@ -90,24 +90,22 @@ class ProductController extends AbstractController
             }
         }
 
-        if($name = $product->getMainImage()){
-            if(!($image = $imageRepository->findOneBy([
-                'name'=>$name, 
-                'product'=> $product
-            ]))){
-                $image=new Image();
+        if ($name = $product->getMainImage()) {
+            if (!($image = $imageRepository->findOneBy([
+                'name' => $name,
+                'product' => $product
+            ]))) {
+                $image = new Image();
                 $image
-                ->setName($name)
-                ->setProduct($product)
-                ->setUpdatedAt('now')
-                ;
+                    ->setName($name)
+                    ->setProduct($product)
+                    ->setUpdatedAt('now');
 
                 $product->addImage($image);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($image);
                 $em->flush();
             }
-
         }
 
 
@@ -146,6 +144,5 @@ class ProductController extends AbstractController
             'form' => $form->createView(),
             'tints' => $tints
         ]);
-        
     }
 }

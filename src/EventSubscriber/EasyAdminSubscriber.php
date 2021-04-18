@@ -125,6 +125,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->avoidCreatePurchase($entity);
         $this->avoidUncompleteStock($entity);
         $this->registrateMainImageInImages($entity);
+        $this->setSizesForCategory($entity);
         return;
     }
 
@@ -154,6 +155,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         $entity = $event->getEntityInstance();
         $this->registrateMainImageInImages($entity);
+        $this->setSizesForCategory($entity);
     }
 
     public function beforeDelete(BeforeEntityDeletedEvent $event)
@@ -176,14 +178,15 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         if ($entity instanceof Product) {
             if ($entity->getMainImageFile() instanceof UploadedFile) {
                 $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'mainImageFile'));
-                if(
+                if (
 
-                    $image = $this->imageRepository->findOneBy([
-                        'name' => $entity->getMainImage(),
-                        'product'=>$entity->getId()
+                    $image = $this->imageRepository->findOneBy(
+                        [
+                            'name' => $entity->getMainImage(),
+                            'product' => $entity->getId()
                         ]
                     )
-                ){
+                ) {
                     $image->setProduct(null);
                     $this->em->remove($image);
                     $this->em->flush();
@@ -197,7 +200,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
     }
 
-   
+
 
     private function setCategory($entity)
     {
@@ -287,16 +290,15 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     {
         if ($entity instanceof Product) {
             $entity
-            ->setHasStock(null)
-            ->setLowStock(null);
+                ->setHasStock(null)
+                ->setLowStock(null);
         }
 
         if ($entity instanceof Stock) {
             if ($product = $entity->getProduct()) {
                 $product
                     ->setHasStock(null)
-                    ->setLowStock(null)
-                ;
+                    ->setLowStock(null);
             }
         }
     }
@@ -375,6 +377,18 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         }
     }
 
+    private function setSizesForCategory($entity)
+    {
+        if ($entity instanceof Product) {
+            if ($categories = $entity->getCategories()) {
+                foreach ($categories as $category) {
+                    $category->setSizes();
+                }
+                $this->em->flush();
+            }
+        }
+    }
+
     private function registrateMainImageInImages($entity)
     {
         if ($entity instanceof Product) {
@@ -399,11 +413,10 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     private function setProductToNullForStock($entity)
     {
-        if($entity instanceof Stock){
-            if (!$this->purchaseRepository->findOneBy(['product'=>$entity->getProduct()])){
+        if ($entity instanceof Stock) {
+            if (!$this->purchaseRepository->findOneBy(['product' => $entity->getProduct()])) {
                 $entity->setProduct(null);
             }
         }
     }
-
 }

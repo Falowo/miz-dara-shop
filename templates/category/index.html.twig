@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}MDS
-	{{category.name}}
+{% block title %}MDS {{category.name}}
 {% endblock %}
 
 {% block menu %}
@@ -13,7 +12,14 @@
 			{% if sibling.categories | length > 0 %}
 				<li class="nav-item dropdown" style="display: flex">
 
-					<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					<a
+						class="nav-link dropdown-toggle"
+						href="#"
+						id="navbarDropdownMenuLink"
+						role="button"
+						data-toggle="dropdown"
+						aria-haspopup="true"
+						aria-expanded="false">
 						{{ sibling.name }}</a>
 
 
@@ -28,9 +34,7 @@
 							<div class="dropdown-divider"></div>
 							{% for child in sibling.categories %}
 
-								<a class="dropdown-item-text" 
-									style="font-weight:bold; font-size:2.2rem" 
-									href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">
+								<a class="dropdown-item-text" style="font-weight:bold; font-size:2.2rem" href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">
 									{{ child.name }}
 								</a>
 
@@ -38,9 +42,7 @@
 
 									{% for baby in child.categories %}
 
-										<a class="dropdown-item-text" 
-											href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}" 
-											style="font-size:2.2rem">
+										<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}" style="font-size:2.2rem">
 											{{ baby.name }}
 										</a>
 
@@ -56,6 +58,9 @@
 		</div>
 	{% endblock %}
 	{% block body %}
+		{# searchbar #}
+		
+		{{ include('category/_search_bar.html.twig') }}
 
 		{# PATH FROM HOME #}
 

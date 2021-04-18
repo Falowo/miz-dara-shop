@@ -12,6 +12,27 @@ use Symfony\Component\String\Slugger\AsciiSlugger;
  */
 class Category
 {
+    const ORDERBY = [
+        'last products',
+        'discounts',
+        'crescent price',
+        'decrescent price'
+    ];
+
+    /**
+     * Undocumented variable
+     *
+     * @var string
+     */
+    private $orderby;
+
+    /**
+     * Undocumented variable
+     *
+     * @var ?string
+     */
+    private $selectedSize;
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -42,7 +63,7 @@ class Category
      */
     private $hasParent;
 
-   
+
 
     /**
      * @ORM\Column(type="smallint", nullable=true)
@@ -54,13 +75,22 @@ class Category
      */
     private $products;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Size::class)
+     */
+    private $sizes;
 
+   
+
+   
 
     public function __construct()
     {
 
         $this->categories = new ArrayCollection();
         $this->products = new ArrayCollection();
+        $this->sizes = new ArrayCollection();
+       
     }
 
 
@@ -110,7 +140,7 @@ class Category
     public function setParent(?self $parent): self
     {
         $this->parent = $parent;
-        $this->setHasParent();        
+        $this->setHasParent();
 
         return $this;
     }
@@ -129,12 +159,10 @@ class Category
 
             $this->categories[] = $category;
             $category->setParent($this);
-            
-
         }
 
         return $this;
-}
+    }
 
     public function removeCategory(self $category): self
     {
@@ -152,7 +180,7 @@ class Category
 
     public function getHasParent(): ?bool
     {
-        
+
         return $this->hasParent;
     }
 
@@ -166,7 +194,7 @@ class Category
         return $this;
     }
 
-   
+
 
     public function getTheme(): ?int
     {
@@ -207,4 +235,76 @@ class Category
 
         return $this;
     }
+
+
+    /**
+     * Get undocumented variable
+     *
+     * @return  string
+     */
+    public function getOrderby()
+    {
+        return $this->orderby;
+    }
+
+    /**
+     * Set undocumented variable
+     *
+     * @param  string  $orderby  Undocumented variable
+     *
+     * @return  self
+     */
+    public function setOrderby(string $orderby)
+    {
+        $this->orderby = $orderby;
+
+        return $this;
+    }
+
+   
+
+    /**
+     * Get the value of selectedSize
+     */ 
+    public function getSelectedSize():?string
+    {
+        return $this->selectedSize;
+    }
+
+    /**
+     * Set the value of selectedSize
+     *
+     * @return  self
+     */ 
+    public function setSelectedSize(string $selectedSize):self
+    {
+        $this->selectedSize = $selectedSize;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Size[]
+     */
+    public function getSizes(): Collection
+    {
+        return $this->sizes;
+    }
+
+    public function addSize(Size $size): self
+    {
+        if (!$this->sizes->contains($size)) {
+            $this->sizes[] = $size;
+        }
+
+        return $this;
+    }
+
+    public function removeSize(Size $size): self
+    {
+        $this->sizes->removeElement($size);
+
+        return $this;
+    }
+     
 }

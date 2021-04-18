@@ -18,23 +18,18 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PurchaseLineType extends AbstractType
-{   
-    
+{
     private $data;
-   
-
     private $stockRepository;
 
     public function __construct(StockRepository $stockRepository, ?ObjectType $data)
     {
         $this->stockRepository = $stockRepository;
-       
         $this->data = $data;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder->addEventListener(
             FormEvents::POST_SET_DATA,
             function (FormEvent $event) {
@@ -43,10 +38,7 @@ class PurchaseLineType extends AbstractType
                 $product = $this->data->getProduct();
                 $size = $this->data->getSize();
                 $tint = $this->data->getTint();
-                
-               
 
-                
                 $this->addSizeField($form, $product, $size, $tint);
                 $this->addTintField($form,  $product, $size, $tint);
                 $this->addQuantityField($form,  $product, $size, $tint);
@@ -62,7 +54,7 @@ class PurchaseLineType extends AbstractType
      * @param Tint|null $tint
      */
     private function addSizeField(FormInterface $form, Product $product, ?Size $size, ?Tint $tint)
-    {        
+    {
         $builder = $form->getConfig()->getFormFactory()->createNamedBuilder(
             'size',
             EntityType::class,
@@ -73,14 +65,12 @@ class PurchaseLineType extends AbstractType
                 'placeholder' => 'Size',
                 'mapped' => true,
                 'required' => false,
-                'empty_data' => $size = $this->data->getSize() ?? $size, 
+                'empty_data' => $size = $this->data->getSize() ?? $size,
                 'auto_initialize' => false,
                 'choices' => $this->addSizeChoices($product),
-                'attr' => $size = $this->data->getSize() ? ['autofocus'=>false, 'value'=>$size] : ['autofocus'=>true]
+                'attr' => $size = $this->data->getSize() ? ['autofocus' => false, 'value' => $size] : ['autofocus' => true]
             ]
         );
-
-
 
         $builder->addEventListener(
             FormEvents::POST_SUBMIT,
@@ -116,7 +106,6 @@ class PurchaseLineType extends AbstractType
             ]
         );
 
-
         $builder->addEventListener(
             FormEvents::POST_SUBMIT,
             function (FormEvent $event) use ($size, $product, $tint) {
@@ -135,7 +124,7 @@ class PurchaseLineType extends AbstractType
 
     private function addQuantityField(FormInterface $form, Product $product, ?Size $size, ?Tint $tint)
     {
-        
+
         $form->add('quantity', ChoiceType::class, [
 
             'label' => false,
@@ -157,14 +146,14 @@ class PurchaseLineType extends AbstractType
     public function addSizeChoices(Product $product)
     {
         $sizes = [];
-        foreach($product->getSizes() as $size){
-            if($stocks = $this->stockRepository->findBy([
-                'product'=>$product,
-                'size'=>$size
-            ])){
-                foreach($stocks as $stock){
+        foreach ($product->getSizes() as $size) {
+            if ($stocks = $this->stockRepository->findBy([
+                'product' => $product,
+                'size' => $size
+            ])) {
+                foreach ($stocks as $stock) {
 
-                    if($stock->getQuantity()>0){
+                    if ($stock->getQuantity() > 0) {
                         $sizes[] = $size;
                     }
                 }
@@ -173,26 +162,23 @@ class PurchaseLineType extends AbstractType
         return $sizes;
     }
 
-
     private function addTintChoices(Product $product, ?Size $size)
     {
         if ($size) {
             $tints = [];
-            foreach($product->getTintsBySize($size) as $tint){
-                if($stock = $this->stockRepository->findOneBy([
-                    'product'=>$product,
-                    'size'=>$size,
-                    'tint'=>$tint
-                ])){
-                    if($stock->getQuantity() >0){
+            foreach ($product->getTintsBySize($size) as $tint) {
+                if ($stock = $this->stockRepository->findOneBy([
+                    'product' => $product,
+                    'size' => $size,
+                    'tint' => $tint
+                ])) {
+                    if ($stock->getQuantity() > 0) {
                         $tints[] = $tint;
                     }
                 }
             }
-
             return $tints;
         }
-
         return [];
     }
 
@@ -200,15 +186,11 @@ class PurchaseLineType extends AbstractType
     {
         $choices = [];
         if ($size && $tint) {
-           
             $stock = $this->stockRepository->findOneBy([
-                'product'=>$product,
-                'size'=>$size,
-                'tint'=>$tint
+                'product' => $product,
+                'size' => $size,
+                'tint' => $tint
             ]);
-            
-            
-
             for ($i = 1; $i <= $stock->getQuantity() && $i <= 16; $i++) {
                 $choices[] = $i;
             }
@@ -217,8 +199,6 @@ class PurchaseLineType extends AbstractType
                 $output[$v] = $k + 1;
             }
             return $output;
-            
-            
         } else
             return [];
     }

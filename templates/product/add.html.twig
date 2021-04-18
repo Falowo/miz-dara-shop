@@ -94,9 +94,15 @@
 		<div class="col-0 col-md-3"></div>
 	</div>
 				<div class="card-body text-center">
-					<h3 class="card-title text-secondary" style="font-weight: bold; font-size: 2rem">{{ product.name | upper }}</h3>
+					<h2 
+					class="card-title text-secondary" 
+					style="font-weight: bold; font-size: 2rem">
+					{{ product.name | upper }}
+					</h2>
 
-					<h4 class="text-primary" style="font-weight: bold; font-size: 2rem">
+					<h3 
+					class="text-primary" 
+					style="font-weight: bold; font-size: 2rem">
 						{% if product.discountPrice is null %}
 
 							{{ product.formatedPrice }}
@@ -115,7 +121,7 @@
 						{% endif %}
 
 
-					</h4>
+					</h3>
 
 					<p class="card-text">
 						{{ product.info }}

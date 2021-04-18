@@ -1,10 +1,12 @@
 {
-  "build/0.b9e94bd1.js": "/build/0.b9e94bd1.js",
-  "build/1.626e70d2.js": "/build/1.626e70d2.js",
-  "build/2.0dbf8d07.js": "/build/2.0dbf8d07.js",
-  "build/add.js": "/build/add.8834ef61.js",
-  "build/app.css": "/build/app.3589eece.css",
-  "build/app.js": "/build/app.9f720c5e.js",
-  "build/newAddress.js": "/build/newAddress.3b7eda7a.js",
+  "build/0.d9a8967d.js": "/build/0.d9a8967d.js",
+  "build/1.f48e24fb.js": "/build/1.f48e24fb.js",
+  "build/2.aecb0448.js": "/build/2.aecb0448.js",
+  "build/3.9293b729.js": "/build/3.9293b729.js",
+  "build/add.js": "/build/add.4207006a.js",
+  "build/app.css": "/build/app.980d7ad9.css",
+  "build/app.js": "/build/app.b413fe61.js",
+  "build/gdpr.js": "/build/gdpr.58d17177.js",
+  "build/newAddress.js": "/build/newAddress.0702aae3.js",
   "build/runtime.js": "/build/runtime.d94b3b43.js"
 }

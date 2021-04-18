@@ -23,15 +23,22 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
+        /**
+    * @return Product[] Returns an array of Product objects
+    */
+    public function findAllByCategory($id)
+    {
+       return $this->findALLByCategoryQuery($id)
+            ->getResult()
+        ;
+    }
+
     /**
      * @param $id
      * @return Query
      */
-    public function findALLByCategoryQuery($id): Query
+    public function findAllByCategoryQuery($id): Query
     {
-
-
-
         return $this->createQueryBuilder('p')
             ->select('p, i, c')
             ->Join('p.categories', 'c')

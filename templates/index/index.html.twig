@@ -1,24 +1,44 @@
 {% extends 'base.html.twig' %}
 
 
+{% block body %}
+	<h1>Home</h1>
 
-    {% block body %}
-        <h1>Welcome</h1>
-
-<div class="row">
-
-
-                {% for product in products %}
-                    {{ include('product/_card.html.twig') }}
-                {% endfor %}
+	<div class="row">
 
 
-
-</div>
-
-        <div class="pagination">
-            {{ knp_pagination_render(products) }}
-        </div>
+		{% for product in products %}
+			{# <h5></h5> #}
+			{{ include('product/_card.html.twig') }}
+		{% endfor %}
 
 
-    {% endblock %}
+	</div>
+
+	<div class="pagination">
+		{{ knp_pagination_render(products) }}
+	</div>
+
+
+{% endblock %}
+{% block footer %}
+	{{ parent() }}
+	<div class="fixed-bottom gdpr" style="min-height:50vh;background-color:rgba(0,0,0,0.8)" >
+		<div class="container d-flex flex-column justify-content-center">
+			<p
+				class="text-center mt-3 mb-5 align flex-grow-1"
+				style="font-size:3rem;color:white">
+				This website may use some cookies but we value your privacy</p>
+			<div class="container d-flex flex-row justify-content-between align-items-start
+					flex-grow-1">
+				<button class="btn btn-lg btn-danger">No cookies</button>
+				<button class="btn btn-lg btn-warning">Just necessary cookies</button>
+				<button class="btn btn-lg btn-success">Accept all</button>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	{{ encore_entry_script_tags('gdpr') }}
+{% endblock %}
