@@ -30,15 +30,7 @@ class CategoryController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            switch ($category->getSelectedSize()) {
-                case 'value':
-                    # code...
-                    break;
-                
-                default:
-                    # code...
-                    break;
-            }
+           dump($category);
         }
 
 

@@ -54,11 +54,11 @@ class FilterService
         return $category->getSizes();
     }
 
-    public function paginate($id, $selectedSizeId=null, $order = null ){
-        $products = $this->paginator->paginate(
-            $this->productRepository->findAllByCategoryQuery($id), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            12 /*limit per page*/
-        );
-    }
+    // public function paginate($id, $selectedSizeId=null, $order = null ){
+    //     $products = $this->paginator->paginate(
+    //         $this->productRepository->findAllByCategoryQuery($id), /* query NOT result */
+    //         $request->query->getInt('page', 1), /*page number*/
+    //         12 /*limit per page*/
+    //     );
+    // }
 }
