@@ -27,7 +27,7 @@ class CategoryController extends AbstractController
               $filterService->setNgetAllSizesByCategory($category);
             }  
         
-        // $form = $this->createForm(SearchBarType::class, $category);
+        $form = $this->createForm(SearchBarType::class, $category);
 
         // $form->handleRequest($request);
 
@@ -87,7 +87,7 @@ class CategoryController extends AbstractController
             'category' => $category,
             'parent' => $parent,
             'ancestors' => $ancestors,
-            // 'form' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 }
