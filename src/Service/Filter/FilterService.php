@@ -41,7 +41,6 @@ class FilterService
         }
         $products = $this->productRepository
             ->findAllByCategory($category->getId());
-            dump($products);
         foreach ($products as $product) {
             if ($stocks = $product->getStocks()) {
                 foreach ($stocks as $stock) {

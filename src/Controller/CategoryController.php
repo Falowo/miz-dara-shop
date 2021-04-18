@@ -23,14 +23,16 @@ class CategoryController extends AbstractController
     public function index(Category $category, ProductRepository $repository, PaginatorInterface $paginator, Request $request, FilterService $filterService, $id)
     {
 
-            $filterService->setNgetAllSizesByCategory($category);
+          if(!$category->getSizes()>0){
+              $filterService->setNgetAllSizesByCategory($category);
+            }  
         
         $form = $this->createForm(SearchBarType::class, $category);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-           dump($category);
+          
         }
 
 
