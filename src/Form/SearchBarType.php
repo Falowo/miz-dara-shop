@@ -21,7 +21,6 @@ class SearchBarType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->data = $builder->getData();
-        dump($this->data);
 
         $builder
             ->add('orderby', ChoiceType::class, [
@@ -65,9 +64,7 @@ class SearchBarType extends AbstractType
                 $choices[$size->getName()] = $size->getId();
             }
         }
-       
 
-        dump($choices);
         return $choices;
     }
 }
