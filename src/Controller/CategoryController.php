@@ -20,7 +20,7 @@ class CategoryController extends AbstractController
      * @param $id
      * @return Response
      */
-    public function index(Category $category, ProductRepository $repository, PaginatorInterface $paginator, Request $request, FilterService $filterService, $id)
+    public function index(Category $category, Request $request, FilterService $filterService, $id)
     {
         $order=['p.id', 'DESC'];
 
@@ -37,14 +37,7 @@ class CategoryController extends AbstractController
         }
           $products = $filterService->paginate($id, $order, $request);
 
-        // $products = $paginator->paginate(
-        //     $repository->findAllByCategoryQuery($id, $order=['p.id', 'DESC']), /* query NOT result */
-        //     $request->query->getInt('page', 1), /*page number*/
-        //     12 /*limit per page*/
-        // );
-
         if (!is_null($category->getParent())) {
-
             $parent = $category->getParent();
         } else {
             $parent = $category;
@@ -72,8 +65,6 @@ class CategoryController extends AbstractController
                 }
             }
         }
-
-
 
         return $this->render('category/index.html.twig', [
             'controller_name' => 'CategoryController',

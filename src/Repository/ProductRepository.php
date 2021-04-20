@@ -38,7 +38,6 @@ class ProductRepository extends ServiceEntityRepository
      */
     public function findAllByCategoryQuery($id, $order=['p.id', 'DESC']): Query
     {
-        dump($order[0], $order[1]);
 
         return $this->createQueryBuilder('p')
             ->select('p, i, c')
