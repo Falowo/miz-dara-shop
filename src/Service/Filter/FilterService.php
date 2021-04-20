@@ -8,13 +8,13 @@ use App\Entity\Category;
 use App\Entity\Stock;
 use App\Repository\StockRepository;
 use App\Repository\ProductRepository;
+use App\Repository\SizeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
 class FilterService
 {
-
-    private $stockRepository;
     private $productRepository;
     private $em;
     private $paginator;
@@ -34,8 +34,8 @@ class FilterService
 
     public function setNgetAllSizesByCategory(Category $category)
     {
-        if($sizes = $category->getSizes()){
-            foreach($sizes as $size){
+        if ($sizes = $category->getSizes()) {
+            foreach ($sizes as $size) {
                 $category->removeSize($size);
             }
         }
@@ -53,11 +53,32 @@ class FilterService
         return $category->getSizes();
     }
 
-    // public function paginate($id, $selectedSizeId=null, $order = null ){
-    //     $products = $this->paginator->paginate(
-    //         $this->productRepository->findAllByCategoryQuery($id), /* query NOT result */
-    //         $request->query->getInt('page', 1), /*page number*/
-    //         12 /*limit per page*/
-    //     );
-    // }
+    public function paginate($id, $order = ['p.id', 'DESC'], Request $request)
+    {
+
+
+        switch ($order) {
+            case 'last products':
+                $order = ['p.id', 'DESC'];
+                break;
+            case 'discounts':
+                $order = ['p.discountPrice', 'DESC'];
+                break;
+            case 'crescent price':
+                $order = ['p.price', 'ASC'];
+                break;
+            case 'decrescent price':
+                $order = ['p.price', 'DESC'];
+                break;
+            default:
+                $order = ['p.id', 'DESC'];
+                break;
+        }
+
+        return $this->paginator->paginate(
+            $this->productRepository->findAllByCategoryQuery($id, $order), /* query NOT result */
+            $request->query->getInt('page', 1), /*page number*/
+            12 /*limit per page*/
+        );
+    }
 }

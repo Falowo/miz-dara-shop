@@ -22,6 +22,7 @@ class CategoryController extends AbstractController
      */
     public function index(Category $category, ProductRepository $repository, PaginatorInterface $paginator, Request $request, FilterService $filterService, $id)
     {
+        $order=['p.id', 'DESC'];
 
           if(!$category->getSizes()>0){
               $filterService->setNgetAllSizesByCategory($category);
@@ -29,25 +30,18 @@ class CategoryController extends AbstractController
         
         $form = $this->createForm(SearchBarType::class, $category);
 
-        // $form->handleRequest($request);
+        $form->handleRequest($request);
 
-        // if ($form->isSubmitted() && $form->isValid()) {
-          
-        // }
+        if ($form->isSubmitted() && $form->isValid()) {
+        $order = $category->getOrderby();
+        }
+          $products = $filterService->paginate($id, $order, $request);
 
-
-        $products = $paginator->paginate(
-            $repository->findAllByCategoryQuery($id), /* query NOT result */
-            $request->query->getInt('page', 1), /*page number*/
-            12 /*limit per page*/
-        );
-
-        
-
-
-
-
-
+        // $products = $paginator->paginate(
+        //     $repository->findAllByCategoryQuery($id, $order=['p.id', 'DESC']), /* query NOT result */
+        //     $request->query->getInt('page', 1), /*page number*/
+        //     12 /*limit per page*/
+        // );
 
         if (!is_null($category->getParent())) {
 

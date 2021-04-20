@@ -2,36 +2,41 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/build/runtime.d94b3b43.js",
-        "/build/0.d9a8967d.js",
-        "/build/3.9293b729.js",
-        "/build/app.b413fe61.js"
+        "http://localhost:8080/build/runtime.js",
+        "http://localhost:8080/build/vendors~add~app~gdpr~newAddress.js",
+        "http://localhost:8080/build/vendors~add~app~newAddress.js",
+        "http://localhost:8080/build/vendors~app.js",
+        "http://localhost:8080/build/app.js"
       ],
       "css": [
-        "/build/app.980d7ad9.css"
+        "http://localhost:8080/build/app.css"
       ]
     },
     "add": {
       "js": [
-        "/build/runtime.d94b3b43.js",
-        "/build/0.d9a8967d.js",
-        "/build/1.f48e24fb.js",
-        "/build/add.4207006a.js"
+        "http://localhost:8080/build/runtime.js",
+        "http://localhost:8080/build/vendors~add~app~gdpr~newAddress.js",
+        "http://localhost:8080/build/vendors~add~app~newAddress.js",
+        "http://localhost:8080/build/vendors~add~gdpr~newAddress.js",
+        "http://localhost:8080/build/vendors~add.js",
+        "http://localhost:8080/build/add.js"
       ]
     },
     "newAddress": {
       "js": [
-        "/build/runtime.d94b3b43.js",
-        "/build/0.d9a8967d.js",
-        "/build/1.f48e24fb.js",
-        "/build/newAddress.0702aae3.js"
+        "http://localhost:8080/build/runtime.js",
+        "http://localhost:8080/build/vendors~add~app~gdpr~newAddress.js",
+        "http://localhost:8080/build/vendors~add~app~newAddress.js",
+        "http://localhost:8080/build/vendors~add~gdpr~newAddress.js",
+        "http://localhost:8080/build/newAddress.js"
       ]
     },
     "gdpr": {
       "js": [
-        "/build/runtime.d94b3b43.js",
-        "/build/2.aecb0448.js",
-        "/build/gdpr.58d17177.js"
+        "http://localhost:8080/build/runtime.js",
+        "http://localhost:8080/build/vendors~add~app~gdpr~newAddress.js",
+        "http://localhost:8080/build/vendors~add~gdpr~newAddress.js",
+        "http://localhost:8080/build/gdpr.js"
       ]
     }
   }

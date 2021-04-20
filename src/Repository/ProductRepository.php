@@ -23,22 +23,23 @@ class ProductRepository extends ServiceEntityRepository
         parent::__construct($registry, Product::class);
     }
 
-        /**
-    * @return Product[] Returns an array of Product objects
-    */
-    public function findAllByCategory($id)
+    /**
+     * @return Product[] Returns an array of Product objects
+     */
+    public function findAllByCategory($id, $order=['p.id', 'DESC'])
     {
-       return $this->findALLByCategoryQuery($id)
-            ->getResult()
-        ;
+        return $this->findAllByCategoryQuery($id, $order)
+            ->getResult();
     }
 
     /**
      * @param $id
      * @return Query
      */
-    public function findAllByCategoryQuery($id): Query
+    public function findAllByCategoryQuery($id, $order=['p.id', 'DESC']): Query
     {
+        dump($order[0], $order[1]);
+
         return $this->createQueryBuilder('p')
             ->select('p, i, c')
             ->Join('p.categories', 'c')
@@ -48,7 +49,7 @@ class ProductRepository extends ServiceEntityRepository
             ->andWhere('p.hasStock = true')
             ->andWhere('c.id = :id')
             ->setParameter('id', $id)
-            ->orderBy('p.id', 'DESC')
+            ->orderBy($order[0], $order[1])
             ->getQuery();
     }
 
@@ -68,14 +69,14 @@ class ProductRepository extends ServiceEntityRepository
     public function findAllByRandomQueryBuilder(): QueryBuilder
     {
         $order = array_rand(array(
-            //            'DESC' => 'DESC',
+            'DESC' => 'DESC',
             'ASC' => 'ASC'
         ));
 
         $column = array_rand(array(
             'p.id' => 'p.id',
-            //            'p.name' => 'p.name',
-            //            'p.price' => 'p.price'
+            'p.name' => 'p.name',
+            'p.price' => 'p.price'
         ));
         return $this->createQueryBuilder('p')
             ->select('p, c')

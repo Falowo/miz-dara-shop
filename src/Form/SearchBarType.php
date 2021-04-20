@@ -29,12 +29,6 @@ class SearchBarType extends AbstractType
                 'placeholder' => 'Sort by',
                 'required' => false
 
-            ])
-            ->add('selectedSize', ChoiceType::class, [
-                'choices' => $this->getSizesChoices($this->data),
-                'label' => false,
-                'placeholder' => 'Look for your size',
-                'required' => false
             ]);
     }
 
@@ -56,15 +50,4 @@ class SearchBarType extends AbstractType
         return $output;
     }
 
-    private function getSizesChoices($category)
-    {
-        $choices = [];
-        if ($sizes = $category->getSizes()) {
-            foreach ($sizes as $size) {
-                $choices[$size->getName()] = $size->getId();
-            }
-        }
-
-        return $choices;
-    }
 }
