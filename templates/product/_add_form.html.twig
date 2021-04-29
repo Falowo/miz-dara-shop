@@ -1,20 +1,22 @@
 {{ form_start(form) }}
 <div class="row">
-	<div class="col">
-		{{ form_row(form.size) }}
-	</div>
-	<div class="col">
-		{{ form_row(form.tint) }}
-	</div>
-	<div class="col">
-		{{ form_row(form.quantity) }}
-	</div>
+  <div class="col">
+    {{ form_row(form.size) }}
+  </div>
+  <div class="col">
+    {{ form_row(form.tint) }}
+  </div>
+  <div class="col">
+    {{ form_row(form.quantity) }}
+  </div>
 </div>
 <div id="button" class="row">
-	<div class="col"></div>
-	<div class="col"></div>
-	<div class="col">
-		<button type="submit" class="btn btn-success p-3" style="font-size: 2rem">{{ button_label|default('Add to cart') }}</button>
-	</div>
+  <div class="col"></div>
+  <div class="col"></div>
+  <div class="col">
+    <button type="submit" class="btn btn-success p-3" style="font-size: 2rem">
+      {{ button_label|default('Add to cart') }}
+    </button>
+  </div>
 </div>
 {{ form_end(form) }}

@@ -1,26 +1,33 @@
+<li class="nav-item dropdown" style="display: flex">
+  <a
+    class="nav-link dropdown-toggle"
+    href="#"
+    id="navbarDropdownMenuLink"
+    role="button"
+    data-toggle="dropdown"
+    aria-haspopup="true"
+    aria-expanded="false"
+  >
+    <i class="far fa-user"></i>&nbsp{{ app.user.firstName }}</a
+  >
 
+  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+    <div class="dropdown-divider">$$</div>
 
-	<li class="nav-item dropdown" style="display: flex">
+    <a
+      class="dropdown-item-text"
+      href="{{ path('address_user') }}"
+      style="font-size: 2.2rem"
+    >
+      My&nbspAddress
+    </a>
 
-		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" 
-        role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			<i class="far fa-user"></i>&nbsp{{ app.user.firstName }}</a>
-
-
-		<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-
-			<div class="dropdown-divider">$$</div>
-
-			<a class="dropdown-item-text"  
-            href="{{ path('address_user') }}" style="font-size:2.2rem">
-				My&nbspAddress
-			</a>
-
-			<a class="dropdown-item-text"  
-            href="{{ path('purchase_list') }}"style="font-size:2.2rem">
-				My&nbspPurchases
-			</a>
-
-		
-		</div>
-	</li>
+    <a
+      class="dropdown-item-text"
+      href="{{ path('purchase_list') }}"
+      style="font-size: 2.2rem"
+    >
+      My&nbspPurchases
+    </a>
+  </div>
+</li>

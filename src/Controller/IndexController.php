@@ -8,6 +8,7 @@ use App\Repository\ProductRepository;
 use App\Repository\PurchaseRepository;
 use App\Service\Cart\CartService;
 use App\Service\Mailer\MailerService;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,13 +33,12 @@ class IndexController extends AbstractController
         CartService $cartService,
         Request $request
     ): Response {
-
+        
         if($user = $this->getUser()){
-            if( !($user->getConfirmedEmail()) ){
-                $authenticate = $this->get('security.csrf.token_manager')->getToken('authenticate');
-              
-                         
 
+            if( !($user->getConfirmedEmail()) ){
+
+                $authenticate = $this->get('security.csrf.token_manager')->getToken('authenticate');
                 $mailerService->sendSignUpEmail($user, $authenticate);
                 return $this->render('index/confirm_your_email.html.twig', [
                     'controller_name' => 'IndexController'        
@@ -75,7 +75,6 @@ class IndexController extends AbstractController
      */
     public function menu(CategoryRepository $repository)
     {
-
         $ancestorCategories  = $repository->findAncestorCategories();
         return $this->render(
             'index/menu.html.twig',
@@ -84,7 +83,6 @@ class IndexController extends AbstractController
             ]
         );
     }
-
     
     public function user()
     {       

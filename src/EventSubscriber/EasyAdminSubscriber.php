@@ -27,8 +27,7 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 class EasyAdminSubscriber implements EventSubscriberInterface
 {
-
-    /**
+     /**
      * @var CacheManager
      */
     private $cacheManager;

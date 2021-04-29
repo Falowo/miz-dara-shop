@@ -1,8 +1,26 @@
+@import 'base';
+@import 'variables';
+@import 'classes';
 
 
-html body {
-    background-color: whitesmoke;
-
+body{
+    min-height: 100vh;
+    display:grid;
+    grid:
+    "header" auto
+    "main" 1fr
+    "footer" auto /
+    auto
 }
 
+header{
+    grid-area: header;
 
+}
+main{
+    grid-area: main;
+}
+
+footer{
+    grid-area: footer;
+}

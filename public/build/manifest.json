@@ -9,5 +9,6 @@
   "build/vendors~add~app~gdpr~newAddress.js": "http://localhost:8080/build/vendors~add~app~gdpr~newAddress.js",
   "build/vendors~add~app~newAddress.js": "http://localhost:8080/build/vendors~add~app~newAddress.js",
   "build/vendors~add~gdpr~newAddress.js": "http://localhost:8080/build/vendors~add~gdpr~newAddress.js",
-  "build/vendors~app.js": "http://localhost:8080/build/vendors~app.js"
+  "build/vendors~app.js": "http://localhost:8080/build/vendors~app.js",
+  "build/images/9227.jpg": "http://localhost:8080/build/images/9227.39b6d38f.jpg"
 }
