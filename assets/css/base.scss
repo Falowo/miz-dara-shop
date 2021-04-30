@@ -2,13 +2,16 @@
   font-size: 62.5%;
 
   body {
+    background: var(--goldy) url("../../public/base/9227.jpg") center fixed;
+    background-size: cover;
     .container-fluid {
       font-size: 2rem;
       color: var(--dark-gold);
       font-family: var(--ubuntu);
-      background: var(--goldy) url("../../public/base/9227.jpg") center fixed;
-      background-size: cover;
 
+      i.logo{
+        font-family: var(--ubuntu);
+      }
       h1 {
         font-size: 4rem;
       }
