@@ -1,1 +1,0 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([["searchBar"],{gKq4:function(e,n){var t=document.querySelector("select"),c=document.querySelector("button");t.addEventListener("change",(function(){console.log({buttonElt:c,selectElt:t}),c.click()}))}},[["gKq4","runtime"]]]);
