@@ -36,7 +36,7 @@
 		</div>
 		<div class="row">
 			<div class="col mb-3">
-				<button class="btn btn-lg btn-primary p-3 " style="font-size: 2rem" type="submit">
+				<button class="btn btn-lg my-btn-blue-logo p-3 " style="font-size: 2rem" type="submit">
 					Sign in
 				</button>
 			</div>
@@ -50,4 +50,8 @@
 	
 			<a href="{{ path('app_forgot_password_request')}} ">I forgot my password</a>
 		
+{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags("menu") }}
 {% endblock %}

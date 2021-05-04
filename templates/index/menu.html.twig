@@ -1,8 +1,52 @@
-{% for category in ancestorCategories %}
-	<li class="nav-item">
-		<a class="nav-link" 
-			href="{{ path('category', {'id': category.id, 'slug': category.slug}) }}">
-		{{ category.name }}
-		</a>
-	</li>
-{% endfor %}
+{# {% for category in ancestorCategories %}
+<li class="nav-item">
+  <a
+    class="nav-link"
+    href="{{ path('category', { id: category.id, slug: category.slug }) }}"
+  >
+    {{ category.name }}
+  </a>
+</li>
+{% endfor %} #}
+
+<ul class=" navbar-nav d-flex flex-column flex-md-row  align-self-md-center flex-lg-column ml-5 mb-4 m-lg-4">
+  {# first level category #} {% for category in ancestorCategories %}
+  <ul class=" nav-list d-flex flex-column flex-lg-row flex-wrap">
+    <a
+      class="nav-link w-100"
+      href="{{ path('category', { id: category.id, slug: category.slug }) }}"
+    >
+      <strong class="blue-logo">{{ category.name }}</strong>
+    </a>
+
+    {# 2nd level category #} {% if category.categories %} {% for category in
+    category.categories %}
+
+    <ul class="second-level nav-item d-flex flex-column">
+      <a
+        class="nav-link"
+        href="{{ path('category', { id: category.id, slug: category.slug }) }}"
+      >
+        <strong class="gold">{{ category.name }}</strong>
+      </a>
+      {% if category.categories %} {% for category in category.categories %} {#
+      3rd level category #}
+      <li class="nav-item third-level">
+        <a
+          class="nav-link"
+          href="{{
+            path('category', { id: category.id, slug: category.slug })
+          }}"
+        >
+          {{ category.name }}
+        </a>
+        {% if category.categories %} {% for category in category.categories %}
+        {% endfor %} {% endif %}
+      </li>
+      {% endfor %} {% endif %}
+    </ul>
+    {% endfor %} {% endif %}
+  </ul>
+  {% endfor %}
+</ul>
+

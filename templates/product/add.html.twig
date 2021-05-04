@@ -101,25 +101,26 @@
 					</h2>
 
 					<h3 
-					class="text-primary" 
-					style="font-weight: bold; font-size: 2rem">
-						{% if product.discountPrice is null %}
+						<strong class="blue-logo">
 
-							{{ product.formatedPrice }}
-							₦
-
-						{% else %}
-
-							<del>
+							{% if product.discountPrice is null %}
+	
 								{{ product.formatedPrice }}
 								₦
-							</del>
-							&nbsp &nbsp &nbsp
-							{{ product.formatedDiscountPrice }}
-							₦
+	
+							{% else %}
+	
+								<del>
+									{{ product.formatedPrice }}
+									₦
+								</del>
+								&nbsp &nbsp &nbsp
+								{{ product.formatedDiscountPrice }}
+								₦
+	
+							{% endif %}
 
-						{% endif %}
-
+						</strong>	
 
 					</h3>
 
@@ -170,6 +171,8 @@
 
 
 
-</div>{% endblock %}{% block javascripts %}
+{% endblock %}{% block javascripts %}
 {{ parent() }}
-{{ encore_entry_script_tags('add') }}{% endblock %}
+{{ encore_entry_script_tags('add') }}
+{{ encore_entry_script_tags('menu') }}
+{% endblock %}

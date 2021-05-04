@@ -1,98 +1,108 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block title %}MDS {{ category.name }}
+{% endblock %} {% block menu %}
+<div class="d-flex flex-column justify-content-around">
+  {% for sibling in parent.categories %} {% if sibling.categories | length > 0
+  %}
+  {% if sibling is same as category %}
+  <li class="order-1 nav-item dropdown show">
+	  {% else %}
+  <li class="nav-item dropdown">
+  {% endif %}
+    <a
+      class="nav-link dropdown-toggle"
+      href="#"
+      id="navbarDropdownMenuLink"
+      role="button"
+      data-toggle="dropdown"
+      aria-haspopup="true"
+      {% if sibling is same as category %}
+      aria-expanded="true"
+      {% else %}
+      aria-expanded="false"
+      {% endif %}
+    >
+      {{ sibling.name }}</a
+    >
+    {% else %}
+  </li>
 
-{% block title %}MDS {{category.name}}
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      href="{{ path('category', { id: sibling.id, slug: sibling.slug }) }}"
+    >
+      {{ sibling.name }}</a
+    >
+
+    {% endif %}
+	{% if sibling is same as category and category.categories | length > 0 %}
+    <div class="dropdown-menu show" aria-labelledby="navbarDropdownMenuLink">
+		{% else %}
+		<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+	{% endif %}
+      {% if sibling.categories | length > 0 %}
+      <div class="dropdown-divider"></div>
+      {% for child in sibling.categories %}
+
+      <a
+        class="dropdown-item-text"
+        style="font-weight: bold; font-size: 2.2rem"
+        href="{{ path('category', { id: child.id, slug: child.slug }) }}"
+      >
+        {{ child.name }}
+      </a>
+
+      {% if child.categories | length > 0 %} {% for baby in child.categories %}
+
+      <a
+        class="dropdown-item-text"
+        href="{{ path('category', { id: baby.id, slug: baby.slug }) }}"
+        style="font-size: 2.2rem"
+      >
+        {{ baby.name }}
+      </a>
+
+      {% endfor %} {% endif %} {% endfor %} {% endif %}
+    </div>
+  </li>
+  {% endfor %}
+</div>
+{% endblock %} {% block body %} 
+
+<div class="d-flex flex-column  flex-md-row justify-content-between">
+
+{# PATH FROM HOME #}
+
+<div class="p-4 d-flex flex-row flex-nowrap">
+  <a href="{{ path('app_index') }} ">Home</a>
+  <span>&nbsp/&nbsp</span>
+
+  {% for ancestor in ancestors %} {% if ancestor %}
+  <a href="{{ path('category', { id: ancestor.id, slug: ancestor.slug }) }} ">
+    {{ ancestor.name }}
+  </a>
+  <span>&nbsp/&nbsp</span>
+
+  {% endif %} {% endfor %}
+  <a href="{{ path('category', { id: category.id, slug: category.slug }) }} ">
+    <strong>{{ category.name }}</strong>
+  </a>
+</div>
+
+{# END PATH FROM HOME #} {# searchbar #}
+
+{{ include("category/_search_bar.html.twig") }}
+
+</div>
+
+<div class="row">
+  {% for product in products %}
+  {{ include("product/_card.html.twig") }}
+  {% endfor %}
+</div>
+<div class="pagination">{{ knp_pagination_render(products) }}</div>
 {% endblock %}
 
-{% block menu %}
-	<div>
-
-
-		{% for sibling in parent.categories %}
-
-			{% if sibling.categories | length > 0 %}
-				<li class="nav-item dropdown" style="display: flex">
-
-					<a
-						class="nav-link dropdown-toggle"
-						href="#"
-						id="navbarDropdownMenuLink"
-						role="button"
-						data-toggle="dropdown"
-						aria-haspopup="true"
-						aria-expanded="false">
-						{{ sibling.name }}</a>
-
-
-				{% else %}
-					<li class="nav-item">
-						<a class="nav-link" href="{{ path('category', {'id': sibling.id, 'slug': sibling.slug}) }}">
-							{{ sibling.name }}</a>
-
-					{% endif %}
-					<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-						{% if sibling.categories | length > 0 %}
-							<div class="dropdown-divider"></div>
-							{% for child in sibling.categories %}
-
-								<a class="dropdown-item-text" style="font-weight:bold; font-size:2.2rem" href="{{ path('category', {'id': child.id, 'slug':child.slug}) }}">
-									{{ child.name }}
-								</a>
-
-								{% if child.categories | length > 0 %}
-
-									{% for baby in child.categories %}
-
-										<a class="dropdown-item-text" href="{{ path('category', {'id': baby.id, 'slug':baby.slug}) }}" style="font-size:2.2rem">
-											{{ baby.name }}
-										</a>
-
-									{% endfor %}
-
-								{% endif %}
-
-							{% endfor %}
-						{% endif %}
-					</div>
-				</li>
-			{% endfor %}
-		</div>
-	{% endblock %}
-	{% block body %}
-		{# searchbar #}
-		
-		{{ include('category/_search_bar.html.twig') }}
-
-		{# PATH FROM HOME #}
-
-		<div class="p-4">
-			<a href="{{ path('app_index')}} ">Home</a>
-			<span class="text-primary">&nbsp/&nbsp</span>
-
-
-			{% for ancestor in ancestors %}
-				{% if ancestor %}
-					<a href="{{ path('category', {'id': ancestor.id, 'slug': ancestor.slug } ) }} ">
-						{{ ancestor.name }}
-					</a>
-					<span class="text-primary">&nbsp/&nbsp</span>
-
-				{% endif %}
-
-			{% endfor %}
-			<a href="{{ path('category', {'id': category.id, 'slug': category.slug } ) }} ">
-				<strong class="text-primary">{{ category.name }}</strong>
-			</a>
-
-		</div>
-
-
-		{# END PATH FROM HOME #}
-
-
-		<div class="row">
-			{% for product in products %}
-				{{ include('product/_card.html.twig') }}
-			{% endfor %}
-		</div>
-		<div class="pagination">{{ knp_pagination_render(products) }}</div>
-	{% endblock %}
+{% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags('searchBar') }}{% endblock %}

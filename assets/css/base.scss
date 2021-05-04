@@ -2,12 +2,17 @@
   font-size: 62.5%;
 
   body {
-    .container-fluid {
-      font-size: 2rem;
+    background: var(--goldy) url("../../public/base/9227.jpg") center fixed;
+    background-size: cover;
+
+    .my-container {
+      font-size: 1.8rem;
       color: var(--dark-gold);
       font-family: var(--ubuntu);
-      background: var(--goldy) url("../../public/base/9227.jpg") center fixed;
-      background-size: cover;
+
+      .logo{
+        min-width: 100px;
+      }
 
       h1 {
         font-size: 4rem;
@@ -19,7 +24,11 @@
         font-size: 2rem;
       }
 
-      h1,h2,h3,h4,h5{
+      h1,
+      h2,
+      h3,
+      h4,
+      h5 {
         color: var(--dark-gold);
         text-align: center;
       }
@@ -33,11 +42,16 @@
         }
       }
 
+      .card.gallery:hover {
+        width: 105%;
+        z-index: 1;
+      }
+
       img {
         max-width: 100%;
       }
 
-      a{
+      a {
         color: var(--dark-gold);
         text-decoration: none;
         &:hover {
@@ -45,8 +59,9 @@
           text-decoration: none;
         }
       }
-
-      a.btn {
+      
+      a.btn,
+      button.my-btn {
         background-color: var(--dark-gold);
         color: white;
         text-decoration: none;
@@ -54,51 +69,26 @@
           background-color: var(--intense-gold);
           text-decoration: none;
         }
+        &-blue-logo {
+          background-color: var(--blue-logo);
+          color:white;
+        }
       }
 
       strong {
-        color: var(--dark-gold);
-      }
+        font-weight: 700;
 
-      footer {
-
-        h1,
-        h2,
-        h3,
-        h4,
-        a {
-          font-family: var(--great-vibes);
-          font-weight: 700;
-          font-size: 3rem;
+        &.blue-logo{
+          color: var(--blue-logo);
         }
-
-        ul {
-          display: flex;
-          flex-flow: row;
-          i {
-            cursor: pointer;
-            &.fa-facebook{
-              color: var(--blue-logo)
-            }
-            &.fa-whatsapp{
-              color: #2F6B12;
-            }
-            &.fa-instagram{
-              color: var(--pinky);
-            }
-            
-            &:hover{
-              color:var(--intense-gold);
-            }
-          }
+        &.pinky{
+          color: var(--pinky);
         }
-        button {
-          background-color: var(--dark-gold);
-          color: white;
-          font-size: 5rem;
-          &:hover {
-            background-color: var(--pinky);
-          }
+        &.gold{
+          color: var(--dark-gold);
+        }        
+        &:hover{
+          font-size:2.3rem; 
         }
       }
     }

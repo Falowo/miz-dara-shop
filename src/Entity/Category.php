@@ -296,7 +296,6 @@ class Category
         if (!$this->sizes->contains($size)) {
             $this->sizes[] = $size;
         }
-
         return $this;
     }
 

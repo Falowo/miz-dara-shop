@@ -7,10 +7,14 @@ use App\Entity\DeliveryFees;
 use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\Purchase;
+use App\Entity\Size;
 use App\Entity\Stock;
+use App\Entity\Tint;
 use App\Repository\ImageRepository;
 use App\Repository\PurchaseRepository;
+use App\Repository\SizeRepository;
 use App\Repository\StockRepository;
+use App\Repository\TintRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityPersistedEvent;
 use EasyCorp\Bundle\EasyAdminBundle\Event\AfterEntityUpdatedEvent;
@@ -68,6 +72,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         FlashBagInterface $flashBagInterface,
         EntityManagerInterface $em,
         StockRepository $stockRepository,
+        SizeRepository $sizeRepository,
+        TintRepository $tintRepository,
         ImageRepository $imageRepository,
         PurchaseRepository $purchaseRepository
 
@@ -78,6 +84,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->flashBagInterface = $flashBagInterface;
         $this->em = $em;
         $this->stockRepository = $stockRepository;
+        $this->sizeRepository  = $sizeRepository;
+        $this->tintRepository = $tintRepository;
         $this->imageRepository = $imageRepository;
         $this->purchaseRepository = $purchaseRepository;
     }
@@ -107,13 +115,7 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setProductForStocks($entity);
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
-
-
-
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
-
-
-
         return;
     }
 
@@ -125,6 +127,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->avoidUncompleteStock($entity);
         $this->registrateMainImageInImages($entity);
         $this->setSizesForCategory($entity);
+        $this->setDefaultNameForProduct($entity);
+        $this->setDefaultStockForProduct($entity);
         return;
     }
 
@@ -141,12 +145,8 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         $this->setCategoriesForProduct($entity);
         $this->setHasStockForProduct($entity);
         $this->avoidDuplicatedStock($entity);
-
         $this->makeSureOnlyOneLocalFieldIsCompletedInDeliveryFees($entity);
-
         $this->setCategoriesForRelatedProducts($entity);
-
-
         return;
     }
 
@@ -160,7 +160,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     public function beforeDelete(BeforeEntityDeletedEvent $event)
     {
         $entity = $event->getEntityInstance();
-
         $this->removeCache($entity);
         $this->setHasStockForProduct($entity);
         $this->setProductToNullForStock($entity);
@@ -178,7 +177,6 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             if ($entity->getMainImageFile() instanceof UploadedFile) {
                 $this->cacheManager->remove($this->uploaderHelper->asset($entity, 'mainImageFile'));
                 if (
-
                     $image = $this->imageRepository->findOneBy(
                         [
                             'name' => $entity->getMainImage(),
@@ -203,14 +201,12 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
     private function setCategory($entity)
     {
-
         if ($entity instanceof Category) {
 
             if ($entity->getParent() === $entity) {
                 $entity->setParent(null);
             }
-            $entity
-                ->setHasParent();
+            $entity->setHasParent();
 
             if ($entity->getHasParent()) {
                 $entity->getParent()->addCategory($entity);
@@ -265,10 +261,10 @@ class EasyAdminSubscriber implements EventSubscriberInterface
             }
         }
     }
+
     private function setCategoriesForRelatedProducts($entity)
     {
         if ($entity instanceof Category) {
-
 
             if ((count($entity->getProducts()) > 0)) {
                 $this->flashBagInterface->add('warning', 'Warning ! You may have to edit the categories for the related products!');
@@ -379,12 +375,18 @@ class EasyAdminSubscriber implements EventSubscriberInterface
     private function setSizesForCategory($entity)
     {
         if ($entity instanceof Product) {
-            if ($categories = $entity->getCategories()) {
-                foreach ($categories as $category) {
-                    $category->setSizes();
+                if($sizes=$entity->getSizes()){
+                    foreach($sizes as $size){
+                        if ($categories = $entity->getCategories()) {
+                    foreach ($categories as $category) {
+                        $category->addSize($size);
+                    }
+                    $this->em->flush();
+                    }
+                    
                 }
-                $this->em->flush();
             }
+           
         }
     }
 
@@ -415,6 +417,56 @@ class EasyAdminSubscriber implements EventSubscriberInterface
         if ($entity instanceof Stock) {
             if (!$this->purchaseRepository->findOneBy(['product' => $entity->getProduct()])) {
                 $entity->setProduct(null);
+            }
+        }
+    }
+
+    public function setDefaultNameForProduct($entity)
+    {
+        if($entity instanceof Product){
+            if(!$entity->getName()){
+                if( count($entity->getCategories())>0){
+                    foreach($entity->getCategories() as $category){
+                        if(count($category->getCategories())===0){
+                            $entity->setName($category->getName() . $entity->getId());
+                        }
+                    }
+                }else{
+                    $entity->setName('DaraItem' . $entity->getId());
+                }
+                $this->em->flush();
+            }
+        }
+    }
+
+    public function setDefaultStockForProduct($entity){
+        if($entity instanceof Product){
+            if(count($entity->getStocks())===0){
+                $stock = new Stock();
+                $stock->setProduct($entity);
+                $stock->setQuantity(1);
+
+                if ( $size = $this->sizeRepository->findOneBy(['name'=>'Unique'])){
+                    $stock->setSize($size);
+                }else{
+                    $size = new Size();
+                    $size->setName('Unique');
+                    $stock->setSize($size);
+                    $this->em->persist($size);
+                }
+                 
+                if ( $tint = $this->tintRepository->findOneBy(['name'=>'Unique']) ){
+                    $stock->setTint($tint);
+                }else{
+                    $tint = new Tint();
+                    $tint->setName('Unique');
+                    $stock->setTint($tint);
+                    $this->em->persist($tint);
+                }
+                $this->em->persist($stock);
+                $entity->addStock($stock);
+                $entity->setHasStock(true);
+                $this->em->flush();
             }
         }
     }

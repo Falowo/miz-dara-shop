@@ -1,58 +1,66 @@
-<div class="col-6 col-lg-4 m-0 p-0">
-    <a class="nav-link p-0" href="{{ path('product_add', {'id': product.id, 'slug': product.slug}) }}">
+<div class="col-6 col-lg-4 col-xl-3 m-0 p-0">
+  <div classe="m-2">
+    <a
+      class="nav-link p-0"
+      href="{{ path('product_add', { id: product.id, slug: product.slug }) }}"
+    >
+      <div class="card gallery">
+        {% if product.mainImage %}
+        <img
+          src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('thumb') }}"
+          class="card-img-top"
+          alt="{{ product.name }}"
+        />
 
+        {% elseif product.images is not empty %} {% for image in product.images
+        %} {% if loop.first %}
+        <img
+          src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb') }}"
+          class="card-img-top"
+          alt="{{ product.name }}"
+        />
 
-        <div class="card">
-           
+        {% endif %} {% endfor %} {% else %}
+        <img
+          src="{{ '/products/images/empty.jpg' | imagine_filter('thumb') }}"
+          class="card-img-top"
+          alt="{{ product.name }}"
+        />
+        {% endif %}
 
-            
-            {% if product.mainImage %}
-                <img src="{{ vich_uploader_asset(product, 'mainImageFile') | imagine_filter('thumb') }}"
-                             class="card-img-top"
-                             alt="{{ product.name }}">
-            
+        <div class="card-body d-flex flex-column">
+          <h2 class="card-title" style="font-size: 2rem; font-weight: bold">
+            {{ product.name }}
+          </h2>
+          <p class="card-text">{{ product.info }}</p>
 
-            {% elseif product.images is not empty %}
-                {% for image in product.images %}
-                    {% if loop.first %}
-                        <img src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb') }}"
-                             class="card-img-top"
-                             alt="{{ product.name }}">
+          {% if product.discountPrice is null %}
+          <a
+            href="{{
+              path('product_add', { id: product.id, slug: product.slug })
+            }}"
+            class="btn align-self-end mt-2"
+            style="font-weight: bold; font-size: 1.5rem"
+          >
+            {{ product.formatedPrice }}&nbsp₦
+          </a>
+          {% else %}
+          <a
+            href="{{
+              path('product_add', { id: product.id, slug: product.slug })
+            }}"
+            class="btn align-self-end mt-2"
+            style="font-weight: bold; font-size: 1.5rem"
+          >
+            <del style="margin-right: 10px">
+              {{ product.formatedPrice }}&nbsp₦
+            </del>
 
-                    {% endif %}
-                {% endfor %}
-
-
-
-            {% else %}
-                <img src="{{ '/products/images/empty.jpg' | imagine_filter('thumb') }}" class="card-img-top"
-                     alt="{{ product.name }}">
-            {% endif %}
-
-            <div class="card-body">
-                <h2 class="card-title" style="font-size:2rem; font-weight:bold">{{ product.name }}</h2>
-                <p class="card-text">{{ product.info }}</p>
-
-                {% if product.discountPrice is null %}
-                    <a href="{{ path('product_add', {'id': product.id, 'slug': product.slug}) }}"
-                       class="btn btn-success float-right" style="font-weight: bold; font-size:1.5rem">
-                        {{ product.formatedPrice }}&nbsp₦
-                    </a>
-                {% else %}
-                    <a href="{{ path('product_add', {'id': product.id, 'slug': product.slug}) }}"
-                       class="btn btn-danger float-right" style="font-weight: bold; font-size:1.5rem">
-                        <del style="margin-right: 10px">
-                            {{ product.formatedPrice }}&nbsp₦
-                        </del>
-
-                        {{ product.formatedDiscountPrice }}&nbsp₦
-                    </a>
-                {% endif %}
-
-
-            </div>
+            {{ product.formatedDiscountPrice }}&nbsp₦
+          </a>
+          {% endif %}
         </div>
+      </div>
     </a>
-
+  </div>
 </div>
-
