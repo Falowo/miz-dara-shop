@@ -15,7 +15,7 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-# /webpack.config.js
+/webpack.config.js
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
