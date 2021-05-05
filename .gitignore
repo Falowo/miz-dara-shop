@@ -15,7 +15,7 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
-/webpack.config.js
+# /webpack.config.js
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
@@ -24,7 +24,7 @@
 /public/products/
 /public/bundles/
 /public/media/cache/
-# /public/build/
+/public/build/
 ###> liip/imagine-bundle ###
 ###< liip/imagine-bundle ###
 
