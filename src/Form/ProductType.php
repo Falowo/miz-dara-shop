@@ -5,6 +5,7 @@ namespace App\Form;
 
 use App\Entity\Category;
 use App\Entity\Product;
+use Doctrine\DBAL\Types\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -24,11 +25,11 @@ class ProductType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $product = $builder->getData();
-
         $builder
             ->add('name')
-            ->add('info')
+            ->add('info', TextType::class,[
+                'required'=>false
+            ])
             ->add('price')
             ->add('discountPrice')
             ->add(

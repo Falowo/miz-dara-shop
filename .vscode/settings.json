@@ -1,4 +1,14 @@
 {
     "editor.linkedEditing": true,
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "database.connections": [
+        {
+            "type": "mysql",
+            "name": "josselin@localhost (MySql)",
+            "host": "localhost:3306",
+            "username": "josselin",
+            "database": "dara-shop",
+            "password": "foo"
+        }
+    ]
 }

@@ -28,14 +28,14 @@ class Product
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=70)
+     * @ORM\Column(type="string", length=70, nullable=true)
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $info;
+    private $info = "First quality product";
 
 
 
@@ -192,8 +192,7 @@ class Product
                 $sizes[] = $stock->getSize();
             }
         }
-        $tints = array_unique($sizes);
-
+        $sizes = array_unique($sizes);
 
         return $sizes;
     }

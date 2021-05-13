@@ -1,44 +1,61 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig' %} {% block body %}
 
+<blockquote
+  class="tiktok-embed"
+  cite="https://www.tiktok.com/@mizdara/video/6955485645154389254"
+  data-video-id="6955485645154389254"
+  style="max-width: 605px; min-width: 325px"
+>
+  <section>
+    <a target="_blank" title="@mizdara" href="https://www.tiktok.com/@mizdara"
+      >@mizdara</a
+    >
+    <p></p>
+    <a
+      target="_blank"
+      title="♬ Oju Rere - BALM OF GILEAD"
+      href="https://www.tiktok.com/music/Oju-Rere-6817702216875378690"
+    >
+      ♬ Oju Rere - BALM OF GILEAD
+    </a>
+  </section>
+</blockquote>
+<script async src="https://www.tiktok.com/embed.js"></script>
 
-{% block body %}
-	<h1>Hello </h1>
+<div class="row">
+  {% for product in products %} 
+  {{ include("product/_card.html.twig") }}
+  {% endfor %}
+</div>
 
-	<div class="row">
+<div class="pagination">
+  {{ knp_pagination_render(products) }}
+</div>
 
-
-		{% for product in products %}
-			{# <h5></h5> #}
-			{{ include('product/_card.html.twig') }}
-		{% endfor %}
-
-
-	</div>
-
-	<div class="pagination">
-		{{ knp_pagination_render(products) }}
-	</div>
-
-
-{% endblock %}
-{% block footer %}
-	{{ parent() }}
-	<div class="fixed-bottom gdpr" style="min-height:50vh;background-color:rgba(0,0,0,0.8)" >
-		<div class="container d-flex flex-column justify-content-center">
-			<p
-				class="text-center mt-3 mb-5 align flex-grow-1"
-				style="font-size:3rem;color:white">
-				This website may use some cookies but we value your privacy</p>
-			<div class="container d-flex flex-row justify-content-between align-items-start
-					flex-grow-1">
-				<button class="btn btn-lg btn-danger">No cookies</button>
-				<button class="btn btn-lg btn-warning">Just necessary cookies</button>
-				<button class="btn btn-lg btn-success">Accept all</button>
-			</div>
-		</div>
-	</div>
-{% endblock %}
-{% block javascripts %}
-	{{ parent() }}
-	{{ encore_entry_script_tags('gdpr') }}
+{% endblock %} {% block footer %}
+{{ parent() }}
+<div
+  class="fixed-bottom gdpr"
+  style="min-height: 30vh; background-color: rgba(0, 0, 0, 0.8)"
+>
+  <div class="container d-flex flex-column justify-content-center">
+    <p
+      class="text-center mt-3 mb-5 align flex-grow-1"
+      style="font-size: 3rem; color: white"
+    >
+      This website may use some cookies but we value your privacy
+    </p>
+    <div
+      class="container d-flex flex-row justify-content-between align-items-start flex-grow-1"
+    >
+      <button class="btn btn-lg btn-danger p-3">No cookies</button>
+      <button class="btn btn-lg btn-warning p-3">Just necessary cookies</button>
+      <button class="btn btn-lg btn-success p-3">Accept all</button>
+    </div>
+  </div>
+</div>
+{% endblock %} {% block javascripts %}
+{{ parent() }}
+{{ encore_entry_script_tags("menu") }}
+{{ encore_entry_script_tags("gdpr") }}
 {% endblock %}

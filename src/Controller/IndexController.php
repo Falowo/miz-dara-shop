@@ -36,8 +36,7 @@ class IndexController extends AbstractController
         
         if($user = $this->getUser()){
 
-            if( !($user->getConfirmedEmail()) ){
-
+            if( !($user->getConfirmedEmail()) ){               
                 $authenticate = $this->get('security.csrf.token_manager')->getToken('authenticate');
                 $mailerService->sendSignUpEmail($user, $authenticate);
                 return $this->render('index/confirm_your_email.html.twig', [
@@ -47,7 +46,6 @@ class IndexController extends AbstractController
 
            $cartService->getLastNotPaidPurchase($user);
         }
-
        
         $products = $paginator->paginate(
             $repository->findAllByRandomQuery(null), /* query NOT result */
@@ -55,16 +53,12 @@ class IndexController extends AbstractController
             12 /*limit per page*/
         );
 
-
-
-
         return $this->render('index/index.html.twig', [
             'controller_name' => 'IndexController',
             'products' => $products,
 
         ]);
     }
-
 
     /**
      * Undocumented function
