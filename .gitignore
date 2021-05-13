@@ -5,10 +5,10 @@
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
+# /public/bundles/
 /var/
 /vendor/
-# /webpack.config.js
+/webpack.config.js
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
