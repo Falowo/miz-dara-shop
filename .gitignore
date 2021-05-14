@@ -5,10 +5,11 @@
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
 /var/
 /vendor/
+
 /webpack.config.js
+
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
@@ -17,19 +18,21 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 
+/webpack.config.js
 ###> symfony/web-server-bundle ###
 /.web-server-pid
 ###< symfony/web-server-bundle ###
 
 /.idea
 /public/products/
-###> liip/imagine-bundle ###
+/public/bundles/
 /public/media/cache/
+# /public/build/
+###> liip/imagine-bundle ###
 ###< liip/imagine-bundle ###
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
-# /public/build/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###

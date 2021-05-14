@@ -83,4 +83,24 @@ class IndexController extends AbstractController
         return $this->render('index/user.html.twig');
     }
 
+    public function whatsappLink()
+    {
+        $android = stripos($_SERVER['HTTP_USER_AGENT'], "android");
+        $iphone = stripos($_SERVER['HTTP_USER_AGENT'], "iphone");
+        $ipad = stripos($_SERVER['HTTP_USER_AGENT'], "ipad");
+
+        $whatsappNumber = '+2348144337778';
+        $whatsappLink = '';
+        if($android !== false || $ipad !== false || $iphone !== false) {//For mobile
+            $whatsappLink = 'https://api.whatsapp.com/send?phone='.$whatsappNumber;
+        } else {//For desktop
+            $whatsappLink = 'https://web.whatsapp.com/send?phone='.$whatsappNumber;
+        }
+    
+    return $this->render('index/whatsapp-link.html.twig', [
+        
+        'whatsappLink' => $whatsappLink,
+
+    ]);
+}
 }
