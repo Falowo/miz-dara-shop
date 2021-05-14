@@ -11,127 +11,127 @@
 		{% block stylesheets %}
 			{# <link rel="stylesheet" href="{{ asset('lib/bootstrap/bootstrap.min.css') }}"> #}
 			<link
-			rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css" integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"/>
+				rel="stylesheet"
+				href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+				integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ="
+				crossorigin="anonymous"/>
 			<link rel="preconnect" href="https://fonts.gstatic.com">
-			<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Ubuntu+Condensed&family=Ubuntu:wght@300;400;700&display=swap" rel="stylesheet">	
-
-			
-			{{ encore_entry_link_tags('app') }}
+			<link
+				href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Ubuntu+Condensed&family=Ubuntu:wght@300;400;700&display=swap"
+				rel="stylesheet"> {{ encore_entry_link_tags('app') }}
 		{% endblock %}
 	</head>
 	<body>
 		<div class="my-container container-fluid container-lg">
 			<header>
-			{% block header %}
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('dashboard_index') }}">
-						<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
-					</a>
+				{% block header %}
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('dashboard_index') }}">
+							<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
+						</a>
 					{% else %}
-					<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
-				{% endif %}
-					
-					
-				<nav class="navbar flex-grow-1" >
-					<div class="nav container-fluid text-uppercase d-flex  
-					flex-row-reverse justify-content-between flex-wrap-reverse" >
+						<img src="{{ '/base/header.jpeg'|imagine_filter('big') }}" class="card-img-top" alt="mi"/>
+					{% endif %}
 
-						
-						<div class= "align-self-baseline m-3">
-							<ul class="navbar-nav d-flex flex-row flex-nowrap">
-								{{ render(controller('App\\Controller\\CartController::link')) }}
-								
-								{% if app.user is null %}
-								<li class="nav-item m-3">
-									<a href="{{ path('app_login') }}" class="nav-link">
-										<strong class="pinky">Login</strong>
-									</a>
-								</li>
-								{% else %}
-								<div class="m-3"></div>
-								{{ render(controller('App\\Controller\\IndexController::user')) }}
-								
-								<li class="nav-item ml-3">
-									<a href="{{ path('app_logout') }}" class="nav-link" >
-										<i class="fas fa-power-off"></i>
-									</a>
-								</li>
-								{% endif %}
-							</ul>
-						</div>
-						<div class="d-flex flex-column flex-md-row flex-grow-1">
-							<div class="logo">
-								<a href="{{ path('app_index') }}" class="navbar-brand  mb-0">
-									<img src="/base/logo5.3.1.svg" width="150px" ></img>
+
+					<nav class="navbar flex-grow-1">
+						<div class="nav container-fluid text-uppercase d-flex flex-row-reverse
+								justify-content-between flex-wrap-reverse">
+
+
+							<div class="align-self-baseline m-3">
+								<ul class="navbar-nav d-flex flex-row flex-nowrap">
+									{{ render(controller('App\\Controller\\CartController::link')) }}
+
+									{% if app.user is null %}
+										<li class="nav-item m-3">
+											<a href="{{ path('app_login') }}" class="nav-link">
+												<strong class="pinky">Login</strong>
+											</a>
+										</li>
+									{% else %}
+										<div class="m-3"></div>
+										{{ render(controller('App\\Controller\\IndexController::user')) }}
+
+										<li class="nav-item ml-3">
+											<a href="{{ path('app_logout') }}" class="nav-link">
+												<i class="fas fa-power-off"></i>
+											</a>
+										</li>
+									{% endif %}
+								</ul>
+							</div>
+							<div class="d-flex flex-column flex-md-row flex-grow-1">
+								<div class="logo">
+									<a href="{{ path('app_index') }}" class="navbar-brand  mb-0">
+									<img src="/base/logo5.3.1.svg" width="150px"> </img>
 								</a>
 							</div>
 
 							{% block menu %}
-							{# show the method menu() of IndexCategoryController #}
-							{{ render(controller('App\\Controller\\IndexController::menu')) }}
+								{# show the method menu() of IndexCategoryController #}
+								{{ render(controller('App\\Controller\\IndexController::menu')) }}
 							{% endblock	%}
-							
+
 						</div>
 					</div>
-				</nav>			
-				{% endblock %}
-			</header>
+				</nav>
+			{% endblock %}
+		</header>
 
-			<main>					
-				<div class="container-fluid text-uppercase">
-					{% for type, messages in app.session.flashBag.all %}
+		<main>
+			<div class="container-fluid text-uppercase">
+				{% for type, messages in app.session.flashBag.all %}
 					{% for message in messages %}
-					{% if type == 'error' %}
-					{% set type = 'danger' %}
-					
-					<div class="alert alert-{{ type }} mt-2">
-						{{ message|raw }}
-					</div>
-					{% endif %}
-					{% if type == 'success' %}
-					{% set type = 'success' %}
-					
-					<div class="alert alert-{{ type }} mt-2">
-						{{ message|raw }}
-					</div>
-					{% endif %}
+						{% if type == 'error' %}
+							{% set type = 'danger' %}
+
+							<div class="alert alert-{{ type }} mt-2">
+								{{ message|raw }}
+							</div>
+						{% endif %}
+						{% if type == 'success' %}
+							{% set type = 'success' %}
+
+							<div class="alert alert-{{ type }} mt-2">
+								{{ message|raw }}
+							</div>
+						{% endif %}
 					{% endfor %}
-					{% endfor %}
-					{% block body %}{% endblock %}
-				</div>
-			</main>
-			<footer>				
-				{% block footer %}					
-					<div class="mt-5 d-flex flex-column justify-content-space-between ">
-						
-						
-						<a href="{{ path('contact_index') }}" class="btn btn-lg p-5 m-3">Contact us</a>
-						
-						<h2> Miz Dara Unique 
-							<br> Wears Boutique</h2>
-														
-						<ul class="d-flex flex-row justify-content-around align-content-center align-items-stretch">
-							<li>
-								<a href="https://www.facebook.com/babalola.dara.9">
-									<i class="fab fa-facebook fa-3x"></i>
-								</a>
-							</li>
-							<li>
-								{# show the method whatsappLink() of IndexCategoryController #}
-								{{ render(controller('App\\Controller\\IndexController::whatsappLink')) }}
-							</li>
-							<li><i class="fab fa-instagram fa-3x"></i></li>
-						</ul>								
-					</div>				
-					<div class="text-center" >
-						All rights reserved ©2020 Miz-Dara-Shop,  by J_K...orian
-					</div>
-				{% endblock %}
-			</footer>
-		</div>	
-	{% block javascripts %}
-	{{ encore_entry_script_tags('app') }}
-	{% endblock %}
-	</body>
-</html>
-				
+				{% endfor %}
+				{% block body %}{% endblock %}
+			</div>
+		</main>
+		<footer>
+			{% block footer %}
+				<div class="mt-5 d-flex flex-column justify-content-space-between ">
+
+
+					<a href="{{ path('contact_index') }}" class="btn btn-lg p-5 m-3">Contact us</a>
+
+					<h2>
+						Miz Dara Unique <br> Wears Boutique</h2>
+
+					<ul class="d-flex flex-row justify-content-around align-content-center
+							align-items-stretch">
+						<li>
+							<a href="https://www.facebook.com/babalola.dara.9">
+								<i class="fab fa-facebook fa-3x"></i>
+							</a>
+						</li>
+						<li>
+							<i class="fab fa-whatsapp fa-3x"></i>
+						</li>
+						<li>
+							<i class="fab fa-instagram fa-3x"></i>
+						</li>
+					</i>
+				</li>
+			</ul>
+		</body>
+	</html>
+</div>
+<div class="text-center">
+	All rights reserved ©2020 Miz-Dara-Shop, by J_K...orian
+</div>{% endblock %}</footer></div>{% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}</body></html>
+
