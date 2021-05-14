@@ -7,6 +7,9 @@
 /config/secrets/prod/prod.decrypt.private.php
 /var/
 /vendor/
+
+/webpack.config.js
+
 ###< symfony/framework-bundle ###
 
 ###> symfony/phpunit-bridge ###
