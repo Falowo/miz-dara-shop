@@ -2,64 +2,49 @@
   "entrypoints": {
     "app": {
       "js": [
-
-        "http://localhost:8080/build/runtime.js",
-        "http://localhost:8080/build/vendors~add~app~gdpr~menu~newAddress~searchBar.js",
-        "http://localhost:8080/build/vendors~add~app~newAddress.js",
-        "http://localhost:8080/build/vendors~app.js",
-        "http://localhost:8080/build/app.js"
-
+        "/build/runtime.d94b3b43.js",
+        "/build/0.d9a8967d.js",
+        "/build/3.9293b729.js",
+        "/build/app.21087e2e.js"
       ],
       "css": [
-        "/build/app.2e7210ae.css"
+        "/build/app.3cf42191.css"
       ]
     },
     "add": {
       "js": [
-
-        "http://localhost:8080/build/runtime.js",
-        "http://localhost:8080/build/vendors~add~app~gdpr~menu~newAddress~searchBar.js",
-        "http://localhost:8080/build/vendors~add~gdpr~menu~newAddress.js",
-        "http://localhost:8080/build/vendors~add~app~newAddress.js",
-        "http://localhost:8080/build/vendors~add.js",
-        "http://localhost:8080/build/add.js"
-
+        "/build/runtime.d94b3b43.js",
+        "/build/0.d9a8967d.js",
+        "/build/1.f48e24fb.js",
+        "/build/add.4207006a.js"
       ]
     },
     "newAddress": {
       "js": [
-
-        "http://localhost:8080/build/runtime.js",
-        "http://localhost:8080/build/vendors~add~app~gdpr~menu~newAddress~searchBar.js",
-        "http://localhost:8080/build/vendors~add~gdpr~menu~newAddress.js",
-        "http://localhost:8080/build/vendors~add~app~newAddress.js",
-        "http://localhost:8080/build/newAddress.js"
-
+        "/build/runtime.d94b3b43.js",
+        "/build/0.d9a8967d.js",
+        "/build/1.f48e24fb.js",
+        "/build/newAddress.0702aae3.js"
       ]
     },
     "gdpr": {
       "js": [
-
-        "http://localhost:8080/build/runtime.js",
-        "http://localhost:8080/build/vendors~add~app~gdpr~menu~newAddress~searchBar.js",
-        "http://localhost:8080/build/vendors~add~gdpr~menu~newAddress.js",
-        "http://localhost:8080/build/gdpr.js"
-
+        "/build/runtime.d94b3b43.js",
+        "/build/2.aecb0448.js",
+        "/build/gdpr.d6119235.js"
       ]
     },
     "searchBar": {
       "js": [
-        "http://localhost:8080/build/runtime.js",
-        "http://localhost:8080/build/vendors~add~app~gdpr~menu~newAddress~searchBar.js",
-        "http://localhost:8080/build/searchBar.js"
+        "/build/runtime.d94b3b43.js",
+        "/build/searchBar.e7fe255f.js"
       ]
     },
     "menu": {
       "js": [
-        "http://localhost:8080/build/runtime.js",
-        "http://localhost:8080/build/vendors~add~app~gdpr~menu~newAddress~searchBar.js",
-        "http://localhost:8080/build/vendors~add~gdpr~menu~newAddress.js",
-        "http://localhost:8080/build/menu.js"
+        "/build/runtime.d94b3b43.js",
+        "/build/2.aecb0448.js",
+        "/build/menu.11d82b8d.js"
       ]
     }
   }
