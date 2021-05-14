@@ -110,9 +110,16 @@
 							<br> Wears Boutique</h2>
 														
 						<ul class="d-flex flex-row justify-content-around align-content-center align-items-stretch">
-							<li><i class="fab fa-facebook fa-3x"></i></li>
-							<li><i class="fab fa-whatsapp fa-3x"></i></li>
-							<li><i class="fab fa-instagram fa-3x"></i></i></li>
+							<li>
+								<a href="https://www.facebook.com/babalola.dara.9">
+									<i class="fab fa-facebook fa-3x"></i>
+								</a>
+							</li>
+							<li>
+								{# show the method whatsappLink() of IndexCategoryController #}
+								{{ render(controller('App\\Controller\\IndexController::whatsappLink')) }}
+							</li>
+							<li><i class="fab fa-instagram fa-3x"></i></li>
 						</ul>								
 					</div>				
 					<div class="text-center" >
