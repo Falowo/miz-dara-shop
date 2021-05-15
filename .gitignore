@@ -26,9 +26,8 @@
 /public/products/
 /public/bundles/
 /public/media/cache/
-# /public/build/
-###> liip/imagine-bundle ###
-###< liip/imagine-bundle ###
+/public/build/
+
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/

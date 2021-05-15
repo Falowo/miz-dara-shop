@@ -1,8 +1,6 @@
 const secondLevelElts = document.querySelectorAll(".second-level");
 const thirdLevelElts = document.querySelectorAll(".third-level");
 
-console.log(thirdLevelElts);
-console.log(secondLevelElts);
 
 setTimeout(
   () =>

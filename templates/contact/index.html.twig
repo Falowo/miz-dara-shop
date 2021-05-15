@@ -38,3 +38,7 @@
   </div>
 </div>
 {% endblock %}
+{% block javascript %}
+  {{ parent() }}
+{{ encore_entry_script_tags('menu') }}
+{% endblock name %}
