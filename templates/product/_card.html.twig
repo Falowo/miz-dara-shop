@@ -12,7 +12,7 @@
           alt="{{ product.name }}"
         />
 
-        {% elseif product.images is not empty %} {% for image in product.images
+        {% elseif product.images | length > 0 %} {% for image in product.images
         %} {% if loop.first %}
         <img
           src="{{ vich_uploader_asset(image, 'imageFile') | imagine_filter('thumb') }}"
@@ -22,7 +22,7 @@
 
         {% endif %} {% endfor %} {% else %}
         <img
-          src="{{ '/products/images/empty.jpg' | imagine_filter('thumb') }}"
+          src="{{ '/base/empty.jpg' | imagine_filter('thumb') }}"
           class="card-img-top"
           alt="{{ product.name }}"
         />
