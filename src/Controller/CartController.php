@@ -3,11 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\DeliveryFees;
-use App\Entity\Image;
 use App\Entity\Purchase;
 use App\Entity\PurchaseLine;
 use App\Entity\User;
-use App\Repository\ImageRepository;
 use App\Repository\StockRepository;
 use App\Service\Cart\CartService;
 use App\Service\Locale\LocaleService;
@@ -304,7 +302,7 @@ class CartController extends AbstractController
      * @param CartService $cartService
      * @return Response
      */
-    public function cart(CartService $cartService, ImageRepository $imageRepository)
+    public function cart(CartService $cartService)
     {
         if ($purchase = $cartService->getPurchase()) {
 
@@ -329,7 +327,6 @@ class CartController extends AbstractController
     public function link(CartService $cartService)
     {
         $purchase = $cartService->getPurchase();
-
 
         return $this->render('cart/_link.html.twig', [
             'purchase' => $purchase,
