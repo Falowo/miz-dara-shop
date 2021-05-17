@@ -3,3 +3,8 @@
 {% block title %}failed to confirm your email{% endblock %}
 
 <h1>{{user.email}}</h1>
+
+{% block javascripts %}
+  {{ parent() }}
+{{ encore_entry_script_tags('menu') }}
+{% endblock  %}
