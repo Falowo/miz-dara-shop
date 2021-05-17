@@ -428,11 +428,11 @@ class EasyAdminSubscriber implements EventSubscriberInterface
                 if( count($entity->getCategories())>0){
                     foreach($entity->getCategories() as $category){
                         if(count($category->getCategories())===0){
-                            $entity->setName($category->getName() . $entity->getId());
+                            $entity->setName($category->getName() . ' ' . $entity->getId());
                         }
                     }
                 }else{
-                    $entity->setName('DaraItem' . $entity->getId());
+                    $entity->setName('DaraItem ' . $entity->getId());
                 }
                 $this->em->flush();
             }
