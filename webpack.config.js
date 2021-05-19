@@ -31,7 +31,7 @@ Encore
 .addEntry("gdpr", "./assets/js/gdpr.js")
 .addEntry("searchBar", "./assets/js/searchBar.js")
 .addEntry("menu", "./assets/js/menu.js")
-.addEntry("menu2", "./assets/js/menu2.js")
+
 
 
 //.addEntry('page2', './assets/js/page2.js')

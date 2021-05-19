@@ -128,10 +128,13 @@
 					</i>
 				</li>
 			</ul>
-		</body>
-	</html>
-</div>
-<div class="text-center">
-	All rights reserved ©2020 Miz-Dara-Shop, by J_K...orian
-</div>{% endblock %}</footer></div>{% block javascripts %}{{ encore_entry_script_tags('app') }}{% endblock %}</body></html>
+		</div>
+		<div class="text-center">
+			All rights reserved ©2020 Miz-Dara-Shop, by J_K...orian
+		</div>{% endblock %}</footer></div>{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+		{{ encore_entry_script_tags("menu") }}
+		{{ encore_entry_script_tags("gdpr") }}
+		{% endblock %}
+	</body></html>
 

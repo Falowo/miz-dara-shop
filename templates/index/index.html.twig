@@ -34,28 +34,5 @@
 
 {% endblock %} {% block footer %}
 {{ parent() }}
-<div
-  class="fixed-bottom gdpr"
-  style="min-height: 30vh; background-color: rgba(0, 0, 0, 0.8)"
->
-  <div class="container d-flex flex-column justify-content-center">
-    <p
-      class="text-center mt-3 mb-5 align flex-grow-1"
-      style="font-size: 3rem; color: white"
-    >
-      This website may use some cookies but we value your privacy
-    </p>
-    <div
-      class="container d-flex flex-row justify-content-between align-items-start flex-grow-1"
-    >
-      <button class="btn btn-lg btn-danger p-3">No cookies</button>
-      <button class="btn btn-lg btn-warning p-3">Just necessary cookies</button>
-      <button class="btn btn-lg btn-success p-3">Accept all</button>
-    </div>
-  </div>
-</div>
-{% endblock %} {% block javascripts %}
-{{ parent() }}
-{{ encore_entry_script_tags("menu") }}
-{{ encore_entry_script_tags("gdpr") }}
-{% endblock %}
+
+{% endblock %} 
