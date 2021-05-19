@@ -10,5 +10,9 @@
             "database": "dara-shop",
             "password": "foo"
         }
-    ]
+    ],
+    "prettier.jsxBracketSameLine": true,
+    "prettier.jsxSingleQuote": true,
+    "prettier.useTabs": true,
+    "prettier.vueIndentScriptAndStyle": true
 }
