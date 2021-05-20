@@ -1,5 +1,7 @@
 {% extends 'base.html.twig' %} {% block title %} Miz-Dara Contact {% endblock %}
-{% block body %} {% if contact.purchase %} {% set purchase = contact.purchase %}
+{% block body %} 
+{% if contact.purchase %} 
+{% set purchase = contact.purchase %}
 {{ include("cart/_cart.html.twig") }}
 {% if purchase.address %}
 {{ include("cart/_address.html.twig") }}
@@ -28,7 +30,7 @@
         {{ form_row(form.content) }}
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group d-flex flex-row-reverse">
       <button class="btn my-btn-blue-logo p-3" style="font-size: 2.2rem">
         Send
       </button>
