@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Contact;
 use App\Entity\Purchase;
 use App\Form\ContactType;
-use App\Repository\PurchaseRepository;
 use App\Service\Mailer\MailerService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +23,6 @@ class ContactController extends AbstractController
         Request $request,
         ?Purchase $purchase,
         MailerService $mailerService, 
-        PurchaseRepository $purchaseRepository
     ): Response {
         $contact = new Contact();
         if ($purchase){
