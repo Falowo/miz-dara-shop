@@ -22,7 +22,7 @@ class ContactController extends AbstractController
     public function index(
         Request $request,
         ?Purchase $purchase,
-        MailerService $mailerService, 
+        MailerService $mailerService 
     ): Response {
         $contact = new Contact();
         if ($purchase){
